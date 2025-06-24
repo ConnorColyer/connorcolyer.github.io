@@ -24,7 +24,7 @@ document.querySelectorAll('a, .project-card').forEach(el => {
     });
 });
 
-// Smooth Scrolling with Lenis (unchanged)
+// Smooth Scrolling with Lenis
 const lenis = new Lenis({
     duration: 1.5,
     easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -34,7 +34,7 @@ lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add(time => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 
-// GSAP Animations (unchanged)
+// GSAP Animations
 gsap.registerPlugin(ScrollTrigger);
 gsap.to('.hero-bg', {
     y: '30%',
@@ -50,8 +50,8 @@ gsap.utils.toArray('section').forEach(section => {
     gsap.from(section.children, {
         opacity: 0,
         y: 50,
-        stagger: 0.2,
-        duration: 1,
+        stagger: 0.3,
+        duration: 1.2,
         scrollTrigger: {
             trigger: section,
             start: 'top 80%',
@@ -86,14 +86,14 @@ class Particle {
         const dx = mouseX - this.x;
         const dy = mouseY - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const beamRadius = 100; // Adjustable radius
-    
+        const beamRadius = 100;
+
         if (distance < beamRadius) {
-            const force = (beamRadius - distance) / beamRadius * 0.3; // Lower force for subtlety
+            const force = (beamRadius - distance) / beamRadius * 0.3;
             this.speedX += (dx / distance) * -force; // Repulsion
             this.speedY += (dy / distance) * -force;
         }
-    
+
         this.x += this.speedX;
         this.y += this.speedY;
         if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
