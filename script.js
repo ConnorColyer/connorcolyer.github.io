@@ -1,12 +1,46 @@
+// Custom Cursor
+const cursor = document.querySelector('.cursor');
 document.addEventListener('mousemove', (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 2;
-  const y = (e.clientY / window.innerHeight - 0.5) * 2;
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+});
+document.querySelectorAll('a, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
 
-  document.querySelectorAll('.hero-layer').forEach((layer, i) => {
-    const depth = (i + 1) * 10;
-    const moveX = x * depth;
-    const moveY = y * depth;
+// Smooth Scrolling with Lenis
+const lenis = new Lenis({
+    duration: 1.5,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+});
+function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
 
-    layer.style.transform = `translate(${moveX}px, ${moveY}px)`;
-  });
+// GSAP Animations
+gsap.registerPlugin(ScrollTrigger);
+gsap.to('.hero-bg', {
+    y: '30%',
+    ease: 'none',
+    scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+    },
+});
+gsap.utils.toArray('section').forEach(section => {
+    gsap.from(section.children, {
+        opacity: 0,
+        y: 50,
+        stagger: 0.2,
+        duration: 1,
+        scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+        },
+    });
 });
