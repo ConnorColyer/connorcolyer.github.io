@@ -86,15 +86,14 @@ class Particle {
         const dx = mouseX - this.x;
         const dy = mouseY - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const beamRadius = 100; // Radius of beam influence
-
+        const beamRadius = 100; // Adjustable radius
+    
         if (distance < beamRadius) {
-            // Attract particles toward the beam center
-            const force = (beamRadius - distance) / beamRadius * 0.5;
-            this.speedX += (dx / distance) * force;
-            this.speedY += (dy / distance) * force;
+            const force = (beamRadius - distance) / beamRadius * 0.3; // Lower force for subtlety
+            this.speedX += (dx / distance) * -force; // Repulsion
+            this.speedY += (dy / distance) * -force;
         }
-
+    
         this.x += this.speedX;
         this.y += this.speedY;
         if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
