@@ -1,22 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Connor Colyer</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="grain-overlay"></div>
-
-  <section class="hero">
-    <div class="hero-layer layer-1">Connor Colyer</div>
-    <div class="hero-layer layer-2">Creative Developer</div>
-    <div class="hero-sub">Elegance. Intuition. Motion.</div>
-  </section>
-
-  <script src="script.js"></script>
+    <canvas id="particle-canvas"></canvas>
+    <div class="cursor"></div>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <h1>Welcome to My World</h1>
+                <p>A blend of code, art, and motion.</p>
+            </div>
+        </section>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>I’m a dev who dreams in pixels and code—let’s make something unforgettable.</p>
+        </section>
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <img src="assets/placeholder.jpg" alt="Project 1">
+                    <h3>Project One</h3>
+                    <p>A wild experiment in motion.</p>
+                </div>
+                <div class="project-card">
+                    <img src="assets/placeholder.jpg" alt="Project 2">
+                    <h3>Project Two</h3>
+                    <p>Minimal design, maximum impact.</p>
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Hit me up: <a href="mailto:you@example.com">you@example.com</a></p>
+        </section>
+    </main>
+    <script src="libs/gsap.min.js"></script>
+    <script src="libs/lenis.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
