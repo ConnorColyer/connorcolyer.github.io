@@ -18,6 +18,23 @@ body {
     transition: width 0.2s, height 0.2s;
 }
 
+.cursor-beam {
+    position: fixed;
+    width: 200px; /* Wide beam */
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, rgba(255, 215, 0, 0) 70%); /* Gold glow */
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    opacity: 0.8;
+    filter: blur(10px);
+    transition: opacity 0.3s;
+}
+
+.cursor-beam.hover {
+    opacity: 1;
+}
+
 .cursor.hover {
     width: 25px;
     height: 25px;
@@ -106,5 +123,5 @@ canvas#particle-canvas {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2;
+    z-index: -1;
 }
