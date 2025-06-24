@@ -1,26 +1,40 @@
-// Custom Cursor
+// Custom Cursor with Beam
 const cursor = document.querySelector('.cursor');
+const cursorBeam = document.createElement('div');
+cursorBeam.classList.add('cursor-beam');
+document.body.appendChild(cursorBeam);
+
 document.addEventListener('mousemove', (e) => {
-    cursor.style.left = `${e.clientX}px`;
-    cursor.style.top = `${e.clientY}px`;
-});
-document.querySelectorAll('a, .project-card').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    const x = e.clientX;
+    const y = e.clientY;
+    cursor.style.left = `${x}px`;
+    cursor.style.top = `${y}px`;
+    cursorBeam.style.left = `${x}px`;
+    cursorBeam.style.top = `${y}px`;
 });
 
-// Smooth Scrolling with Lenis
+document.querySelectorAll('a, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        cursorBeam.classList.add('hover');
+    });
+    el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        cursorBeam.classList.remove('hover');
+    });
+});
+
+// Smooth Scrolling with Lenis (unchanged)
 const lenis = new Lenis({
     duration: 1.5,
     easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    autoRaf: true,
 });
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(time => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
 
-// GSAP Animations
+// GSAP Animations (unchanged)
 gsap.registerPlugin(ScrollTrigger);
 gsap.to('.hero-bg', {
     y: '30%',
@@ -45,7 +59,7 @@ gsap.utils.toArray('section').forEach(section => {
     });
 });
 
-// Canvas Particles
+// Canvas Particles with Beam Interaction
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
@@ -72,10 +86,15 @@ class Particle {
         const dx = mouseX - this.x;
         const dy = mouseY - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < 100) {
-            this.speedX += dx / distance * 0.1;
-            this.speedY += dy / distance * 0.1;
+        const beamRadius = 100; // Radius of beam influence
+
+        if (distance < beamRadius) {
+            // Attract particles toward the beam center
+            const force = (beamRadius - distance) / beamRadius * 0.5;
+            this.speedX += (dx / distance) * force;
+            this.speedY += (dy / distance) * force;
         }
+
         this.x += this.speedX;
         this.y += this.speedY;
         if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
@@ -96,3 +115,9 @@ function animateParticles() {
     requestAnimationFrame(animateParticles);
 }
 animateParticles();
+
+// Resize canvas on window resize
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
