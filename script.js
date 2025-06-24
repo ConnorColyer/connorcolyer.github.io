@@ -1,21 +1,12 @@
-// Scroll fade-in animation
-const reveal = () => {
-  const sections = document.querySelectorAll("section");
-  sections.forEach(sec => {
-    const rect = sec.getBoundingClientRect();
-    if (rect.top < window.innerHeight - 100) {
-      sec.style.opacity = 1;
-      sec.style.transform = "translateY(0)";
-    }
-  });
-};
+document.addEventListener('mousemove', (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 2;
+  const y = (e.clientY / window.innerHeight - 0.5) * 2;
 
-window.addEventListener("scroll", reveal);
-window.addEventListener("load", () => {
-  document.querySelectorAll("section").forEach(sec => {
-    sec.style.opacity = 0;
-    sec.style.transform = "translateY(40px)";
-    sec.style.transition = "all 0.6s ease-out";
+  document.querySelectorAll('.hero-layer').forEach((layer, i) => {
+    const depth = (i + 1) * 10;
+    const moveX = x * depth;
+    const moveY = y * depth;
+
+    layer.style.transform = `translate(${moveX}px, ${moveY}px)`;
   });
-  reveal();
 });
