@@ -84,6 +84,12 @@ nav a:hover {
 
 .hero-content {
     text-align: center;
+    background: rgba(255, 253, 208, 0.7); /* Cream with transparency */
+    backdrop-filter: blur(10px); /* Soft blur */
+    border-radius: 15px;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 section {
