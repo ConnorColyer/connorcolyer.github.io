@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.15/dist/lenis.min.js"></script>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas> 
+    <div class="cursor"></div>
+    <div class="cursor-trail"></div>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <h1>Dive into Motion</h1>
+                <p>Where creativity flows and code comes alive.</p>
+                <a href="#projects" class="cta-button">Discover My Work</a>
+            </div>
+        </section>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>I’m a developer passionate about crafting immersive, animated experiences that captivate and inspire.</p>
+        </section>
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="project-grid">
+                <div class="project-card" data-title="Project One">
+                    <h3>Project One</h3>
+                    <p>Interactive visuals that pulse with energy.</p>
+                </div>
+                <div class="project-card" data-title="Project Two">
+                    <h3>Project Two</h3>
+                    <p>Fluid animations meet elegant design.</p>
+                </div>
+                <div class="project-card" data-title="Project Three">
+                    <h3>Project Three</h3>
+                    <p>A bold showcase of dynamic creativity.</p>
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Let’s make waves together: you@example.com</p>
+            <a href="mailto:you@example.com" class="cta-button">Reach Out</a>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
