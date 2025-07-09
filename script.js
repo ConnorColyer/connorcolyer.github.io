@@ -1,6 +1,6 @@
 const lenis = new Lenis({
-    duration: 1.2,
-    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    duration: 1.4,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -12 * t)),
     smoothWheel: true,
 });
 
@@ -8,67 +8,104 @@ lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add(time => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 
-// Custom Cursor
+// Custom Cursor with Trail
 const cursor = document.querySelector('.cursor');
-const cursorGlow = document.querySelector('.cursor-glow');
+const cursorTrail = document.querySelector('.cursor-trail');
 
 document.addEventListener('mousemove', e => {
-    gsap.to([cursor, cursorGlow], {
+    gsap.to(cursor, {
         x: e.clientX,
         y: e.clientY,
         duration: 0.1,
+        ease: 'power3.out'
+    });
+    gsap.to(cursorTrail, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.3,
         ease: 'power2.out'
     });
 });
 
-document.querySelectorAll('a, .project-card').forEach(el => {
+document.querySelectorAll('.nav-link, .project-card, .cta-button').forEach(el => {
     el.addEventListener('mouseenter', () => {
         gsap.to(cursor, { scale: 2, background: '#ff4d4d', duration: 0.3 });
-        gsap.to(cursorGlow, { scale: 1.2, opacity: 1, duration: 0.3 });
+        gsap.to(cursorTrail, { scale: 1.3, opacity: 0.9, duration: 0.3 });
     });
     el.addEventListener('mouseleave', () => {
         gsap.to(cursor, { scale: 1, background: '#00ffcc', duration: 0.3 });
-        gsap.to(cursorGlow, { scale: 1, opacity: 0.7, duration: 0.3 });
+        gsap.to(cursorTrail, { scale: 1, opacity: 0.6, duration: 0.3 });
     });
 });
 
 // GSAP Animations
 gsap.registerPlugin(ScrollTrigger);
 
+// Hero Animation
 gsap.from('.hero-content', {
     opacity: 0,
-    y: 100,
-    duration: 1.5,
-    ease: 'power3.out',
-    delay: 0.5
+    y: 150,
+    scale: 0.9,
+    duration: 1.8,
+    ease: 'elastic.out(1, 0.6)',
+    delay: 0.3
 });
 
+gsap.from('.cta-button', {
+    opacity: 0,
+    y: 50,
+    duration: 1.5,
+    ease: 'power3.out',
+    delay: 0.8
+});
+
+// Section Animations
 gsap.utils.toArray('section').forEach(section => {
     gsap.from(section.children, {
         opacity: 0,
-        y: 60,
-        stagger: 0.2,
-        duration: 1.2,
-        ease: 'power3.out',
+        y: 80,
+        stagger: 0.25,
+        duration: 1.5,
+        ease: 'power4.out',
         scrollTrigger: {
             trigger: section,
-            start: 'top 85%',
+            start: 'top 80%',
             toggleActions: 'play none none reverse'
         }
     });
 });
 
+// Project Card Animations
 gsap.utils.toArray('.project-card').forEach(card => {
     gsap.from(card, {
         opacity: 0,
-        scale: 0.9,
-        rotationX: 10,
-        duration: 1,
-        ease: 'elastic.out(1, 0.5)',
+        y: 100,
+        scale: 0.85,
+        rotationX: 15,
+        duration: 1.2,
+        ease: 'elastic.out(1, 0.4)',
         scrollTrigger: {
             trigger: card,
-            start: 'top 90%',
+            start: 'top 85%',
         }
+    });
+
+    card.addEventListener('mouseenter', () => {
+        gsap.to(card, {
+            rotationY: 5,
+            scale: 1.05,
+            duration: 0.5,
+            ease: 'power2.out'
+        });
+    });
+
+    card.addEventListener('mouseleave', () => {
+        gsap.to(card, {
+            rotationY: 0,
+            scale: 1,
+            duration: 0.5,
+            ease: 'power2.out'
+        });
     });
 });
 
@@ -78,8 +115,9 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-const geometry = new THREE.PlaneGeometry(10, 10, 32, 32);
+const geometry = new THREE.PlaneGeometry(12, 12, 64, 64);
 const material = new THREE.ShaderMaterial({
     uniforms: {
         uTime: { value: 0 },
@@ -88,9 +126,14 @@ const material = new THREE.ShaderMaterial({
     },
     vertexShader: `
         varying vec2 vUv;
+        uniform float uTime;
+        uniform vec2 uMouse;
         void main() {
             vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            vec3 pos = position;
+            float dist = length(vec2(pos.x, pos.y) - uMouse);
+            pos.z += sin(dist * 10.0 - uTime * 2.0) * 0.2;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
         }
     `,
     fragmentShader: `
@@ -107,10 +150,10 @@ const material = new THREE.ShaderMaterial({
             vec2 uv = vUv * 2.0 - 1.0;
             vec2 mouse = uMouse / uResolution * 2.0 - 1.0;
             float dist = length(uv - mouse);
-            float wave = sin(dist * 10.0 - uTime * 2.0) * 0.1;
-            float n = noise(uv + uTime * 0.1) * 0.2;
-            vec3 color = vec3(0.0, 0.5 + wave + n, 0.8 + wave + n);
-            gl_FragColor = vec4(color, 0.3);
+            float wave = sin(dist * 15.0 - uTime * 3.0) * 0.15;
+            float n = noise(uv + uTime * 0.2) * 0.3;
+            vec3 color = vec3(0.1 + wave, 0.6 + wave + n, 0.9 + wave + n);
+            gl_FragColor = vec4(color, 0.4);
         }
     `,
     side: THREE.DoubleSide
@@ -121,12 +164,15 @@ scene.add(plane);
 camera.position.z = 5;
 
 document.addEventListener('mousemove', e => {
-    material.uniforms.uMouse.value.set(e.clientX, e.clientY);
+    const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+    const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+    material.uniforms.uMouse.value.set(mouseX * 6, mouseY * 6);
 });
 
 function animate() {
     requestAnimationFrame(animate);
-    material.uniforms.uTime.value += 0.05;
+    material.uniforms.uTime.value += 0.03;
+    plane.rotation.z += 0.002;
     renderer.render(scene, camera);
 }
 animate();
