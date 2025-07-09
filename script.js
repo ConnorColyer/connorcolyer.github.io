@@ -1,6 +1,7 @@
+// Smooth Scrolling with Lenis
 const lenis = new Lenis({
-    duration: 1.2,
-    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    duration: 1.3,
+    easing: t => Math.min(1, 1.001 - Math.pow(2, -11 * t)),
     smoothWheel: true,
 });
 
@@ -22,18 +23,18 @@ document.addEventListener('mousemove', e => {
     gsap.to(cursorTrail, {
         x: e.clientX,
         y: e.clientY,
-        duration: 0.4,
+        duration: 0.3,
         ease: 'power2.out'
     });
 });
 
 document.querySelectorAll('.nav-link, .project-card, .cta-button').forEach(el => {
     el.addEventListener('mouseenter', () => {
-        gsap.to(cursor, { scale: 2, background: '#ff3b3b', duration: 0.3 });
-        gsap.to(cursorTrail, { scale: 1.4, opacity: 0.8, duration: 0.3 });
+        gsap.to(cursor, { scale: 2, background: '#ff3333', duration: 0.3 });
+        gsap.to(cursorTrail, { scale: 1.5, opacity: 0.8, duration: 0.3 });
     });
     el.addEventListener('mouseleave', () => {
-        gsap.to(cursor, { scale: 1, background: '#00ffea', duration: 0.3 });
+        gsap.to(cursor, { scale: 1, background: '#00ffdd', duration: 0.3 });
         gsap.to(cursorTrail, { scale: 1, opacity: 0.5, duration: 0.3 });
     });
 });
@@ -41,23 +42,23 @@ document.querySelectorAll('.nav-link, .project-card, .cta-button').forEach(el =>
 // GSAP Animations
 gsap.registerPlugin(ScrollTrigger);
 
-// Hero Section
+// Hero Section Animation
 gsap.from('.hero-content', {
     opacity: 0,
-    y: 200,
+    y: 150,
     scale: 0.8,
-    rotation: 5,
+    rotation: 10,
     duration: 2,
     ease: 'elastic.out(1, 0.5)',
-    delay: 0.2
+    delay: 0.3
 });
 
 gsap.from('.cta-button', {
     opacity: 0,
-    y: 100,
+    y: 80,
     duration: 1.5,
     ease: 'power3.out',
-    delay: 0.7
+    delay: 0.8
 });
 
 // Section Animations
@@ -65,7 +66,7 @@ gsap.utils.toArray('section').forEach(section => {
     gsap.from(section.children, {
         opacity: 0,
         y: 100,
-        stagger: 0.3,
+        stagger: 0.2,
         duration: 1.5,
         ease: 'power4.out',
         scrollTrigger: {
@@ -81,8 +82,8 @@ gsap.utils.toArray('.project-card').forEach(card => {
     gsap.from(card, {
         opacity: 0,
         y: 120,
-        scale: 0.8,
-        rotationX: 20,
+        scale: 0.85,
+        rotationX: 15,
         duration: 1.5,
         ease: 'elastic.out(1, 0.4)',
         scrollTrigger: {
@@ -94,8 +95,8 @@ gsap.utils.toArray('.project-card').forEach(card => {
     card.addEventListener('mouseenter', () => {
         gsap.to(card, {
             scale: 1.1,
-            rotationY: 10,
-            rotationX: -5,
+            rotationY: 8,
+            rotationX: -3,
             duration: 0.4,
             ease: 'power2.out'
         });
@@ -135,7 +136,7 @@ const material = new THREE.ShaderMaterial({
             vUv = uv;
             vec3 pos = position;
             float dist = length(vec2(pos.x, pos.y) - uMouse);
-            pos.z += sin(dist * 12.0 - uTime * 3.0) * 0.3;
+            pos.z += sin(dist * 15.0 - uTime * 4.0) * 0.3;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
         }
     `,
@@ -153,8 +154,8 @@ const material = new THREE.ShaderMaterial({
             vec2 uv = vUv * 2.0 - 1.0;
             vec2 mouse = uMouse / uResolution * 2.0 - 1.0;
             float dist = length(uv - mouse);
-            float wave = sin(dist * 20.0 - uTime * 4.0) * 0.2;
-            float n = noise(uv + uTime * 0.3) * 0.4;
+            float wave = sin(dist * 20.0 - uTime * 5.0) * 0.25;
+            float n = noise(uv + uTime * 0.4) * 0.3;
             vec3 color = vec3(0.2 + wave, 0.7 + wave + n, 1.0 + wave + n);
             gl_FragColor = vec4(color, 0.5);
         }
@@ -174,15 +175,13 @@ document.addEventListener('mousemove', e => {
 
 function animate() {
     requestAnimationFrame(animate);
-    material.uniforms.uTime.value += 0.04;
-    plane.rotation.z += 0.003;
+    material.uniforms.uTime.value += 0.05;
+    plane.rotation.z += 0.002;
     renderer.render(scene, camera);
 }
 animate();
 
 window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
