@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+    <title>My Liquid Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.15/dist/lenis.min.js"></script>
 </head>
 <body>
-    <canvas id="particle-canvas"></canvas>
+    <canvas id="bg-canvas"></canvas>
     <div class="cursor"></div>
-    <div class="cursor-beam"></div>
+    <div class="cursor-glow"></div>
     <header>
         <nav>
             <ul>
@@ -22,38 +26,37 @@
     </header>
     <main>
         <section id="hero">
-            <div class="hero-bg"></div>
             <div class="hero-content">
-                <h1>Welcome to My World</h1>
-                <p>A blend of code, art, and motion.</p>
+                <h1>Welcome to My Universe</h1>
+                <p>Where code flows like water and creativity knows no bounds.</p>
             </div>
         </section>
         <section id="about">
             <h2>About Me</h2>
-            <p>I’m a dev who dreams in pixels and code—let’s make something unforgettable.</p>
+            <p>I'm a developer who crafts immersive digital experiences with a passion for fluid motion and pixel-perfect design.</p>
         </section>
         <section id="projects">
             <h2>Projects</h2>
             <div class="project-grid">
                 <div class="project-card">
-                    <img src="placeholder.jpg" alt="Project 1">
                     <h3>Project One</h3>
-                    <p>A wild experiment in motion.</p>
+                    <p>A liquid journey through interactive design.</p>
                 </div>
                 <div class="project-card">
-                    <img src="placeholder.jpg" alt="Project 2">
                     <h3>Project Two</h3>
-                    <p>Minimal design, maximum impact.</p>
+                    <p>Elegance in motion, powered by code.</p>
+                </div>
+                <div class="project-card">
+                    <h3>Project Three</h3>
+                    <p>Dynamic visuals that captivate and inspire.</p>
                 </div>
             </div>
         </section>
         <section id="contact">
             <h2>Contact</h2>
-            <p>Hit me up: <a href="mailto:you@example.com">you@example.com</a></p>
+            <p>Reach out: you@example.com</p>
         </section>
     </main>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
