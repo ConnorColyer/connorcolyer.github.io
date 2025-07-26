@@ -4,180 +4,218 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Connor Colyer</title>
-    <link rel="stylesheet" href="https://unpkg.com/modern-normalize/modern-normalize.css" />
     <style>
-      :root {
-        --bg-light: linear-gradient(to bottom right, #ffffff, #e4d8ff);
-        --bg-dark: linear-gradient(to bottom right, #0f0c29, #302b63);
-        --text-light: #1a1a1a;
-        --text-dark: #ffffff;
-        --glass-bg-light: rgba(255, 255, 255, 0.5);
-        --glass-bg-dark: rgba(25, 25, 25, 0.3);
-        --glass-border-light: rgba(255, 255, 255, 0.2);
-        --glass-border-dark: rgba(255, 255, 255, 0.1);
-      }
-
       html, body {
         margin: 0;
         padding: 0;
+        height: 100%;
+        width: 100%;
         overflow-x: hidden;
-        font-family: 'Segoe UI', sans-serif;
-        background: var(--bg-light);
-        color: var(--text-light);
-        transition: background 0.3s, color 0.3s;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         scroll-behavior: smooth;
+        background: linear-gradient(
+          to bottom right,
+          var(--bg-start, #ffffff),
+          var(--bg-end, #eeeeff)
+        );
+        transition: background 0.4s ease;
       }
 
-      @media (prefers-color-scheme: dark) {
-        body {
-          background: var(--bg-dark);
-          color: var(--text-dark);
-        }
+      body.dark {
+        --bg-start: #0a0a1a;
+        --bg-end: #1a1a2e;
       }
 
-      canvas#bg {
+      canvas {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
         z-index: -1;
       }
 
-      .glass {
-        margin: 10vh auto;
-        max-width: 800px;
-        padding: 3rem;
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 20px;
-        border: 1px solid var(--glass-border-light);
-        background-color: var(--glass-bg-light);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        transition: background-color 0.3s, border-color 0.3s;
+      .content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
       }
 
-      @media (prefers-color-scheme: dark) {
-        .glass {
-          background-color: var(--glass-bg-dark);
-          border: 1px solid var(--glass-border-dark);
-        }
+      .section {
+        padding: 6rem 0;
+        color: var(--text, #000);
+      }
+
+      body.dark .section {
+        --text: #fff;
+      }
+
+      .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+        color: var(--text, #000);
       }
 
       h1 {
-        font-size: 3rem;
-        margin: 0 0 1rem;
-        text-align: center;
-      }
-
-      p.subheading {
-        font-size: 1.3rem;
-        text-align: center;
-        margin: 0;
-        opacity: 0.8;
-      }
-
-      section.about {
-        margin-top: 100vh;
-        padding: 4rem 2rem;
-        text-align: center;
-        backdrop-filter: blur(10px);
-      }
-
-      section.about h2 {
-        font-size: 2rem;
+        font-size: 4rem;
         margin-bottom: 1rem;
       }
 
-      section.about p {
-        font-size: 1.2rem;
-        max-width: 700px;
-        margin: auto;
-        opacity: 0.9;
+      h2 {
+        font-size: 1.5rem;
+        opacity: 0.8;
+      }
+
+      .glass {
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 0 40px rgba(0,0,0,0.2);
+        margin: 4rem 0;
+        transition: all 0.3s ease;
+      }
+
+      body.dark .glass {
+        background-color: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 0 40px rgba(255,255,255,0.05);
       }
     </style>
   </head>
   <body>
     <canvas id="bg"></canvas>
-    <div class="glass">
+    <div class="hero">
       <h1>Connor Colyer</h1>
-      <p class="subheading">Creative Technologist. Student. Dreamer of Code & Cosmos.</p>
+      <h2>Creative Technologist & Future Engineer</h2>
     </div>
 
-    <section class="about">
-      <h2>About Me</h2>
-      <p>
-        I'm an 18-year-old student based in London, currently diving deep into Computer Science, Maths, and Biology. I build tools, break limits, and dream of designing the future — whether that’s in space propulsion, AI systems, or something the world hasn’t seen yet.
-      </p>
-    </section>
+    <div class="content">
+      <div class="glass section">
+        <h2>About Me</h2>
+        <p>
+          I'm Connor, an 18-year-old passionate about computers, science, and designing cool shit.
+          Based in London, I build, experiment, and question how everything fits together.
+        </p>
+        <p>
+          Right now, I’m working on an Iron Man-style exosuit, a web-based visual assistant, and figuring out how to reverse engineer reality itself.
+        </p>
+      </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.18/dist/lenis.min.js"></script>
     <script>
+      // Theme detection
+      function setTheme() {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark');
+        } else {
+          document.body.classList.remove('dark');
+        }
+      }
+      setTheme();
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(setTheme);
+
+      // Background particles
+      const canvas = document.getElementById("bg");
+      const ctx = canvas.getContext("2d");
+      let particlesArray;
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
+      });
+
+      const mouse = {
+        x: null,
+        y: null,
+        radius: 100
+      };
+
+      window.addEventListener("mousemove", function(event) {
+        mouse.x = event.x;
+        mouse.y = event.y;
+      });
+
+      class Particle {
+        constructor(x, y, dirX, dirY, size, color) {
+          this.x = x;
+          this.y = y;
+          this.dirX = dirX;
+          this.dirY = dirY;
+          this.size = size;
+          this.color = color;
+        }
+
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+          ctx.fillStyle = this.color;
+          ctx.fill();
+        }
+
+        update() {
+          if (this.x > canvas.width || this.x < 0) {
+            this.dirX = -this.dirX;
+          }
+          if (this.y > canvas.height || this.y < 0) {
+            this.dirY = -this.dirY;
+          }
+
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) {
+            this.x -= dx / 20;
+            this.y -= dy / 20;
+          }
+
+          this.x += this.dirX;
+          this.y += this.dirY;
+          this.draw();
+        }
+      }
+
+      function init() {
+        particlesArray = [];
+        let colors = document.body.classList.contains('dark') ? '#aaa' : '#555';
+        let numberOfParticles = 100;
+        for (let i = 0; i < numberOfParticles; i++) {
+          let size = Math.random() * 2 + 0.5;
+          let x = Math.random() * canvas.width;
+          let y = Math.random() * canvas.height;
+          let dirX = (Math.random() - 0.5) * 0.5;
+          let dirY = (Math.random() - 0.5) * 0.5;
+          let color = colors;
+
+          particlesArray.push(new Particle(x, y, dirX, dirY, size, color));
+        }
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < particlesArray.length; i++) {
+          particlesArray[i].update();
+        }
+      }
+
+      init();
+      animate();
+    </script>
+    <script type="module">
+      import Lenis from 'https://cdn.skypack.dev/@studio-freight/lenis';
       const lenis = new Lenis();
       function raf(time) {
         lenis.raf(time);
         requestAnimationFrame(raf);
       }
       requestAnimationFrame(raf);
-    </script>
-    <script>
-      const canvas = document.getElementById('bg');
-      const ctx = canvas.getContext('2d');
-      let particles = [];
-
-      function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-
-      window.addEventListener('resize', resize);
-      resize();
-
-      const particleCount = 150;
-      for (let i = 0; i < particleCount; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          radius: Math.random() * 2 + 0.5
-        });
-      }
-
-      function draw() {
-        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        ctx.fillStyle = dark ? '#0f0c29' : '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        for (let p of particles) {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = dark ? '#ffffff88' : '#5500ff44';
-          ctx.fill();
-
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        }
-
-        requestAnimationFrame(draw);
-      }
-
-      draw();
-
-      canvas.addEventListener('mousemove', e => {
-        for (let p of particles) {
-          const dx = p.x - e.clientX;
-          const dy = p.y - e.clientY;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100) {
-            p.vx += dx / 10000;
-            p.vy += dy / 10000;
-          }
-        }
-      });
     </script>
   </body>
 </html>
