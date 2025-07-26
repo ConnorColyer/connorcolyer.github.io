@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connor Colyer</title>
+  <title>Connor Colyer - Portfolio</title>
   <style>
     html {
       scroll-behavior: smooth;
     }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -24,6 +25,7 @@
       --text: #1e1e1e;
       --accent: #8c52ff;
       --shadow-color: rgba(0, 0, 0, 0.2);
+      --card-bg: rgba(255, 255, 255, 0.95);
     }
 
     @media (prefers-color-scheme: dark) {
@@ -33,11 +35,12 @@
         --text: #ffffff;
         --accent: #d0aaff;
         --shadow-color: rgba(255, 255, 255, 0.2);
+        --card-bg: rgba(0, 0, 0, 0.85);
       }
     }
 
     section {
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -45,6 +48,7 @@
       position: relative;
       text-align: center;
       z-index: 1;
+      padding: 2rem;
     }
 
     h1 {
@@ -58,6 +62,7 @@
       font-size: 2rem;
       font-weight: 300;
       color: var(--text);
+      margin-bottom: 1rem;
     }
 
     #particles {
@@ -85,41 +90,197 @@
       }
     }
 
-    .about-container {
-      background: var(--bg-end);
+    .about-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px var(--shadow-color);
-      margin: 2rem;
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
-    .about-container.visible {
+    .about-section.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    .about-container:hover {
+    .about-content {
+      flex: 3;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .about-content:hover {
       transform: scale(1.02);
       box-shadow: 0 6px 20px var(--shadow-color);
     }
 
-    .about {
-      height: 100vh;
+    .about-image {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .about-image img {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+    }
+
+    .skills-section, .projects-section, .testimonials-section, .contact-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .skill-bar {
+      margin: 1rem 0;
+      width: 100%;
+      background: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .skill-bar-fill {
+      height: 20px;
+      background: var(--accent);
+      width: 0;
+      transition: width 1s ease;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px var(--shadow-color);
+    }
+
+    .project-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .project-card h3 {
+      margin: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .project-card p {
+      margin: 0 1rem 1rem;
+      color: var(--text);
+    }
+
+    .testimonials-slider {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonial {
+      display: none;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      text-align: center;
+      transition: opacity 0.5s ease;
+    }
+
+    .testimonial.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .contact-form {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      max-width: 800px;
-      margin: auto;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      max-width: 600px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    .contact-form input, .contact-form textarea {
+      padding: 1rem;
+      border: 1px solid var(--text);
+      border-radius: 5px;
+      background: var(--card-bg);
+      color: var(--text);
+    }
+
+    .contact-form button {
+      padding: 1rem;
+      background: var(--accent);
+      color: var(--text);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .contact-form button:hover {
+      background: #6b3ecc;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: var(--text);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .about-section {
+        flex-direction: column;
+        padding: 1rem;
+      }
+
+      .about-content {
+        padding: 1rem;
+      }
+
+      .about-image {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 3rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" id="theme-toggle">Toggle Theme</button>
   <canvas id="particles"></canvas>
   <section>
     <div class="title-wrapper">
@@ -127,16 +288,75 @@
     </div>
     <h2 id="subtitle">code. build. explore.</h2>
   </section>
-  <div class="about-container">
-    <section class="about">
+
+  <section class="about-section">
+    <div class="about-content">
       <h2>About Me</h2>
       <p>
         I'm an 18-year-old builder, developer, and creator based in London.
         Passionate about futuristic tech, rocket suits, and AI assistants.
         Currently building Spectra, a screen-aware intelligence system, and prototyping an Iron-Man-style exosuit.
       </p>
-    </section>
-  </div>
+    </div>
+    <div class="about-image">
+      <img src="https://via.placeholder.com/400x267" alt="Connor Colyer" />
+    </div>
+  </section>
+
+  <section class="skills-section">
+    <h2>Skills</h2>
+    <div class="skill-bar">
+      <div class="skill-bar-fill" style="width: 90%"></div>
+      <span>Python: 90%</span>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-bar-fill" style="width: 85%"></div>
+      <span>JavaScript: 85%</span>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-bar-fill" style="width: 80%"></div>
+      <span>AI Development: 80%</span>
+    </div>
+  </section>
+
+  <section class="projects-section">
+    <h2>Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <img src="https://via.placeholder.com/300x200" alt="Spectra Project" />
+        <h3>Spectra</h3>
+        <p>Screen-aware intelligence system for intuitive user interactions.</p>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/300x200" alt="Exosuit Project" />
+        <h3>Iron-Man Exosuit</h3>
+        <p>Prototype for a futuristic exosuit with advanced mobility features.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials-section">
+    <h2>Testimonials</h2>
+    <div class="testimonials-slider">
+      <div class="testimonial active">
+        <p>"Connor's innovative approach to AI is impressive!" - Tech Mentor</p>
+      </div>
+      <div class="testimonial">
+        <p>"His exosuit prototype shows incredible potential." - Engineering Lead</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <h2>Contact Me</h2>
+    <form class="contact-form" action="https://formspree.io/f/your-form-id" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
   <script>
     // Responsive title hover
     const title = document.getElementById('title');
@@ -146,7 +366,7 @@
       title.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
     });
 
-    // Particle background
+    // Particle background with parallax
     const canvas = document.getElementById("particles");
     const ctx = canvas.getContext("2d");
     let particlesArray = [];
@@ -206,7 +426,7 @@
     animateParticles();
 
     // Intersection Observer for About Me section
-    const aboutContainer = document.querySelector('.about-container');
+    const aboutSection = document.querySelector('.about-section');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -215,7 +435,35 @@
         }
       });
     }, { threshold: 0.1 });
-    observer.observe(aboutContainer);
+    observer.observe(aboutSection);
+
+    // Theme toggle
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+
+    // Testimonial slider
+    const testimonials = document.querySelectorAll('.testimonial');
+    let currentTestimonial = 0;
+
+    function showTestimonial(index) {
+      testimonials.forEach((t, i) => {
+        t.classList.toggle('active', i === index);
+      });
+    }
+
+    setInterval(() => {
+      currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+      showTestimonial(currentTestimonial);
+    }, 5000);
+
+    // Animate skill bars on load
+    const skillBars = document.querySelectorAll('.skill-bar-fill');
+    skillBars.forEach(bar => {
+      setTimeout(() => {
+        bar.style.width = bar.style.width;
+      }, 500);
+    });
   </script>
 </body>
 </html>
