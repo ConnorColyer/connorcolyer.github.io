@@ -16,10 +16,10 @@
       font-family: 'Outfit', sans-serif;
       background: #000;
       color: #fff;
-      overflow: hidden;
       cursor: none;
+      overflow-x: hidden;
     }
-    #starfield, #cursorCanvas {
+    #starfield {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
@@ -32,7 +32,7 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 4px 60px rgba(0, 0, 0, 0.4);
       padding: 2rem;
-      margin: 2rem auto;
+      margin: 4rem auto;
       max-width: 800px;
       animation: fadeIn 1.4s ease forwards;
     }
@@ -42,20 +42,22 @@
       justify-content: center;
       flex-direction: column;
       text-align: center;
-      height: 100vh;
+      min-height: 100vh;
       animation: fadeInUp 1.2s ease forwards;
     }
     .hero h1 {
-      font-size: 4rem;
+      font-size: 5rem;
       font-weight: 600;
       background: linear-gradient(45deg, #00f0ff, #0070ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 1rem;
+      animation: pulse 3s infinite ease-in-out;
     }
     .hero p {
-      font-size: 1.3rem;
-      opacity: 0.7;
+      font-size: 1.5rem;
+      opacity: 0.8;
+      animation: fadeIn 2s ease forwards;
     }
     section {
       animation: fadeInUp 1.5s ease both;
@@ -73,6 +75,10 @@
     @keyframes fadeIn {
       from { opacity: 0; } to { opacity: 1; }
     }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.03); opacity: 0.8; }
+    }
     #customCursor {
       position: fixed;
       top: 0;
@@ -84,50 +90,57 @@
       pointer-events: none;
       z-index: 1000;
     }
+    main {
+      position: relative;
+      z-index: 1;
+      min-height: 300vh;
+      padding-bottom: 5rem;
+    }
   </style>
 </head>
 <body>
   <canvas id="starfield"></canvas>
   <div id="customCursor"></div>
+  <main>
+    <section class="hero glass">
+      <h1>Connor Colyer</h1>
+      <p>Full-stack Developer | CSS & JS Wizard</p>
+    </section>
 
-  <section class="hero glass">
-    <h1>Connor Colyer</h1>
-    <p>Full-stack Developer | CSS & JS Wizard</p>
-  </section>
+    <section class="glass">
+      <h2>About Me</h2>
+      <p>I craft sleek, performant web experiences and dabble in physics, AI, and custom input tech. I’m always experimenting with the bleeding edge of the web platform.</p>
+    </section>
 
-  <section class="glass">
-    <h2>About Me</h2>
-    <p>I craft sleek, performant web experiences and dabble in physics, AI, and custom input tech. I’m always experimenting with the bleeding edge of the web platform.</p>
-  </section>
+    <section class="glass">
+      <h2>Projects</h2>
+      <ul>
+        <li>🧠 Neural Visual Assistant (Spectra)</li>
+        <li>🚀 Iron Man-Inspired Flight Suit</li>
+        <li>🌌 Quantum Multiverse Simulation Engine</li>
+      </ul>
+    </section>
 
-  <section class="glass">
-    <h2>Projects</h2>
-    <ul>
-      <li>🧠 Neural Visual Assistant (Spectra)</li>
-      <li>🚀 Iron Man-Inspired Flight Suit</li>
-      <li>🌌 Quantum Multiverse Simulation Engine</li>
-    </ul>
-  </section>
-
-  <section class="glass">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:connor@example.com" style="color:#00d1ff">connor@example.com</a></p>
-  </section>
+    <section class="glass">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:connor@example.com" style="color:#00d1ff">connor@example.com</a></p>
+    </section>
+  </main>
 
   <script>
     // Custom cursor
     const cursor = document.getElementById("customCursor");
+    let mouseX = 0, mouseY = 0;
     document.addEventListener("mousemove", (e) => {
-      cursor.style.transform = `translate(${e.clientX - 7}px, ${e.clientY - 7}px)`;
       mouseX = e.clientX;
       mouseY = e.clientY;
+      cursor.style.transform = `translate(${mouseX - 7}px, ${mouseY - 7}px)`;
     });
 
-    // Starfield with parallax
+    // Starfield canvas
     const canvas = document.getElementById("starfield");
     const ctx = canvas.getContext("2d");
     let stars = [];
-    let mouseX = 0, mouseY = 0;
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -136,32 +149,30 @@
 
     function initStars() {
       stars = [];
-      for (let i = 0; i < 250; i++) {
+      for (let i = 0; i < 500; i++) {
         stars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
           z: Math.random() * 2 + 1,
-          radius: Math.random() * 1.5 + 0.5,
-          speed: Math.random() * 0.5 + 0.2
+          r: Math.random() * 1.5 + 0.2,
+          speed: Math.random() * 0.8 + 0.1
         });
       }
     }
 
-    function animateStars() {
+    function drawStars() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let s of stars) {
         s.x -= s.speed;
         if (s.x < 0) s.x = canvas.width;
-
-        let dx = (mouseX - canvas.width / 2) * 0.0005 * s.z;
-        let dy = (mouseY - canvas.height / 2) * 0.0005 * s.z;
-
+        const dx = (mouseX - canvas.width / 2) * 0.0004 * s.z;
+        const dy = (mouseY - canvas.height / 2) * 0.0004 * s.z;
         ctx.beginPath();
-        ctx.arc(s.x + dx * canvas.width, s.y + dy * canvas.height, s.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "white";
+        ctx.arc(s.x + dx * canvas.width, s.y + dy * canvas.height, s.r, 0, 2 * Math.PI);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
         ctx.fill();
       }
-      requestAnimationFrame(animateStars);
+      requestAnimationFrame(drawStars);
     }
 
     window.addEventListener("resize", () => {
@@ -171,7 +182,7 @@
 
     resizeCanvas();
     initStars();
-    animateStars();
+    drawStars();
   </script>
 </body>
 </html>
