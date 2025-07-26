@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Connor Colyer</title>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
     html, body {
       margin: 0;
       padding: 0;
@@ -20,6 +23,7 @@
       --bg-end: #ffffff;
       --text: #1e1e1e;
       --accent: #8c52ff;
+      --shadow-color: rgba(0, 0, 0, 0.2);
     }
 
     @media (prefers-color-scheme: dark) {
@@ -28,6 +32,7 @@
         --bg-end: #000000;
         --text: #ffffff;
         --accent: #d0aaff;
+        --shadow-color: rgba(255, 255, 255, 0.2);
       }
     }
 
@@ -65,15 +70,48 @@
       pointer-events: none;
     }
 
+    .title-wrapper {
+      animation: fadeInScale 0.5s ease forwards;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .about-container {
+      background: var(--bg-end);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      margin: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .about-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .about-container:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 20px var(--shadow-color);
+    }
+
     .about {
       height: 100vh;
-      background: transparent;
-      color: var(--text);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 4rem;
       font-size: 1.2rem;
       max-width: 800px;
       margin: auto;
@@ -84,17 +122,21 @@
 <body>
   <canvas id="particles"></canvas>
   <section>
-    <h1 id="title">Connor Colyer</h1>
+    <div class="title-wrapper">
+      <h1 id="title">Connor Colyer</h1>
+    </div>
     <h2 id="subtitle">code. build. explore.</h2>
   </section>
-  <section class="about">
-    <h2>About Me</h2>
-    <p>
-      I'm an 18-year-old builder, developer, and creator based in London.
-      Passionate about futuristic tech, rocket suits, and AI assistants.
-      Currently building Spectra, a screen-aware intelligence system, and prototyping an Iron-Man-style exosuit.
-    </p>
-  </section>
+  <div class="about-container">
+    <section class="about">
+      <h2>About Me</h2>
+      <p>
+        I'm an 18-year-old builder, developer, and creator based in London.
+        Passionate about futuristic tech, rocket suits, and AI assistants.
+        Currently building Spectra, a screen-aware intelligence system, and prototyping an Iron-Man-style exosuit.
+      </p>
+    </section>
+  </div>
   <script>
     // Responsive title hover
     const title = document.getElementById('title');
@@ -130,8 +172,9 @@
         this.y += this.speedY + (mouse.y - this.y) * 0.0001;
       }
       draw() {
+        const scrollY = window.scrollY;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y - scrollY * 0.2, this.size, 0, Math.PI * 2);
         ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
         ctx.fill();
       }
@@ -161,6 +204,18 @@
 
     initParticles(150);
     animateParticles();
+
+    // Intersection Observer for About Me section
+    const aboutContainer = document.querySelector('.about-container');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(aboutContainer);
   </script>
 </body>
 </html>
