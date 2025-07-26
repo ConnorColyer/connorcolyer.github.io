@@ -1,188 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connor Colyer | Developer Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      font-family: 'Outfit', sans-serif;
-      background: #000;
-      color: #fff;
-      cursor: none;
-      overflow-x: hidden;
-    }
-    #starfield {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -2;
-    }
-    .glass {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px) saturate(160%);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 4px 60px rgba(0, 0, 0, 0.4);
-      padding: 2rem;
-      margin: 4rem auto;
-      max-width: 800px;
-      animation: fadeIn 1.4s ease forwards;
-    }
-    .hero {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      min-height: 100vh;
-      animation: fadeInUp 1.2s ease forwards;
-    }
-    .hero h1 {
-      font-size: 5rem;
-      font-weight: 600;
-      background: linear-gradient(45deg, #00f0ff, #0070ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1rem;
-      animation: pulse 3s infinite ease-in-out;
-    }
-    .hero p {
-      font-size: 1.5rem;
-      opacity: 0.8;
-      animation: fadeIn 2s ease forwards;
-    }
-    section {
-      animation: fadeInUp 1.5s ease both;
-    }
-    @keyframes fadeInUp {
-      from {
-        transform: translateY(30px);
-        opacity: 0;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connor Colyer</title>
+    <style>
+      :root {
+        color-scheme: light dark;
       }
-      to {
-        transform: translateY(0);
-        opacity: 1;
+
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        background: radial-gradient(circle at top left, var(--bg-start), var(--bg-end));
+        transition: background 1s ease;
       }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; } to { opacity: 1; }
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.03); opacity: 0.8; }
-    }
-    #customCursor {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #00d1ff;
-      pointer-events: none;
-      z-index: 1000;
-    }
-    main {
-      position: relative;
-      z-index: 1;
-      min-height: 300vh;
-      padding-bottom: 5rem;
-    }
-  </style>
-</head>
-<body>
-  <canvas id="starfield"></canvas>
-  <div id="customCursor"></div>
-  <main>
-    <section class="hero glass">
+
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg-start: #ffffff;
+          --bg-end: #d9c8ff;
+          --text-color: #1a1a1a;
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg-start: #1a0033;
+          --bg-end: #000010;
+          --text-color: #f0f0f0;
+        }
+      }
+
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+      }
+
+      .hero {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--text-color);
+        padding: 0 2rem;
+      }
+
+      .hero h1 {
+        font-size: 4rem;
+        margin: 0;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+      }
+
+      .hero p {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+        opacity: 0.8;
+      }
+
+      .scroll-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.5rem;
+        animation: bounce 2s infinite;
+        opacity: 0.6;
+      }
+
+      @keyframes bounce {
+        0%, 100% {
+          transform: translate(-50%, 0);
+        }
+        50% {
+          transform: translate(-50%, 10px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg"></canvas>
+    <div class="hero">
       <h1>Connor Colyer</h1>
-      <p>Full-stack Developer | CSS & JS Wizard</p>
-    </section>
+      <p>Building with logic, wonder, and caffeine</p>
+      <div class="scroll-indicator">⬇️ Scroll</div>
+    </div>
 
-    <section class="glass">
-      <h2>About Me</h2>
-      <p>I craft sleek, performant web experiences and dabble in physics, AI, and custom input tech. I’m always experimenting with the bleeding edge of the web platform.</p>
-    </section>
+    <script>
+      // Particle canvas background
+      const canvas = document.getElementById('bg');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
 
-    <section class="glass">
-      <h2>Projects</h2>
-      <ul>
-        <li>🧠 Neural Visual Assistant (Spectra)</li>
-        <li>🚀 Iron Man-Inspired Flight Suit</li>
-        <li>🌌 Quantum Multiverse Simulation Engine</li>
-      </ul>
-    </section>
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
 
-    <section class="glass">
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:connor@example.com" style="color:#00d1ff">connor@example.com</a></p>
-    </section>
-  </main>
+      window.addEventListener('resize', resize);
+      resize();
 
-  <script>
-    // Custom cursor
-    const cursor = document.getElementById("customCursor");
-    let mouseX = 0, mouseY = 0;
-    document.addEventListener("mousemove", (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursor.style.transform = `translate(${mouseX - 7}px, ${mouseY - 7}px)`;
-    });
+      const particleCount = 120;
 
-    // Starfield canvas
-    const canvas = document.getElementById("starfield");
-    const ctx = canvas.getContext("2d");
-    let stars = [];
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < 500; i++) {
-        stars.push({
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          z: Math.random() * 2 + 1,
-          r: Math.random() * 1.5 + 0.2,
-          speed: Math.random() * 0.8 + 0.1
+          radius: Math.random() * 1.5 + 1,
+          dx: (Math.random() - 0.5) * 0.7,
+          dy: (Math.random() - 0.5) * 0.7
         });
       }
-    }
 
-    function drawStars() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let s of stars) {
-        s.x -= s.speed;
-        if (s.x < 0) s.x = canvas.width;
-        const dx = (mouseX - canvas.width / 2) * 0.0004 * s.z;
-        const dy = (mouseY - canvas.height / 2) * 0.0004 * s.z;
-        ctx.beginPath();
-        ctx.arc(s.x + dx * canvas.width, s.y + dy * canvas.height, s.r, 0, 2 * Math.PI);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-        ctx.fill();
+      let mouse = { x: null, y: null };
+      window.addEventListener('mousemove', e => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+      });
+
+      function draw() {
+        const gradient = ctx.createRadialGradient(
+          canvas.width / 2,
+          canvas.height / 2,
+          0,
+          canvas.width / 2,
+          canvas.height / 2,
+          canvas.width
+        );
+
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          gradient.addColorStop(0, '#330033');
+          gradient.addColorStop(1, '#000010');
+        } else {
+          gradient.addColorStop(0, '#ffffff');
+          gradient.addColorStop(1, '#d9c8ff');
+        }
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+          let dx = mouse.x - p.x;
+          let dy = mouse.y - p.y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 100) {
+            p.x -= dx * 0.005;
+            p.y -= dy * 0.005;
+          }
+
+          p.x += p.dx;
+          p.y += p.dy;
+
+          if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.fill();
+        });
+
+        requestAnimationFrame(draw);
       }
-      requestAnimationFrame(drawStars);
-    }
 
-    window.addEventListener("resize", () => {
-      resizeCanvas();
-      initStars();
-    });
-
-    resizeCanvas();
-    initStars();
-    drawStars();
-  </script>
-</body>
+      draw();
+    </script>
+  </body>
 </html>
