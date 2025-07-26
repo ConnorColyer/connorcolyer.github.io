@@ -1,155 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connor Colyer</title>
-  <link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css" />
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: white;
-      background: radial-gradient(ellipse at center, #0f0c29, #302b63, #24243e);
-      transition: background 0.5s ease;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connor Colyer</title>
+    <link rel="stylesheet" href="https://unpkg.com/modern-normalize/modern-normalize.css" />
+    <style>
+      :root {
+        --bg-light: linear-gradient(to bottom right, #ffffff, #e4d8ff);
+        --bg-dark: linear-gradient(to bottom right, #0f0c29, #302b63);
+        --text-light: #1a1a1a;
+        --text-dark: #ffffff;
+        --glass-bg-light: rgba(255, 255, 255, 0.5);
+        --glass-bg-dark: rgba(25, 25, 25, 0.3);
+        --glass-border-light: rgba(255, 255, 255, 0.2);
+        --glass-border-dark: rgba(255, 255, 255, 0.1);
+      }
 
-    body.light {
-      background: radial-gradient(ellipse at center, #ffffff, #e4d8f9, #cbc3e3);
-      color: #111;
-    }
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: 'Segoe UI', sans-serif;
+        background: var(--bg-light);
+        color: var(--text-light);
+        transition: background 0.3s, color 0.3s;
+        scroll-behavior: smooth;
+      }
 
-    .content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      backdrop-filter: blur(8px) saturate(180%);
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 1rem;
-      padding: 2rem;
-      margin: 2rem;
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
-      transition: all 0.4s ease;
-    }
-
-    h1 {
-      font-size: 4rem;
-      margin: 0;
-      animation: float 4s ease-in-out infinite;
-    }
-
-    h2 {
-      font-weight: 300;
-      font-size: 1.5rem;
-      margin-top: 1rem;
-      opacity: 0.8;
-      animation: fadeIn 3s ease-out;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    #tsparticles {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-  </style>
-</head>
-<body>
-  <div id="tsparticles"></div>
-  <div class="content" data-scroll-container>
-    <div data-scroll-section>
-      <h1>Connor Colyer</h1>
-      <h2>Building things, thinking deeper, always learning</h2>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.3.0/tsparticles.bundle.min.js"></script>
-  <script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
-  <script>
-    // Smooth scrolling
-    const scroll = new LocomotiveScroll({
-      el: document.querySelector('[data-scroll-container]'),
-      smooth: true,
-      lerp: 0.05,
-    });
-
-    // Light/dark detection
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (!prefersDark) document.body.classList.add('light');
-
-    // Particle background
-    tsParticles.load("tsparticles", {
-      fullScreen: { enable: false },
-      background: {
-        color: "transparent"
-      },
-      particles: {
-        number: {
-          value: 80,
-          density: {
-            enable: true,
-            area: 800
-          }
-        },
-        color: {
-          value: prefersDark ? "#ffffff" : "#6a0dad"
-        },
-        opacity: {
-          value: 0.3
-        },
-        size: {
-          value: 3
-        },
-        move: {
-          enable: true,
-          speed: 1,
-          direction: "none",
-          outModes: "out",
-          attract: {
-            enable: true,
-            rotateX: 600,
-            rotateY: 1200
-          }
-        },
-        links: {
-          enable: true,
-          distance: 150,
-          color: prefersDark ? "#ffffff" : "#6a0dad",
-          opacity: 0.2
-        }
-      },
-      interactivity: {
-        events: {
-          onHover: {
-            enable: true,
-            mode: "repulse"
-          }
-        },
-        modes: {
-          repulse: {
-            distance: 100
-          }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: var(--bg-dark);
+          color: var(--text-dark);
         }
       }
-    });
-  </script>
-</body>
+
+      canvas#bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+      }
+
+      .glass {
+        margin: 10vh auto;
+        max-width: 800px;
+        padding: 3rem;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 20px;
+        border: 1px solid var(--glass-border-light);
+        background-color: var(--glass-bg-light);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        transition: background-color 0.3s, border-color 0.3s;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .glass {
+          background-color: var(--glass-bg-dark);
+          border: 1px solid var(--glass-border-dark);
+        }
+      }
+
+      h1 {
+        font-size: 3rem;
+        margin: 0 0 1rem;
+        text-align: center;
+      }
+
+      p.subheading {
+        font-size: 1.3rem;
+        text-align: center;
+        margin: 0;
+        opacity: 0.8;
+      }
+
+      section.about {
+        margin-top: 100vh;
+        padding: 4rem 2rem;
+        text-align: center;
+        backdrop-filter: blur(10px);
+      }
+
+      section.about h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      section.about p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: auto;
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg"></canvas>
+    <div class="glass">
+      <h1>Connor Colyer</h1>
+      <p class="subheading">Creative Technologist. Student. Dreamer of Code & Cosmos.</p>
+    </div>
+
+    <section class="about">
+      <h2>About Me</h2>
+      <p>
+        I'm an 18-year-old student based in London, currently diving deep into Computer Science, Maths, and Biology. I build tools, break limits, and dream of designing the future — whether that’s in space propulsion, AI systems, or something the world hasn’t seen yet.
+      </p>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.18/dist/lenis.min.js"></script>
+    <script>
+      const lenis = new Lenis();
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    </script>
+    <script>
+      const canvas = document.getElementById('bg');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      const particleCount = 150;
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          radius: Math.random() * 2 + 0.5
+        });
+      }
+
+      function draw() {
+        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        ctx.fillStyle = dark ? '#0f0c29' : '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (let p of particles) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = dark ? '#ffffff88' : '#5500ff44';
+          ctx.fill();
+
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+
+      canvas.addEventListener('mousemove', e => {
+        for (let p of particles) {
+          const dx = p.x - e.clientX;
+          const dy = p.y - e.clientY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            p.vx += dx / 10000;
+            p.vy += dy / 10000;
+          }
+        }
+      });
+    </script>
+  </body>
 </html>
