@@ -78,7 +78,6 @@
       transform: translateX(100%);
     }
 
-    /* Enhanced Custom Cursor */
     .cursor {
       width: 20px;
       height: 20px;
@@ -87,8 +86,10 @@
       position: fixed;
       pointer-events: none;
       z-index: 99990;
-      transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       mix-blend-mode: difference;
+      transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform;
+      backface-visibility: hidden;
     }
 
     .cursor-follower {
@@ -99,7 +100,9 @@
       position: fixed;
       pointer-events: none;
       z-index: 99980;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform;
+      backface-visibility: hidden;
     }
 
     .cursor.hover {
@@ -111,6 +114,19 @@
       transform: scale(0.8);
       background: rgba(140, 82, 255, 0.3);
     }
+
+    /* Hide cursor on touch devices */
+    @media (hover: none) and (pointer: coarse) {
+      .cursor,
+      .cursor-follower {
+        display: none !important;
+      }
+      
+      body {
+        cursor: auto !important;
+      }
+}
+
 
     /* Hero Section with improved animations */
     .hero {
@@ -1186,8 +1202,7 @@
         <br>
         <p>
           Currently building <strong>Spectra</strong>, an AI-powered screen-aware intelligence system that's redefining 
-          human-computer interaction. When I'm not coding, you'll find me prototyping an Iron Man-style exosuit 
-          or capturing the world through my lens.
+          human-computer interaction. When I'm not coding, youll find me capturing the world through my lens.
         </p>
         <br>
         <p>
@@ -1293,9 +1308,9 @@
         </div>
       </div>
 
-      <div class="project-card" data-project="exosuit">
+      <div class="project-card" data-project="redacted-project">
         <div class="project-image">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7g37DzDmVQNqkCcSEhSUqa6NpO83PrhlADg&s?w=600&h=400&fit=crop" alt="Exosuit">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7g37DzDmVQNqkCcSEhSUqa6NpO83PrhlADg&s?w=600&h=400&fit=crop" alt="redacted-project">
           <span class="project-type">Hardware/Robotics</span>
           <div class="project-overlay">
             <p>Click to explore →</p>
@@ -1412,571 +1427,676 @@
 
   <script>
     // Enhanced theme detection and toggle
-    const detectTheme = () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        return savedTheme;
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
+// Enhanced theme detection and toggle
+const detectTheme = () => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    return savedTheme;
+  }
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
 
-    const setTheme = (theme) => {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-    };
+const setTheme = (theme) => {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+};
 
-    // Initialize theme
-    setTheme(detectTheme());
+// Initialize theme
+setTheme(detectTheme());
 
-    // Theme toggle with animation
-    document.getElementById('theme-toggle').addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      setTheme(newTheme);
-    });
+// Theme toggle with animation
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  setTheme(newTheme);
+});
 
-    // Enhanced loader with stagger animation
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-        
-        // Trigger initial animations
-        setTimeout(() => {
-          initializeAnimations();
-        }, 500);
-      }, 1000);
-    });
+// Enhanced loader with stagger animation
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+    
+    // Trigger initial animations
+    setTimeout(() => {
+      initializeAnimations();
+    }, 500);
+  }, 1000);
+});
 
-    // Enhanced custom cursor with hover effects
-    const cursor = document.querySelector('.cursor');
-    const cursorFollower = document.querySelector('.cursor-follower');
-    let isHovering = false;
+// OPTIMIZED CUSTOM CURSOR SYSTEM
+(function() {
+  // Check if device supports hover (not touch device)
+  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    return; // Exit early on touch devices
+  }
 
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-      
-      setTimeout(() => {
-        cursorFollower.style.left = e.clientX - 10 + 'px';
-        cursorFollower.style.top = e.clientY - 10 + 'px';
-      }, 100);
-    });
+  const cursor = document.querySelector('.cursor');
+  const cursorFollower = document.querySelector('.cursor-follower');
+  
+  if (!cursor || !cursorFollower) return;
 
-    // Cursor hover effects
-    const hoverElements = document.querySelectorAll('a, button, .project-card, .skill-card');
-    hoverElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.classList.add('hover');
-        cursorFollower.classList.add('hover');
-      });
-      
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('hover');
-        cursorFollower.classList.remove('hover');
-      });
-    });
+  // Cursor position variables
+  let mouseX = 0;
+  let mouseY = 0;
+  let cursorX = 0;
+  let cursorY = 0;
+  let followerX = 0;
+  let followerY = 0;
+  
+  let isMoving = false;
+  let animationId = null;
 
-    document.addEventListener('mousedown', () => {
-      cursor.style.transform = 'scale(0.8)';
-      cursorFollower.style.transform = 'scale(0.6)';
-    });
+  // Smooth interpolation function
+  function lerp(start, end, factor) {
+    return start + (end - start) * factor;
+  }
 
-    document.addEventListener('mouseup', () => {
-      cursor.style.transform = 'scale(1)';
-      cursorFollower.style.transform = 'scale(1)';
-    });
-
-    // Enhanced particle system with better performance
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouseX = 0;
-    let mouseY = 0;
-    let animationId;
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+  // Update mouse position
+  function updateMousePosition(e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    if (!isMoving) {
+      isMoving = true;
+      animateCursor();
     }
+  }
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+  // Optimized animation loop
+  function animateCursor() {
+    // Smooth interpolation for cursor position
+    cursorX = lerp(cursorX, mouseX, 0.25);
+    cursorY = lerp(cursorY, mouseY, 0.25);
+    
+    // Smooth interpolation for follower (slower)
+    followerX = lerp(followerX, mouseX - 20, 0.15);
+    followerY = lerp(followerY, mouseY - 20, 0.15);
 
-    class EnhancedParticle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.baseX = this.x;
-        this.baseY = this.y;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
-        this.opacity = Math.random() * 0.5 + 0.3;
-        this.life = Math.random() * 100 + 100;
-        this.maxLife = this.life;
-      }
+    // Apply transforms using translate3d for better performance
+    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+    cursorFollower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
 
-      update() {
-        // Mouse interaction with improved physics
-        const dx = mouseX - this.x;
-        const dy = mouseY - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const maxDistance = 200;
-        
-        if (distance < maxDistance) {
-          const force = (maxDistance - distance) / maxDistance;
-          const angle = Math.atan2(dy, dx);
-          const pushX = Math.cos(angle) * force * 25;
-          const pushY = Math.sin(angle) * force * 25;
-          
-          this.x -= pushX;
-          this.y -= pushY;
-          
-          // Create ripple effect
-          this.size = Math.min(this.size * 1.02, 4);
-          this.opacity = Math.min(this.opacity * 1.05, 1);
-        } else {
-          // Return to base position with spring physics
-          const springStrength = 0.02;
-          const dampening = 0.95;
-          
-          this.x += (this.baseX - this.x) * springStrength;
-          this.y += (this.baseY - this.y) * springStrength;
-          
-          this.size *= 0.995;
-          this.opacity *= 0.998;
-        }
-
-        // Drift movement
-        this.baseX += this.speedX;
-        this.baseY += this.speedY;
-
-        // Wrap around edges
-        if (this.baseX > canvas.width) this.baseX = 0;
-        if (this.baseX < 0) this.baseX = canvas.width;
-        if (this.baseY > canvas.height) this.baseY = 0;
-        if (this.baseY < 0) this.baseY = canvas.height;
-
-        // Life cycle
-        this.life--;
-        if (this.life <= 0) {
-          this.reset();
-        }
-      }
-
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.baseX = this.x;
-        this.baseY = this.y;
-        this.life = this.maxLife;
-        this.size = Math.random() * 2 + 0.5;
-        this.opacity = Math.random() * 0.5 + 0.3;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(140, 82, 255, ${this.opacity})`;
-        ctx.fill();
-        
-        // Add glow effect
-        ctx.shadowColor = `rgba(140, 82, 255, ${this.opacity * 0.5})`;
-        ctx.shadowBlur = this.size * 2;
-      }
+    // Check if we need to continue animating
+    const cursorDistance = Math.abs(cursorX - mouseX) + Math.abs(cursorY - mouseY);
+    const followerDistance = Math.abs(followerX - (mouseX - 20)) + Math.abs(followerY - (mouseY - 20));
+    
+    if (cursorDistance > 0.5 || followerDistance > 0.5) {
+      animationId = requestAnimationFrame(animateCursor);
+    } else {
+      isMoving = false;
+      animationId = null;
     }
+  }
 
-    function createParticles() {
-      particles = [];
-      const particleCount = Math.min(window.innerWidth / 8, 150);
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new EnhancedParticle());
-      }
+  // Throttled mouse move handler
+  let mouseMoveTimeout;
+  function handleMouseMove(e) {
+    updateMousePosition(e);
+    
+    // Clear existing timeout
+    if (mouseMoveTimeout) {
+      clearTimeout(mouseMoveTimeout);
     }
-
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      particles.forEach(particle => {
-        particle.update();
-        particle.draw();
-      });
-
-      // Enhanced connections with dynamic opacity
-      particles.forEach((p1, i) => {
-        particles.slice(i + 1, i + 5).forEach(p2 => {
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          
-          if (distance < 120) {
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            const opacity = 0.15 * (1 - distance / 120) * Math.min(p1.opacity, p2.opacity);
-            ctx.strokeStyle = `rgba(140, 82, 255, ${opacity})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
-      });
-
-      animationId = requestAnimationFrame(animateParticles);
-    }
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    // Performance optimization
-    let isVisible = true;
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        isVisible = false;
+    
+    // Stop animation after inactivity
+    mouseMoveTimeout = setTimeout(() => {
+      if (animationId) {
         cancelAnimationFrame(animationId);
-      } else {
-        isVisible = true;
-        animateParticles();
+        isMoving = false;
+        animationId = null;
+      }
+    }, 100);
+  }
+
+  // Mouse event listeners
+  document.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+  // Enhanced hover effects with better performance
+  const hoverElements = document.querySelectorAll('a, button, .project-card, .skill-card, .portfolio-item, .filter-btn, .nav-link');
+  
+  function addHoverEffect() {
+    cursor.classList.add('hover');
+    cursorFollower.classList.add('hover');
+  }
+  
+  function removeHoverEffect() {
+    cursor.classList.remove('hover');
+    cursorFollower.classList.remove('hover');
+  }
+
+  hoverElements.forEach(el => {
+    el.addEventListener('mouseenter', addHoverEffect, { passive: true });
+    el.addEventListener('mouseleave', removeHoverEffect, { passive: true });
+  });
+
+  // Mouse down/up effects
+  let isPressed = false;
+  
+  function handleMouseDown() {
+    if (isPressed) return;
+    isPressed = true;
+    cursor.style.transform += ' scale(0.8)';
+    cursorFollower.style.transform += ' scale(0.6)';
+  }
+  
+  function handleMouseUp() {
+    if (!isPressed) return;
+    isPressed = false;
+    cursor.style.transform = cursor.style.transform.replace(' scale(0.8)', '');
+    cursorFollower.style.transform = cursorFollower.style.transform.replace(' scale(0.6)', '');
+  }
+
+  document.addEventListener('mousedown', handleMouseDown, { passive: true });
+  document.addEventListener('mouseup', handleMouseUp, { passive: true });
+
+  // Initialize cursor position
+  cursor.style.transform = 'translate3d(-100px, -100px, 0)';
+  cursorFollower.style.transform = 'translate3d(-100px, -100px, 0)';
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+    }
+    document.removeEventListener('mousemove', handleMouseMove);
+    hoverElements.forEach(el => {
+      el.removeEventListener('mouseenter', addHoverEffect);
+      el.removeEventListener('mouseleave', removeHoverEffect);
+    });
+  });
+})();
+
+// Enhanced particle system with better performance
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let mouseX = 0;
+let mouseY = 0;
+let animationId;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class EnhancedParticle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.baseX = this.x;
+    this.baseY = this.y;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+    this.opacity = Math.random() * 0.5 + 0.3;
+    this.life = Math.random() * 100 + 100;
+    this.maxLife = this.life;
+  }
+
+  update() {
+    // Mouse interaction with improved physics
+    const dx = mouseX - this.x;
+    const dy = mouseY - this.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const maxDistance = 200;
+    
+    if (distance < maxDistance) {
+      const force = (maxDistance - distance) / maxDistance;
+      const angle = Math.atan2(dy, dx);
+      const pushX = Math.cos(angle) * force * 25;
+      const pushY = Math.sin(angle) * force * 25;
+      
+      this.x -= pushX;
+      this.y -= pushY;
+      
+      // Create ripple effect
+      this.size = Math.min(this.size * 1.02, 4);
+      this.opacity = Math.min(this.opacity * 1.05, 1);
+    } else {
+      // Return to base position with spring physics
+      const springStrength = 0.02;
+      const dampening = 0.95;
+      
+      this.x += (this.baseX - this.x) * springStrength;
+      this.y += (this.baseY - this.y) * springStrength;
+      
+      this.size *= 0.995;
+      this.opacity *= 0.998;
+    }
+
+    // Drift movement
+    this.baseX += this.speedX;
+    this.baseY += this.speedY;
+
+    // Wrap around edges
+    if (this.baseX > canvas.width) this.baseX = 0;
+    if (this.baseX < 0) this.baseX = canvas.width;
+    if (this.baseY > canvas.height) this.baseY = 0;
+    if (this.baseY < 0) this.baseY = canvas.height;
+
+    // Life cycle
+    this.life--;
+    if (this.life <= 0) {
+      this.reset();
+    }
+  }
+
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.baseX = this.x;
+    this.baseY = this.y;
+    this.life = this.maxLife;
+    this.size = Math.random() * 2 + 0.5;
+    this.opacity = Math.random() * 0.5 + 0.3;
+  }
+
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(140, 82, 255, ${this.opacity})`;
+    ctx.fill();
+    
+    // Add glow effect
+    ctx.shadowColor = `rgba(140, 82, 255, ${this.opacity * 0.5})`;
+    ctx.shadowBlur = this.size * 2;
+  }
+}
+
+function createParticles() {
+  particles = [];
+  const particleCount = Math.min(window.innerWidth / 8, 150);
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new EnhancedParticle());
+  }
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  particles.forEach(particle => {
+    particle.update();
+    particle.draw();
+  });
+
+  // Enhanced connections with dynamic opacity
+  particles.forEach((p1, i) => {
+    particles.slice(i + 1, i + 5).forEach(p2 => {
+      const dx = p1.x - p2.x;
+      const dy = p1.y - p2.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distance < 120) {
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        const opacity = 0.15 * (1 - distance / 120) * Math.min(p1.opacity, p2.opacity);
+        ctx.strokeStyle = `rgba(140, 82, 255, ${opacity})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
       }
     });
+  });
 
-    createParticles();
+  animationId = requestAnimationFrame(animateParticles);
+}
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+// Performance optimization
+let isVisible = true;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    isVisible = false;
+    cancelAnimationFrame(animationId);
+  } else {
+    isVisible = true;
     animateParticles();
+  }
+});
 
-    // Enhanced smooth scrolling with easing
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          const offset = 0;
-          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
-          
-          // Custom smooth scroll with easing
-          const startPosition = window.pageYOffset;
-          const distance = targetPosition - startPosition;
-          const duration = 1000;
-          let start = null;
+createParticles();
+animateParticles();
 
-          function step(timestamp) {
-            if (!start) start = timestamp;
-            const progress = timestamp - start;
-            const percentage = Math.min(progress / duration, 1);
-            
-            // Easing function (ease-in-out-cubic)
-            const easing = percentage < 0.5 
-              ? 4 * percentage * percentage * percentage 
-              : 1 - Math.pow(-2 * percentage + 2, 3) / 2;
-            
-            window.scrollTo(0, startPosition + distance * easing);
-            
-            if (progress < duration) {
-              requestAnimationFrame(step);
-            }
-          }
-          
+// Enhanced smooth scrolling with easing
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      const offset = 0;
+      const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      
+      // Custom smooth scroll with easing
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const duration = 1000;
+      let start = null;
+
+      function step(timestamp) {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const percentage = Math.min(progress / duration, 1);
+        
+        // Easing function (ease-in-out-cubic)
+        const easing = percentage < 0.5 
+          ? 4 * percentage * percentage * percentage 
+          : 1 - Math.pow(-2 * percentage + 2, 3) / 2;
+        
+        window.scrollTo(0, startPosition + distance * easing);
+        
+        if (progress < duration) {
           requestAnimationFrame(step);
         }
-      });
-    });
-
-    // Enhanced scroll progress with color transition
-    window.addEventListener('scroll', () => {
-      const winScroll = document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      
-      const progressBar = document.getElementById('scrollProgress');
-      progressBar.style.width = scrolled + '%';
-      
-      // Color transition based on scroll
-      const hue = scrolled * 3.6; // 0-360 degrees
-      progressBar.style.background = `hsl(${hue}, 70%, 60%)`;
-    });
-
-    // Enhanced intersection observer for animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          
-          // Trigger specific animations based on section
-          if (entry.target.id === 'skills') {
-            animateSkills();
-          } else if (entry.target.id === 'projects') {
-            animateProjects();
-          } else if (entry.target.id === 'contact') {
-            animateContact();
-          }
-        }
-      });
-    }, observerOptions);
-
-    // Skill bar animation with stagger
-    function animateSkills() {
-      const skillCards = document.querySelectorAll('.skill-card');
-      const progressBars = document.querySelectorAll('.skill-progress');
-      
-      skillCards.forEach((card, index) => {
-        setTimeout(() => {
-          card.classList.add('animate');
-        }, index * 200);
-      });
-      
-      setTimeout(() => {
-        progressBars.forEach((bar, index) => {
-          setTimeout(() => {
-            const width = bar.getAttribute('data-width');
-            bar.style.width = width + '%';
-          }, index * 100);
-        });
-      }, 600);
-    }
-
-    // Project cards animation
-    function animateProjects() {
-      const projectCards = document.querySelectorAll('.project-card');
-      projectCards.forEach((card, index) => {
-        setTimeout(() => {
-          card.classList.add('animate');
-        }, index * 150);
-      });
-    }
-
-    // Contact form animation
-    function animateContact() {
-      const formGroups = document.querySelectorAll('.form-group');
-      const submitBtn = document.querySelector('.submit-btn');
-      const socialLinks = document.querySelectorAll('.social-link');
-      
-      formGroups.forEach((group, index) => {
-        setTimeout(() => {
-          group.classList.add('animate');
-        }, index * 100);
-      });
-      
-      setTimeout(() => {
-        submitBtn.classList.add('animate');
-      }, formGroups.length * 100 + 200);
-      
-      setTimeout(() => {
-        socialLinks.forEach((link, index) => {
-          setTimeout(() => {
-            link.classList.add('animate');
-          }, index * 100);
-        });
-      }, formGroups.length * 100 + 400);
-    }
-
-    // Initialize animations
-    function initializeAnimations() {
-      document.querySelectorAll('.fade-in-section').forEach(section => {
-        sectionObserver.observe(section);
-      });
-    }
-
-    // Enhanced portfolio button with page transition
-    document.getElementById('portfolioBtn').addEventListener('click', function(e) {
-      e.preventDefault();
-      
-      const transition = document.getElementById('pageTransition');
-      transition.classList.add('active');
-      
-      setTimeout(() => {
-        window.location.href = this.href;
-      }, 400);
-    });
-
-    // Project Modal Data (unchanged)
-    const projectData = {
-      spectra: {
-        title: 'Spectra AI',
-        type: 'AI/Development',
-        media: '<img src="https://miro.medium.com/v2/resize:fit:1400/1*Gc7oQOfQpZ3gMB2WoQjh-g.jpeg?w=1200&h=600&fit=crop" alt="Spectra AI">',
-        description: `
-          <p>Spectra is a revolutionary screen-aware intelligence system that understands what you're looking at and provides contextual assistance in real-time. Built using cutting-edge computer vision and natural language processing, it creates an intuitive bridge between human intent and digital action.</p>
-          <br>
-          <p>The system uses advanced OCR, object detection, and semantic understanding to comprehend on-screen content, then leverages large language models to provide intelligent suggestions, automate tasks, and answer questions about what you're viewing.</p>
-          <br>
-          <p>Key innovations include real-time screen analysis with sub-100ms latency, privacy-first local processing, and a plugin architecture that allows developers to extend functionality for specific use cases.</p>
-        `,
-        tech: ['Python', 'TensorFlow', 'OpenCV', 'Transformers', 'Electron', 'React', 'WebRTC', 'CUDA']
-      },
-      exosuit: {
-        title: 'Exosuit Prototype',
-        type: 'Hardware/Robotics',
-        media: '<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7g37DzDmVQNqkCcSEhSUqa6NpO83PrhlADg&s?w=1200&h=600&fit=crop" alt="Exosuit">',
-        description: `
-          <p>More Info Coming Soon.</p>
-          <br>
-          <p> </p>
-          <br>
-          <p> </p>
-        `,
-        tech: ['Arduino', 'Raspberry Pi', 'C++', 'Python', 'CAD/Fusion 360', '3D Printing', 'Servo Control', 'IMU Sensors']
-      },
-      'london-nights': {
-        title: 'Bermuda | Another Love - Tom Odell',
-        type: 'Videography',
-        media: '<iframe width="100%" height="315" src="https://www.youtube.com/embed/-eD26UwctZQ" frameborder="0" allowfullscreen style="border-radius: 10px;"></iframe>',        
-        description: `
-          <p>A cinematic exploration of Bermuda, capturing the vibrant energy and hidden beauty of the island. Shot over 2 weeks across 20+ locations, this project showcases the beautiful transformation of the island when the sun sets.</p>
-          <br>
-          
-        `,
-        tech: ['DJI Mini 3 Pro', 'Final Cut Pro', 'Apple Motion',]
-      },
-      neural: {
-        title: 'Neural Interface Research',
-        type: 'Research',
-        media: '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Human_EEG_artefacts.png/960px-Human_EEG_artefacts.png?w=1200&h=600&fit=crop" alt="Neural Interface">',
-        description: `
-          <p>Pioneering research into brain-computer interfaces for direct neural control of digital systems. This project explores the future of human-machine interaction through non-invasive EEG technology and machine learning.</p>
-          <br>
-          <p>Using consumer-grade EEG devices combined with custom signal processing algorithms, we've achieved basic control of digital interfaces through thought alone. The system can detect intent patterns with 85% accuracy for simple commands.</p>
-          <br>
-          <p>Current research focuses on improving signal-to-noise ratios, reducing training time for new users, and expanding the vocabulary of detectable neural commands. Long-term goals include integration with AR/VR systems and the exosuit project.</p>
-        `,
-        tech: ['Python', 'TensorFlow', 'Signal Processing', 'EEG/OpenBCI', 'Unity', 'Real-time Processing', 'Neural Networks']
       }
-    };
+      
+      requestAnimationFrame(step);
+    }
+  });
+});
 
-    // Enhanced project card click handlers
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('click', function() {
-        const projectId = this.getAttribute('data-project');
-        const project = projectData[projectId];
-        
-        if (project) {
-          const modalContent = `
-            <div class="modal-header">
-              <h2 class="modal-title">${project.title}</h2>
-              <p style="color: var(--primary); font-size: 1.2rem;">${project.type}</p>
-            </div>
-            
-            <div class="modal-media">
-              ${project.media}
-            </div>
-            
-            <div class="modal-details">
-              <div class="modal-description">
-                ${project.description}
-              </div>
-              
-              <div class="modal-tech">
-                <h3 style="margin-bottom: 1rem; color: var(--primary);">Technologies Used</h3>
-                <ul class="tech-list">
-                  ${project.tech.map(tech => `<li>${tech}</li>`).join('')}
-                </ul>
-              </div>
-            </div>
-          `;
-          
-          document.getElementById('modalContent').innerHTML = modalContent;
-          document.getElementById('projectModal').classList.add('active');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    });
+// Enhanced scroll progress with color transition
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = (winScroll / height) * 100;
+  
+  const progressBar = document.getElementById('scrollProgress');
+  progressBar.style.width = scrolled + '%';
+  
+  // Color transition based on scroll
+  const hue = scrolled * 3.6; // 0-360 degrees
+  progressBar.style.background = `hsl(${hue}, 70%, 60%)`;
+});
 
-    // Close Modal
-    document.getElementById('modalClose').addEventListener('click', () => {
-      document.getElementById('projectModal').classList.remove('active');
-      document.body.style.overflow = 'auto';
-    });
+// Enhanced intersection observer for animations
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
 
-    // Close modal on background click
-    document.getElementById('projectModal').addEventListener('click', (e) => {
-      if (e.target === document.getElementById('projectModal')) {
-        document.getElementById('projectModal').classList.remove('active');
-        document.body.style.overflow = 'auto';
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      
+      // Trigger specific animations based on section
+      if (entry.target.id === 'skills') {
+        animateSkills();
+      } else if (entry.target.id === 'projects') {
+        animateProjects();
+      } else if (entry.target.id === 'contact') {
+        animateContact();
       }
-    });
+    }
+  });
+}, observerOptions);
 
-    // Enhanced form submission
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const submitBtn = e.target.querySelector('.submit-btn');
-      const originalText = submitBtn.innerHTML;
-      
-      submitBtn.innerHTML = 'Sending...';
-      submitBtn.style.background = 'var(--primary)';
-      
+// Skill bar animation with stagger
+function animateSkills() {
+  const skillCards = document.querySelectorAll('.skill-card');
+  const progressBars = document.querySelectorAll('.skill-progress');
+  
+  skillCards.forEach((card, index) => {
+    setTimeout(() => {
+      card.classList.add('animate');
+    }, index * 200);
+  });
+  
+  setTimeout(() => {
+    progressBars.forEach((bar, index) => {
       setTimeout(() => {
-        submitBtn.innerHTML = '✓ Sent!';
-        submitBtn.style.background = '#4ade80';
-        
-        setTimeout(() => {
-          submitBtn.innerHTML = originalText;
-          submitBtn.style.background = 'var(--gradient)';
-          e.target.reset();
-        }, 2000);
-      }, 1000);
+        const width = bar.getAttribute('data-width');
+        bar.style.width = width + '%';
+      }, index * 100);
     });
+  }, 600);
+}
 
-    // Enhanced parallax effect
-    let ticking = false;
+// Project cards animation
+function animateProjects() {
+  const projectCards = document.querySelectorAll('.project-card');
+  projectCards.forEach((card, index) => {
+    setTimeout(() => {
+      card.classList.add('animate');
+    }, index * 150);
+  });
+}
+
+// Contact form animation
+function animateContact() {
+  const formGroups = document.querySelectorAll('.form-group');
+  const submitBtn = document.querySelector('.submit-btn');
+  const socialLinks = document.querySelectorAll('.social-link');
+  
+  formGroups.forEach((group, index) => {
+    setTimeout(() => {
+      group.classList.add('animate');
+    }, index * 100);
+  });
+  
+  setTimeout(() => {
+    submitBtn.classList.add('animate');
+  }, formGroups.length * 100 + 200);
+  
+  setTimeout(() => {
+    socialLinks.forEach((link, index) => {
+      setTimeout(() => {
+        link.classList.add('animate');
+      }, index * 100);
+    });
+  }, formGroups.length * 100 + 400);
+}
+
+// Initialize animations
+function initializeAnimations() {
+  document.querySelectorAll('.fade-in-section').forEach(section => {
+    sectionObserver.observe(section);
+  });
+}
+
+// Enhanced portfolio button with page transition
+document.getElementById('portfolioBtn').addEventListener('click', function(e) {
+  e.preventDefault();
+  
+  const transition = document.getElementById('pageTransition');
+  transition.classList.add('active');
+  
+  setTimeout(() => {
+    window.location.href = this.href;
+  }, 400);
+});
+
+// Project Modal Data
+const projectData = {
+  spectra: {
+    title: 'Spectra AI',
+    type: 'AI/Development',
+    media: '<img src="https://miro.medium.com/v2/resize:fit:1400/1*Gc7oQOfQpZ3gMB2WoQjh-g.jpeg?w=1200&h=600&fit=crop" alt="Spectra AI">',
+    description: `
+      <p>Spectra is a revolutionary screen-aware intelligence system that understands what you're looking at and provides contextual assistance in real-time. Built using cutting-edge computer vision and natural language processing, it creates an intuitive bridge between human intent and digital action.</p>
+      <br>
+      <p>The system uses advanced OCR, object detection, and semantic understanding to comprehend on-screen content, then leverages large language models to provide intelligent suggestions, automate tasks, and answer questions about what you're viewing.</p>
+      <br>
+      <p>Key innovations include real-time screen analysis with sub-100ms latency, privacy-first local processing, and a plugin architecture that allows developers to extend functionality for specific use cases.</p>
+    `,
+    tech: ['Python', 'TensorFlow', 'OpenCV', 'Transformers', 'Electron', 'React', 'WebRTC', 'CUDA']
+  },
+  exosuit: {
+    title: 'Exosuit Prototype',
+    type: 'Hardware/Robotics',
+    media: '<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7g37DzDmVQNqkCcSEhSUqa6NpO83PrhlADg&s?w=1200&h=600&fit=crop" alt="Exosuit">',
+    description: `
+      <p>More Info Coming Soon.</p>
+      <br>
+      <p> </p>
+      <br>
+      <p> </p>
+    `,
+    tech: ['Arduino', 'Raspberry Pi', 'C++', 'Python', 'CAD/Fusion 360', '3D Printing', 'Servo Control', 'IMU Sensors']
+  },
+  'london-nights': {
+    title: 'Bermuda | Another Love - Tom Odell',
+    type: 'Videography',
+    media: '<iframe width="100%" height="315" src="https://www.youtube.com/embed/-eD26UwctZQ" frameborder="0" allowfullscreen style="border-radius: 10px;"></iframe>',        
+    description: `
+      <p>A cinematic exploration of Bermuda, capturing the vibrant energy and hidden beauty of the island. Shot over 2 weeks across 20+ locations, this project showcases the beautiful transformation of the island when the sun sets.</p>
+      <br>
+      
+    `,
+    tech: ['DJI Mini 3 Pro', 'Final Cut Pro', 'Apple Motion',]
+  },
+  neural: {
+    title: 'Neural Interface Research',
+    type: 'Research',
+    media: '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Human_EEG_artefacts.png/960px-Human_EEG_artefacts.png?w=1200&h=600&fit=crop" alt="Neural Interface">',
+    description: `
+      <p>Pioneering research into brain-computer interfaces for direct neural control of digital systems. This project explores the future of human-machine interaction through non-invasive EEG technology and machine learning.</p>
+      <br>
+      <p>Using consumer-grade EEG devices combined with custom signal processing algorithms, we've achieved basic control of digital interfaces through thought alone. The system can detect intent patterns with 85% accuracy for simple commands.</p>
+      <br>
+      <p>Current research focuses on improving signal-to-noise ratios, reducing training time for new users, and expanding the vocabulary of detectable neural commands. Long-term goals include integration with AR/VR systems and the exosuit project.</p>
+    `,
+    tech: ['Python', 'TensorFlow', 'Signal Processing', 'EEG/OpenBCI', 'Unity', 'Real-time Processing', 'Neural Networks']
+  }
+};
+
+// Enhanced project card click handlers
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', function() {
+    const projectId = this.getAttribute('data-project');
+    const project = projectData[projectId];
     
-    function updateParallax() {
-      const scrolled = window.pageYOffset;
-      const parallax = document.querySelector('.hero-content');
-      const particles = document.getElementById('canvas');
+    if (project) {
+      const modalContent = `
+        <div class="modal-header">
+          <h2 class="modal-title">${project.title}</h2>
+          <p style="color: var(--primary); font-size: 1.2rem;">${project.type}</p>
+        </div>
+        
+        <div class="modal-media">
+          ${project.media}
+        </div>
+        
+        <div class="modal-details">
+          <div class="modal-description">
+            ${project.description}
+          </div>
+          
+          <div class="modal-tech">
+            <h3 style="margin-bottom: 1rem; color: var(--primary);">Technologies Used</h3>
+            <ul class="tech-list">
+              ${project.tech.map(tech => `<li>${tech}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
       
-      if (parallax) {
-        parallax.style.transform = `translateY(${scrolled * 0.1}px)`;
-      }
-      
-      if (particles) {
-        particles.style.transform = `translateY(${scrolled * 0.05}px)`;
-      }
-      
-      ticking = false;
+      document.getElementById('modalContent').innerHTML = modalContent;
+      document.getElementById('projectModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
+  });
+});
+
+// Close Modal
+document.getElementById('modalClose').addEventListener('click', () => {
+  document.getElementById('projectModal').classList.remove('active');
+  document.body.style.overflow = 'auto';
+});
+
+// Close modal on background click
+document.getElementById('projectModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('projectModal')) {
+    document.getElementById('projectModal').classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+});
+
+// Enhanced form submission
+document.getElementById('contactForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const submitBtn = e.target.querySelector('.submit-btn');
+  const originalText = submitBtn.innerHTML;
+  
+  submitBtn.innerHTML = 'Sending...';
+  submitBtn.style.background = 'var(--primary)';
+  
+  setTimeout(() => {
+    submitBtn.innerHTML = '✓ Sent!';
+    submitBtn.style.background = '#4ade80';
     
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(updateParallax);
-        ticking = true;
-      }
-    });
+    setTimeout(() => {
+      submitBtn.innerHTML = originalText;
+      submitBtn.style.background = 'var(--gradient)';
+      e.target.reset();
+    }, 2000);
+  }, 1000);
+});
 
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!localStorage.getItem('theme')) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
-    });
+// Enhanced parallax effect
+let ticking = false;
 
-    // Page visibility optimization for animations
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        // Pause expensive animations
-        document.querySelectorAll('.skill-progress').forEach(bar => {
-          bar.style.animationPlayState = 'paused';
-        });
-      } else {
-        // Resume animations
-        document.querySelectorAll('.skill-progress').forEach(bar => {
-          bar.style.animationPlayState = 'running';
-        });
-      }
-    });
+function updateParallax() {
+  const scrolled = window.pageYOffset;
+  const parallax = document.querySelector('.hero-content');
+  const particles = document.getElementById('canvas');
+  
+  if (parallax) {
+    parallax.style.transform = `translateY(${scrolled * 0.1}px)`;
+  }
+  
+  if (particles) {
+    particles.style.transform = `translateY(${scrolled * 0.05}px)`;
+  }
+  
+  ticking = false;
+}
 
-    // Resize optimization
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        createParticles();
-      }, 250);
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(updateParallax);
+    ticking = true;
+  }
+});
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  if (!localStorage.getItem('theme')) {
+    setTheme(e.matches ? 'dark' : 'light');
+  }
+});
+
+// Page visibility optimization for animations
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    // Pause expensive animations
+    document.querySelectorAll('.skill-progress').forEach(bar => {
+      bar.style.animationPlayState = 'paused';
     });
+  } else {
+    // Resume animations
+    document.querySelectorAll('.skill-progress').forEach(bar => {
+      bar.style.animationPlayState = 'running';
+    });
+  }
+});
+
+// Resize optimization
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    createParticles();
+  }, 250);
+});
   </script>
 </body>
 </html>
