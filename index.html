@@ -1298,6 +1298,14 @@ body, * { cursor: auto !important; }
 .modal .result { padding: 10px 14px; border-top: 1px solid var(--border-color,#222); display:flex; gap:10px; align-items:center; }
 .modal .result:hover, .modal .result.active { background: rgba(255,255,255,.06); cursor: pointer; }
 .modal .hint { padding: 8px 14px; color: var(--text-secondary,#aaa); font-size: .9rem; }
+
+/* Particles background behind hero */
+.hero, .hero-content { position: relative; overflow: hidden; }
+#particles {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  display:block; z-index: 0; pointer-events: none;
+}
+.hero .hero-content, .hero-content .inner, .hero > *:not(#particles) { position: relative; z-index: 1; }
 </style>
 <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -1317,7 +1325,7 @@ body, * { cursor: auto !important; }
     "addressCountry": "UK"
   }
 }</script></head>
-<body id="main"><a class="skip-link" href="#main">Skip to content</a>
+<body id="main"><a class="skip-link" href="#main">Skip to content</a><main id="main"></main>
 <!-- Page Transition -->
 <div class="page-transition" id="pageTransition"></div>
 <!-- Loader -->
@@ -1336,7 +1344,7 @@ body, * { cursor: auto !important; }
 <!-- Scroll Progress -->
 <div class="scroll-progress" id="scrollProgress"></div>
 <!-- Hero Section -->
-<section class="hero">
+<section class="hero"><canvas aria-hidden="true" id="particles"></canvas>
 <canvas id="canvas"></canvas>
 <div class="hero-content">
 <h1 class="glitch" data-text="Connor Colyer">Connor Colyer</h1>
@@ -1919,5 +1927,58 @@ body, * { cursor: auto !important; }
 <div class="hint">Press Esc to close • Enter to open</div>
 </div>
 </div>
-</body>
+<script>
+/* Particles Canvas */
+(() => {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const c = document.getElementById('particles');
+  if (!c || reduce) return;
+  const ctx = c.getContext('2d');
+  let dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  let w, h, particles, raf;
+  const opts = {
+    countBase: 70,      // base count at 1200px width
+    speed: 0.15,        // px per ms
+    connectDist: 110,   // px
+    radius: [1, 2.4]
+  };
+  function rand(a,b){ return a + Math.random()*(b-a); }
+  function resize(){
+    const rect = c.getBoundingClientRect();
+    w = Math.max(1, rect.width); h = Math.max(1, rect.height);
+    c.width = Math.floor(w*dpr); c.height = Math.floor(h*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const density = Math.max(20, Math.round(opts.countBase * (w/1200)));
+    particles = Array.from({length: density}, () => ({
+      x: rand(0,w), y: rand(0,h),
+      vx: rand(-opts.speed, opts.speed), vy: rand(-opts.speed, opts.speed),
+      r: rand(opts.radius[0], opts.radius[1])
+    }));
+  }
+  function step(ts){
+    ctx.clearRect(0,0,w,h);
+    for (let i=0;i<particles.length;i++){
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -50) p.x = w+50; if (p.x > w+50) p.x = -50;
+      if (p.y < -50) p.y = h+50; if (p.y > h+50) p.y = -50;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.fill();
+      // connect lines nearby
+      for (let j=i+1;j<particles.length;j++){
+        const q = particles[j]; const dx=p.x-q.x, dy=p.y-q.y; const dist = Math.hypot(dx,dy);
+        if (dist < opts.connectDist){
+          const a = 1 - (dist/opts.connectDist);
+          ctx.strokeStyle = `rgba(255,255,255,${0.18*a})`; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+        }
+      }
+    }
+    raf = requestAnimationFrame(step);
+  }
+  const ro = new ResizeObserver(()=> resize());
+  ro.observe(c.parentElement || c);
+  resize();
+  raf = requestAnimationFrame(step);
+})();
+</script></body>
 </html>
