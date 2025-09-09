@@ -53,7 +53,7 @@
       background: var(--bg-dark);
       color: var(--text-primary);
       overflow-x: hidden;
-      cursor: none;
+      cursor: auto;
       transition: background-color 0.3s ease, color 0.3s ease;
       line-height: 1.6;
     }
@@ -1147,31 +1147,69 @@
       }
     }
   
-/* Ripple node */
-.ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: .2;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
+/* ===== Modern polish ===== */
+:root {
+  --brand: #7c5cff;
+  --brand-2: #21d4fd;
+}
+/* Link underline animation */
+a:not(.button):not(.btn){
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size .25s ease;
+}
+a:not(.button):not(.btn):hover { background-size: 100% 2px; }
+
+/* Scroll progress bar */
+#scrollProgress {
+  position: fixed; inset: 0 0 auto 0; height: 3px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  z-index: 9999; will-change: transform;
 }
 
-/* Contact form */
-.contact-section { margin-top: 4rem; }
-.contact-section .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.contact-section input, .contact-section textarea {
-  width: 100%; padding: 12px 14px; border-radius: 12px;
-  border: 1px solid var(--border-color, #333); background: var(--bg-card, #111);
+/* Back-to-top FAB */
+#toTop {
+  position: fixed; right: 16px; bottom: 16px;
+  padding: 10px 12px; border-radius: 999px;
+  background: var(--bg-card, #111); color: var(--text, #eee);
+  border: 1px solid var(--border-color, #333);
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(12px);
+  transition: opacity .2s ease, transform .2s ease;
+  z-index: 10000;
+}
+#toTop.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+/* Theme toggle (icon-only button baseline) */
+.theme-toggle {
+  border: 1px solid var(--border-color, #333);
+  background: var(--bg-card, #111);
   color: var(--text, #eaeaea);
+  border-radius: 999px;
+  padding: 8px 10px;
+  margin-left: 12px;
+  cursor: pointer;
 }
-.contact-section .btn { margin-top: 12px; }
-.contact-status { margin-top: 8px; font-size: .95rem; color: var(--text-secondary, #aaa); }
-@media (max-width: 640px){
-  .contact-section .fields { grid-template-columns: 1fr; }
+@media (prefers-color-scheme: light) {
+  .theme-toggle { background: #fff; color: #111; }
 }
+
+/* Focus rings for a11y */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Smooth anchor offset if sticky headers exist */
+html { scroll-behavior: smooth; }
+.anchor-offset { scroll-margin-top: 80px; }
 </style>
-<link href="/favicon.ico" rel="icon" type="image/x-icon"/><meta content="Connor Colyer — Software Engineer" property="og:title"/><meta content="Full‑stack developer and creative. Software engineering, videography, and theatre lighting. University of Winchester." property="og:description"/><meta content="/og-image.png" property="og:image"/><meta content="https://YOUR_DOMAIN_OR_GHPAGES_URL" property="og:url"/><meta content="website" property="og:type"/><meta content="summary_large_image" name="twitter:card"/><meta content="Connor Colyer — Software Engineer" name="twitter:title"/><meta content="Full‑stack developer and creative. Software engineering, videography, and theatre lighting. University of Winchester." name="twitter:description"/><meta content="/og-image.png" name="twitter:image"/></head>
+</head>
 <body>
 <!-- Page Transition -->
 <div class="page-transition" id="pageTransition"></div>
@@ -1190,7 +1228,7 @@
 <span>Full Portfolio →</span>
 </a>
 <!-- Custom Cursor -->
-<div class="cursor"></div>
+
 <div class="cursor-follower"></div>
 <!-- Scroll Progress -->
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -1440,818 +1478,82 @@
 <div id="modalContent"></div>
 </div>
 </div>
-<script>
-    // Enhanced theme detection and toggle
-// Enhanced theme detection and toggle
-const detectTheme = () => {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    return savedTheme;
-  }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-};
 
-const setTheme = (theme) => {
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('theme', theme);
-};
-
-// Initialize theme
-setTheme(detectTheme());
-
-// Theme toggle with animation
-document.getElementById('theme-toggle').addEventListener('click', () => {
-  const currentTheme = document.documentElement.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  setTheme(newTheme);
-});
-
-// Enhanced loader with stagger animation
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
-    
-    // Trigger initial animations
-    setTimeout(() => {
-      initializeAnimations();
-    }, 500);
-  }, 1000);
-});
-
-// OPTIMIZED CUSTOM CURSOR SYSTEM
-(function() {
-  // Check if device supports hover (not touch device)
-  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    return; // Exit early on touch devices
-  }
-
-  const cursor = document.querySelector('.cursor');
-  const cursorFollower = document.querySelector('.cursor-follower');
-  
-  if (!cursor || !cursorFollower) return;
-
-  // Cursor position variables
-  let mouseX = 0;
-  let mouseY = 0;
-  let cursorX = 0;
-  let cursorY = 0;
-  let followerX = 0;
-  let followerY = 0;
-  
-  let isMoving = false;
-  let animationId = null;
-
-  // Smooth interpolation function
-  function lerp(start, end, factor) {
-    return start + (end - start) * factor;
-  }
-
-  // Update mouse position
-  function updateMousePosition(e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    
-    if (!isMoving) {
-      isMoving = true;
-      animateCursor();
-    }
-  }
-
-  // Optimized animation loop
-  function animateCursor() {
-    // Smooth interpolation for cursor position
-    cursorX = lerp(cursorX, mouseX, 0.25);
-    cursorY = lerp(cursorY, mouseY, 0.25);
-    
-    // Smooth interpolation for follower (slower)
-    followerX = lerp(followerX, mouseX - 20, 0.15);
-    followerY = lerp(followerY, mouseY - 20, 0.15);
-
-    // Apply transforms using translate3d for better performance
-    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
-    cursorFollower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
-
-    // Check if we need to continue animating
-    const cursorDistance = Math.abs(cursorX - mouseX) + Math.abs(cursorY - mouseY);
-    const followerDistance = Math.abs(followerX - (mouseX - 20)) + Math.abs(followerY - (mouseY - 20));
-    
-    if (cursorDistance > 0.5 || followerDistance > 0.5) {
-      animationId = requestAnimationFrame(animateCursor);
-    } else {
-      isMoving = false;
-      animationId = null;
-    }
-  }
-
-  // Throttled mouse move handler
-  let mouseMoveTimeout;
-  function handleMouseMove(e) {
-    updateMousePosition(e);
-    
-    // Clear existing timeout
-    if (mouseMoveTimeout) {
-      clearTimeout(mouseMoveTimeout);
-    }
-    
-    // Stop animation after inactivity
-    mouseMoveTimeout = setTimeout(() => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-        isMoving = false;
-        animationId = null;
-      }
-    }, 100);
-  }
-
-  // Mouse event listeners
-  document.addEventListener('mousemove', handleMouseMove, { passive: true });
-
-  // Enhanced hover effects with better performance
-  const hoverElements = document.querySelectorAll('a, button, .project-card, .skill-card, .portfolio-item, .filter-btn, .nav-link');
-  
-  function addHoverEffect() {
-    cursor.classList.add('hover');
-    cursorFollower.classList.add('hover');
-  }
-  
-  function removeHoverEffect() {
-    cursor.classList.remove('hover');
-    cursorFollower.classList.remove('hover');
-  }
-
-  hoverElements.forEach(el => {
-    el.addEventListener('mouseenter', addHoverEffect, { passive: true });
-    el.addEventListener('mouseleave', removeHoverEffect, { passive: true });
-  });
-
-  // Mouse down/up effects
-  let isPressed = false;
-  
-  function handleMouseDown() {
-    if (isPressed) return;
-    isPressed = true;
-    cursor.style.transform += ' scale(0.8)';
-    cursorFollower.style.transform += ' scale(0.6)';
-  }
-  
-  function handleMouseUp() {
-    if (!isPressed) return;
-    isPressed = false;
-    cursor.style.transform = cursor.style.transform.replace(' scale(0.8)', '');
-    cursorFollower.style.transform = cursorFollower.style.transform.replace(' scale(0.6)', '');
-  }
-
-  document.addEventListener('mousedown', handleMouseDown, { passive: true });
-  document.addEventListener('mouseup', handleMouseUp, { passive: true });
-
-  // Initialize cursor position
-  cursor.style.transform = 'translate3d(-100px, -100px, 0)';
-  cursorFollower.style.transform = 'translate3d(-100px, -100px, 0)';
-
-  // Cleanup on page unload
-  window.addEventListener('beforeunload', () => {
-    if (animationId) {
-      cancelAnimationFrame(animationId);
-    }
-    document.removeEventListener('mousemove', handleMouseMove);
-    hoverElements.forEach(el => {
-      el.removeEventListener('mouseenter', addHoverEffect);
-      el.removeEventListener('mouseleave', removeHoverEffect);
-    });
-  });
-})();
-
-// Enhanced particle system with better performance
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-let mouseX = 0;
-let mouseY = 0;
-let animationId;
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-class EnhancedParticle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2 + 0.5;
-    this.baseX = this.x;
-    this.baseY = this.y;
-    this.speedX = Math.random() * 0.5 - 0.25;
-    this.speedY = Math.random() * 0.5 - 0.25;
-    this.opacity = Math.random() * 0.5 + 0.3;
-    this.life = Math.random() * 100 + 100;
-    this.maxLife = this.life;
-  }
-
-  update() {
-    // Mouse interaction with improved physics
-    const dx = mouseX - this.x;
-    const dy = mouseY - this.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    const maxDistance = 200;
-    
-    if (distance < maxDistance) {
-      const force = (maxDistance - distance) / maxDistance;
-      const angle = Math.atan2(dy, dx);
-      const pushX = Math.cos(angle) * force * 25;
-      const pushY = Math.sin(angle) * force * 25;
-      
-      this.x -= pushX;
-      this.y -= pushY;
-      
-      // Create ripple effect
-      this.size = Math.min(this.size * 1.02, 4);
-      this.opacity = Math.min(this.opacity * 1.05, 1);
-    } else {
-      // Return to base position with spring physics
-      const springStrength = 0.02;
-      const dampening = 0.95;
-      
-      this.x += (this.baseX - this.x) * springStrength;
-      this.y += (this.baseY - this.y) * springStrength;
-      
-      this.size *= 0.995;
-      this.opacity *= 0.998;
-    }
-
-    // Drift movement
-    this.baseX += this.speedX;
-    this.baseY += this.speedY;
-
-    // Wrap around edges
-    if (this.baseX > canvas.width) this.baseX = 0;
-    if (this.baseX < 0) this.baseX = canvas.width;
-    if (this.baseY > canvas.height) this.baseY = 0;
-    if (this.baseY < 0) this.baseY = canvas.height;
-
-    // Life cycle
-    this.life--;
-    if (this.life <= 0) {
-      this.reset();
-    }
-  }
-
-  reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.baseX = this.x;
-    this.baseY = this.y;
-    this.life = this.maxLife;
-    this.size = Math.random() * 2 + 0.5;
-    this.opacity = Math.random() * 0.5 + 0.3;
-  }
-
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(140, 82, 255, ${this.opacity})`;
-    ctx.fill();
-    
-    // Add glow effect
-    ctx.shadowColor = `rgba(140, 82, 255, ${this.opacity * 0.5})`;
-    ctx.shadowBlur = this.size * 2;
-  }
-}
-
-function createParticles() {
-  particles = [];
-  const particleCount = Math.min(window.innerWidth / 8, 150);
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new EnhancedParticle());
-  }
-}
-
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  particles.forEach(particle => {
-    particle.update();
-    particle.draw();
-  });
-
-  // Enhanced connections with dynamic opacity
-  particles.forEach((p1, i) => {
-    particles.slice(i + 1, i + 5).forEach(p2 => {
-      const dx = p1.x - p2.x;
-      const dy = p1.y - p2.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance < 120) {
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        const opacity = 0.15 * (1 - distance / 120) * Math.min(p1.opacity, p2.opacity);
-        ctx.strokeStyle = `rgba(140, 82, 255, ${opacity})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
-    });
-  });
-
-  animationId = requestAnimationFrame(animateParticles);
-}
-
-document.addEventListener('mousemove', (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-// Performance optimization
-let isVisible = true;
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    isVisible = false;
-    cancelAnimationFrame(animationId);
-  } else {
-    isVisible = true;
-    animateParticles();
-  }
-});
-
-createParticles();
-animateParticles();
-
-// Enhanced smooth scrolling with easing
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      const offset = 0;
-      const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
-      
-      // Custom smooth scroll with easing
-      const startPosition = window.pageYOffset;
-      const distance = targetPosition - startPosition;
-      const duration = 1000;
-      let start = null;
-
-      function step(timestamp) {
-        if (!start) start = timestamp;
-        const progress = timestamp - start;
-        const percentage = Math.min(progress / duration, 1);
-        
-        // Easing function (ease-in-out-cubic)
-        const easing = percentage < 0.5 
-          ? 4 * percentage * percentage * percentage 
-          : 1 - Math.pow(-2 * percentage + 2, 3) / 2;
-        
-        window.scrollTo(0, startPosition + distance * easing);
-        
-        if (progress < duration) {
-          requestAnimationFrame(step);
-        }
-      }
-      
-      requestAnimationFrame(step);
-    }
-  });
-});
-
-// Enhanced scroll progress with color transition
-window.addEventListener('scroll', () => {
-  const winScroll = document.documentElement.scrollTop;
-  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  const scrolled = (winScroll / height) * 100;
-  
-  const progressBar = document.getElementById('scrollProgress');
-  progressBar.style.width = scrolled + '%';
-  
-  // Color transition based on scroll
-  const hue = scrolled * 3.6; // 0-360 degrees
-  progressBar.style.background = `hsl(${hue}, 70%, 60%)`;
-});
-
-// Enhanced intersection observer for animations
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -50px 0px'
-};
-
-const sectionObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      
-      // Trigger specific animations based on section
-      if (entry.target.id === 'skills') {
-        animateSkills();
-      } else if (entry.target.id === 'projects') {
-        animateProjects();
-      } else if (entry.target.id === 'contact') {
-        animateContact();
-      }
-    }
-  });
-}, observerOptions);
-
-// Skill bar animation with stagger
-function animateSkills() {
-  const skillCards = document.querySelectorAll('.skill-card');
-  const progressBars = document.querySelectorAll('.skill-progress');
-  
-  skillCards.forEach((card, index) => {
-    setTimeout(() => {
-      card.classList.add('animate');
-    }, index * 200);
-  });
-  
-  setTimeout(() => {
-    progressBars.forEach((bar, index) => {
-      setTimeout(() => {
-        const width = bar.getAttribute('data-width');
-        bar.style.width = width + '%';
-      }, index * 100);
-    });
-  }, 600);
-}
-
-// Project cards animation
-function animateProjects() {
-  const projectCards = document.querySelectorAll('.project-card');
-  projectCards.forEach((card, index) => {
-    setTimeout(() => {
-      card.classList.add('animate');
-    }, index * 150);
-  });
-}
-
-// Contact form animation
-function animateContact() {
-  const formGroups = document.querySelectorAll('.form-group');
-  const submitBtn = document.querySelector('.submit-btn');
-  const socialLinks = document.querySelectorAll('.social-link');
-  
-  formGroups.forEach((group, index) => {
-    setTimeout(() => {
-      group.classList.add('animate');
-    }, index * 100);
-  });
-  
-  setTimeout(() => {
-    submitBtn.classList.add('animate');
-  }, formGroups.length * 100 + 200);
-  
-  setTimeout(() => {
-    socialLinks.forEach((link, index) => {
-      setTimeout(() => {
-        link.classList.add('animate');
-      }, index * 100);
-    });
-  }, formGroups.length * 100 + 400);
-}
-
-// Initialize animations
-function initializeAnimations() {
-  document.querySelectorAll('.fade-in-section').forEach(section => {
-    sectionObserver.observe(section);
-  });
-}
-
-// Enhanced portfolio button with page transition
-document.getElementById('portfolioBtn').addEventListener('click', function(e) {
-  e.preventDefault();
-  
-  const transition = document.getElementById('pageTransition');
-  transition.classList.add('active');
-  
-  setTimeout(() => {
-    window.location.href = this.href;
-  }, 400);
-});
-
-// Project Modal Data
-const projectData = {
-  spectra: {
-    title: 'Spectra AI',
-    type: 'AI/Development',
-    media: '<img src="https://miro.medium.com/v2/resize:fit:1400/1*Gc7oQOfQpZ3gMB2WoQjh-g.jpeg?w=1200&h=600&fit=crop" alt="Spectra AI">',
-    description: `
-      <p>Spectra is a revolutionary screen-aware intelligence system that understands what you're looking at and provides contextual assistance in real-time. Built using cutting-edge computer vision and natural language processing, it creates an intuitive bridge between human intent and digital action.</p>
-      <br>
-      <p>The system uses advanced OCR, object detection, and semantic understanding to comprehend on-screen content, then leverages large language models to provide intelligent suggestions, automate tasks, and answer questions about what you're viewing.</p>
-      <br>
-      <p>Key innovations include real-time screen analysis with sub-100ms latency, privacy-first local processing, and a plugin architecture that allows developers to extend functionality for specific use cases.</p>
-    `,
-    tech: ['Python', 'TensorFlow', 'OpenCV', 'Transformers', 'Electron', 'React', 'WebRTC', 'CUDA']
-  },
-  hardware: {
-    title: 'Hardware Prototype',
-    type: 'Hardware/Robotics',
-    media: '<img src="https://images.unsplash.com/photo-1581091870627-1c1e8aaaad49?w=1200&h=600&fit=crop" alt="Hardware Prototype">',
-    description: `
-      <p>Early-stage wearable robotics prototype featuring servo-actuated joints, HUD display integration, and gesture control systems.</p>
-    `,
-    tech: ['Arduino', 'Raspberry Pi', 'C++', 'Python', 'CAD/Fusion 360', '3D Printing', 'Servo Control', 'IMU Sensors']
-  },
-  'project-aconite': {
-    title: 'Project Aconite',
-    type: 'Interactive',
-    media: '<img src="https://images.unsplash.com/photo-1560807707-108b5f74f6db?w=1200&h=600&fit=crop" alt="Project Aconite">',
-    description: `
-      <p>Experimental narrative exploring transformation and resilience through generative visuals and immersive soundscapes.</p>
-      <br>
-      <p>Built as a progressive web experience designed to run smoothly across devices.</p>
-    `,
-    tech: ['WebGL', 'Three.js', 'CSS Animations']
-  },
-  neural: {
-    title: 'Neural Interface Research',
-    type: 'Research',
-    media: '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Human_EEG_artefacts.png/960px-Human_EEG_artefacts.png?w=1200&h=600&fit=crop" alt="Neural Interface">',
-    description: `
-      <p>Pioneering research into brain-computer interfaces for direct neural control of digital systems. This project explores the future of human-machine interaction through non-invasive EEG technology and machine learning.</p>
-      <br>
-      <p>Using consumer-grade EEG devices combined with custom signal processing algorithms, we've achieved basic control of digital interfaces through thought alone. The system can detect intent patterns with 85% accuracy for simple commands.</p>
-      <br>
-      <p>Current research focuses on improving signal-to-noise ratios, reducing training time for new users, and expanding the vocabulary of detectable neural commands. Long-term goals include integration with AR/VR systems and the hardware prototype.</p>
-    `,
-    tech: ['Python', 'TensorFlow', 'Signal Processing', 'EEG/OpenBCI', 'Unity', 'Real-time Processing', 'Neural Networks']
-  }
-};
-
-// Enhanced project card click handlers
-document.querySelectorAll('.project-card').forEach(card => {
-  card.addEventListener('click', function() {
-    const projectId = this.getAttribute('data-project');
-    const project = projectData[projectId];
-    
-    if (project) {
-      const modalContent = `
-        <div class="modal-header">
-          <h2 class="modal-title">${project.title}</h2>
-          <p style="color: var(--primary); font-size: 1.2rem;">${project.type}</p>
-        </div>
-        
-        <div class="modal-media">
-          ${project.media}
-        </div>
-        
-        <div class="modal-details">
-          <div class="modal-description">
-            ${project.description}
-          </div>
-          
-          <div class="modal-tech">
-            <h3 style="margin-bottom: 1rem; color: var(--primary);">Technologies Used</h3>
-            <ul class="tech-list">
-              ${project.tech.map(tech => `<li>${tech}</li>`).join('')}
-            </ul>
-          </div>
-        </div>
-      `;
-      
-      document.getElementById('modalContent').innerHTML = modalContent;
-      document.getElementById('projectModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-  });
-});
-
-// Close Modal
-document.getElementById('modalClose').addEventListener('click', () => {
-  document.getElementById('projectModal').classList.remove('active');
-  document.body.style.overflow = 'auto';
-});
-
-// Close modal on background click
-document.getElementById('projectModal').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('projectModal')) {
-    document.getElementById('projectModal').classList.remove('active');
-    document.body.style.overflow = 'auto';
-  }
-});
-
-// Enhanced form submission
-document.getElementById('contactForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  
-  const submitBtn = e.target.querySelector('.submit-btn');
-  const originalText = submitBtn.innerHTML;
-  
-  submitBtn.innerHTML = 'Sending...';
-  submitBtn.style.background = 'var(--primary)';
-  
-  setTimeout(() => {
-    submitBtn.innerHTML = '✓ Sent!';
-    submitBtn.style.background = '#4ade80';
-    
-    setTimeout(() => {
-      submitBtn.innerHTML = originalText;
-      submitBtn.style.background = 'var(--gradient)';
-      e.target.reset();
-    }, 2000);
-  }, 1000);
-});
-
-// Enhanced parallax effect
-let ticking = false;
-
-function updateParallax() {
-  const scrolled = window.pageYOffset;
-  const parallax = document.querySelector('.hero-content');
-  const particles = document.getElementById('canvas');
-  
-  if (parallax) {
-    parallax.style.transform = `translateY(${scrolled * 0.1}px)`;
-  }
-  
-  if (particles) {
-    particles.style.transform = `translateY(${scrolled * 0.05}px)`;
-  }
-  
-  ticking = false;
-}
-
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(updateParallax);
-    ticking = true;
-  }
-});
-
-// Listen for system theme changes
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-  if (!localStorage.getItem('theme')) {
-    setTheme(e.matches ? 'dark' : 'light');
-  }
-});
-
-// Page visibility optimization for animations
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    // Pause expensive animations
-    document.querySelectorAll('.skill-progress').forEach(bar => {
-      bar.style.animationPlayState = 'paused';
-    });
-  } else {
-    // Resume animations
-    document.querySelectorAll('.skill-progress').forEach(bar => {
-      bar.style.animationPlayState = 'running';
-    });
-  }
-});
-
-// Resize optimization
-let resizeTimeout;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimeout);
-  resizeTimeout = setTimeout(() => {
-    createParticles();
-  }, 250);
-});
-  </script>
-<section class="contact-section reveal" id="contact">
-<h2>Contact</h2>
-<p>Got a project or role in mind? Drop a message.</p>
-<form action="https://formspree.io/f/YOUR_FORMSPREE_ID" id="contactForm" method="POST">
-<div class="fields">
-<input name="name" placeholder="Your name" required="" type="text"/>
-<input name="_replyto" placeholder="Your email" required="" type="email"/>
-</div>
-<textarea name="message" placeholder="Your message" required="" rows="5"></textarea>
-<button class="btn" type="submit">Send</button>
-<p aria-live="polite" class="contact-status" id="contactStatus"></p>
-</form>
-<!-- Optional EmailJS route (requires adding their SDK). 
-       If you prefer EmailJS, replace the Formspree action above and include:
-       emailjs.init('YOUR_PUBLIC_KEY'); emailjs.send('YOUR_SERVICE_ID','YOUR_TEMPLATE_ID', {...});
-  -->
-</section>
-<footer><div class="socials"><ul><li><a class="button" href="YOUR_LINKEDIN_URL">LinkedIn</a></li><li><a class="button" href="YOUR_GITHUB_URL">GitHub</a></li><li><a class="button" href="mailto:YOUR_EMAIL_ADDRESS">Email</a></li></ul></div></footer><script>
-/* ===== Micro-interactions (no libs) ===== */
+<button aria-label="Back to top" id="toTop">↑</button><script>
+/* ===== UX Enhancements ===== */
 (() => {
-  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduce) return;
+  // Respect reduced motion
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // 1) Scroll-reveal using IntersectionObserver + Web Animations API
-  const revealEls = document.querySelectorAll('.reveal, .animate, .timeline-item, .stat-card, .portfolio-item');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.animate(
-          [
-            {opacity: 0, transform: 'translateY(12px) scale(0.98)'},
-            {opacity: 1, transform: 'translateY(0) scale(1)'}
-          ],
-          {duration: 500, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards'}
-        );
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {threshold: 0.15});
-  revealEls.forEach(el => observer.observe(el));
-
-  // 2) Soft hover lift for cards and buttons
-  const hovEls = document.querySelectorAll('.card, .stat-card, .portfolio-item .portfolio-image, .btn, a.button, button');
-  hovEls.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      el.animate([{transform: 'translateY(0)'}, {transform: 'translateY(-2px)'}],
-        {duration: 120, fill: 'forwards', easing: 'ease-out'});
-      el.style.willChange = 'transform';
-    });
-    el.addEventListener('mouseleave', () => {
-      el.animate([{transform: getComputedStyle(el).transform}, {transform: 'translateY(0)'}],
-        {duration: 150, fill: 'forwards'});
-    });
-  });
-
-  // 3) Hero parallax — rAF + lerp (no per-mousemove WAAPI spam)
-  const coarse = window.matchMedia('(pointer: coarse)').matches;
-  const hero = document.querySelector('.hero, .hero-content');
-  if (hero && !coarse) {
-    let targetX = 0, targetY = 0;
-    let currentX = 0, currentY = 0;
-    let raf = null;
-    const MAX_ROT = 3; // degrees
-    const PERSPECTIVE = 800;
-    const LERP = 0.12;
-
-    const step = () => {
-      const dx = targetX - currentX;
-      const dy = targetY - currentY;
-      currentX += dx * LERP;
-      currentY += dy * LERP;
-      hero.style.transform = `perspective(${PERSPECTIVE}px) rotateY(${currentX}deg) rotateX(${currentY}deg)`;
-      raf = (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) ? requestAnimationFrame(step) : null;
+  // 1) Scroll progress bar
+  const bar = document.getElementById('scrollProgress');
+  if (bar && !reduce) {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const p = max > 0 ? (doc.scrollTop / max) : 0;
+      bar.style.transform = `scaleX(${p})`;
     };
-
-    const queue = (x, y) => {
-      targetX = Math.max(-MAX_ROT, Math.min(MAX_ROT, x));
-      targetY = Math.max(-MAX_ROT, Math.min(MAX_ROT, y));
-      if (!raf) raf = requestAnimationFrame(step);
-    };
-
-    hero.style.willChange = 'transform';
-    const onMove = (e) => {
-      const rect = hero.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      queue(x * 2 * MAX_ROT, -y * 2 * MAXROT); // typo fixed below
-    };
-
-    // Fix typo: MAXROT -> MAX_ROT
-    const onMoveFixed = (e) => {
-      const rect = hero.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      queue(x * 2 * MAX_ROT, -y * 2 * MAX_ROT);
-    };
-
-    hero.addEventListener('pointermove', onMoveFixed);
-    hero.addEventListener('pointerleave', () => {
-      queue(0, 0);
-    }, {passive: true});
+    document.addEventListener('scroll', onScroll, {passive: true});
+    onScroll();
   }
 
-  // 4) Ripple on primary buttons
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.btn, button, .button');
-    if (!btn) return;
-    const r = document.createElement('span');
-    r.className = 'ripple';
-    const rect = btn.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    r.style.width = r.style.height = size + 'px';
-    r.style.left = (e.clientX - rect.left - size/2) + 'px';
-    r.style.top = (e.clientY - rect.top - size/2) + 'px';
-    btn.style.position = 'relative';
-    btn.style.overflow = 'hidden';
-    btn.appendChild(r);
-    r.animate([{opacity: .25, transform: 'scale(0.2)'},{opacity: 0, transform: 'scale(1)'}], {duration: 450, easing: 'ease-out'})
-     .addEventListener('finish', ()=> r.remove());
-  });
-})();
-</script><script>
-// Contact form AJAX (progress + graceful fallback)
-(() => {
-  const form = document.getElementById('contactForm');
-  const status = document.getElementById('contactStatus');
-  if (!form) return;
+  // 2) Back-to-top FAB
+  const fab = document.getElementById('toTop');
+  if (fab) {
+    const onScrollFab = () => {
+      const y = window.scrollY || document.documentElement.scrollTop;
+      if (y > 600) fab.classList.add('show'); else fab.classList.remove('show');
+    };
+    document.addEventListener('scroll', onScrollFab, {passive: true});
+    fab.addEventListener('click', () => window.scrollTo({top: 0, behavior: reduce ? 'auto' : 'smooth'}));
+    onScrollFab();
+  }
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    status.textContent = 'Sending...';
+  // 3) Theme toggle with localStorage
+  const btn = document.querySelector('.theme-toggle');
+  const setTheme = (t) => {
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('theme', t); } catch {}
+  };
+  const initTheme = () => {
     try {
-      const data = new FormData(form);
-      const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
-      if (res.ok) {
-        form.reset();
-        status.textContent = 'Thanks! I’ll get back to you soon.';
-      } else {
-        status.textContent = 'Hmm, that failed. Email me directly instead.';
-      }
-    } catch (err) {
-      status.textContent = 'Network error — please try again.';
-    }
+      const saved = localStorage.getItem('theme');
+      if (saved) return setTheme(saved);
+    } catch {}
+  };
+  initTheme();
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const cur = document.documentElement.dataset.theme || 'auto';
+      const next = cur === 'dark' ? 'light' : cur === 'light' ? 'auto' : 'dark';
+      setTheme(next);
+      btn.setAttribute('aria-label', `Theme: ${next}`);
+    });
+  }
+
+  // 4) Prefetch on hover (same-origin only)
+  const prefetch = (url) => {
+    try {
+      const u = new URL(url, location.href);
+      if (u.origin !== location.origin) return;
+      const link = document.createElement('link');
+      link.rel = 'prefetch'; link.href = u.href;
+      document.head.appendChild(link);
+    } catch {}
+  };
+  document.addEventListener('mouseover', (e) => {
+    const a = e.target.closest('a[href]');
+    if (a) prefetch(a.getAttribute('href'));
+  }, {passive: true});
+
+  // 5) Make internal anchor targets offset-friendly
+  document.querySelectorAll('section[id]').forEach(sec => sec.classList.add('anchor-offset'));
+
+  // 6) Lazyload images
+  document.querySelectorAll('img:not([loading])').forEach(img => {
+    img.loading = 'lazy';
+    img.decoding = 'async';
   });
 })();
 </script></body>
