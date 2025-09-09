@@ -1,0 +1,78 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Case Study — Project Name | Connor Colyer</title>
+  <link rel="stylesheet" href="connor-effects.css">
+  <link rel="stylesheet" href="connor-pro.css">
+  <style>
+    body{max-width:1000px;margin:0 auto;padding:24px; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#eaeaea; background:#0b0b0b;}
+    h1{font-size:2rem;margin:.5rem 0 1rem;}
+    h2{margin:1.5rem 0 .6rem;}
+    .lead{color:#bdbdbd;}
+    .hero-media{border:1px solid #333; border-radius:14px; overflow:hidden; margin:12px 0 20px;}
+    .grid{display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:16px;}
+    .pill{border:1px solid #333; border-radius:999px; padding:.35rem .7rem; display:inline-block; margin-right:6px;}
+    a{color:#a78bfa;}
+  </style>
+</head>
+<body>
+  <div id="scrollProgress"></div>
+  <button id="backToTop" aria-label="Back to top">↑</button>
+
+  <header class="reveal">
+    <h1>Project Name — Case Study</h1>
+    <p class="lead">Short one-liner about the project’s goal and context.</p>
+  </header>
+
+  <section class="hero-media reveal">
+    <img src="https://picsum.photos/1200/600" alt="Project hero" />
+  </section>
+
+  <section class="reveal">
+    <h2>Overview</h2>
+    <p>Problem, constraints, audience. Your role and timeline.</p>
+  </section>
+
+  <section class="grid reveal">
+    <div>
+      <h2>Highlights</h2>
+      <ul>
+        <li>Result or metric (+%/+ms etc.)</li>
+        <li>Interesting technique</li>
+        <li>Complexity you solved</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Tech</h2>
+      <p><span class="pill">Rust</span> <span class="pill">Python</span> <span class="pill">TypeScript</span></p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>Gallery</h2>
+    <div class="grid">
+      <img class="project-card" data-media='[{"src":"https://picsum.photos/seed/1/1200/800"},{"src":"https://picsum.photos/seed/2/1200/800"}]' src="https://picsum.photos/seed/1/600/400" alt="Preview 1" />
+      <img class="project-card" data-media='[{"src":"https://picsum.photos/seed/3/1200/800"},{"src":"https://picsum.photos/seed/4/1200/800"}]' src="https://picsum.photos/seed/3/600/400" alt="Preview 2" />
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>Outcome</h2>
+    <p>What changed, what shipped, what you learned.</p>
+  </section>
+
+  <!-- Particles target -->
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <!-- Command Palette + Modal scaffolding -->
+  <div id="commandPalette"></div>
+  <div class="modal-root"></div>
+  <div class="toast-wrap"></div>
+
+  <script defer src="connor-effects.js"></script>
+  <script defer src="connor-pro.js"></script>
+</body>
+</html>

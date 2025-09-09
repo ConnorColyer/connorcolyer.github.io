@@ -1,0 +1,35 @@
+
+/* ===== Connor Effects (additive) ===== */
+:root { --fx-brand: var(--primary, #6366f1); }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(22px) scale(.98); will-change: transform, opacity; }
+.reveal.visible { opacity: 1; transform: translateY(0) scale(1); transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1); }
+
+/* Card hover lift */
+.card, .project-card, .skill-chip { transition: transform .18s ease, box-shadow .18s ease; }
+.card:hover, .project-card:hover { transform: translateY(-6px); box-shadow: 0 22px 48px rgba(0,0,0,.35); }
+
+/* Ripple */
+.fx-rip-wrap { position: relative; overflow: hidden; }
+.fx-ripple { position:absolute; border-radius:50%; background: currentColor; opacity:.22; transform: scale(0); pointer-events:none;
+  animation: fx-ripple .6s ease-out forwards; }
+@keyframes fx-ripple { to { transform: scale(3.6); opacity: 0; } }
+
+/* Shimmer skeleton */
+.fx-skeleton { position:relative; background: var(--bg-card, rgba(255,255,255,.06)); color: transparent; }
+.fx-skeleton::after {
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.10) 45%, transparent 90%);
+  transform: translateX(-100%);
+  animation: fx-shimmer 1.2s ease-in-out infinite;
+}
+@keyframes fx-shimmer { to { transform: translateX(100%); } }
+
+/* Scroll progress fallback */
+#scrollProgress { height: 3px; background: linear-gradient(90deg, var(--fx-brand), #a78bfa); transform-origin:0 50%; transform: scaleX(0); position:fixed; top:0; left:0; right:0; z-index:9999; }
+
+/* Back-to-top button baseline */
+#backToTop { position:fixed; right:1rem; bottom:1rem; opacity:0; pointer-events:none; transform: translateY(8px);
+  transition: opacity .2s ease, transform .2s ease; }
+#backToTop.show { opacity:1; pointer-events:auto; transform: translateY(0); }
