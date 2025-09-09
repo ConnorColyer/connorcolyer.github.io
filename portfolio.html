@@ -466,6 +466,52 @@
       transform: scale(1);
     }
 
+    /* Experience Section */
+    .experience-section {
+      padding: 80px 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .timeline {
+      border-left: 2px solid var(--border-color);
+      padding-left: 2rem;
+      position: relative;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -11px;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .timeline-item h3 {
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-item span {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
     /* Stats Section */
     .stats-section {
       padding: 80px 5%;
@@ -918,15 +964,15 @@
     <!-- Videography Projects -->
     <div class="portfolio-item" data-category="videography">
       <div class="portfolio-image">
-        <img src="https://i.ytimg.com/vi/-eD26UwctZQ/hqdefault.jpg" alt="Bermuda Film">
-        <span class="portfolio-type">Videography</span>
+        <img src="https://images.unsplash.com/photo-1560807707-108b5f74f6db?w=600&h=400&fit=crop" alt="Project Aconite">
+        <span class="portfolio-type">Interactive</span>
         <div class="portfolio-overlay">
-          <h3>Bermuda | Another Love</h3>
-          <p>Cinematic exploration of Bermuda's hidden beauty</p>
+          <h3>Project Aconite</h3>
+          <p>Experimental narrative exploring transformation and resilience through generative visuals</p>
           <div class="portfolio-tags">
-            <span class="tag">DJI Mini 3 Pro</span>
-            <span class="tag">Final Cut Pro</span>
-            <span class="tag">Color Grading</span>
+            <span class="tag">WebGL</span>
+            <span class="tag">Three.js</span>
+            <span class="tag">CSS</span>
           </div>
         </div>
       </div>
@@ -1032,11 +1078,11 @@
     <!-- Hardware Projects -->
     <div class="portfolio-item" data-category="hardware">
       <div class="portfolio-image">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7g37DzDmVQNqkCcSEhSUqa6NpO83PrhlADg&s" alt="Exosuit">
+        <img src="https://images.unsplash.com/photo-1581091870627-1c1e8aaaad49?w=600&h=400&fit=crop" alt="Hardware Prototype">
         <span class="portfolio-type">Hardware</span>
         <div class="portfolio-overlay">
-          <h3>Exosuit Prototype</h3>
-          <p>Functional exosuit with servo-actuated joints and HUD integration</p>
+          <h3>Hardware Prototype</h3>
+          <p>Wearable robotics concept with servo-actuated joints and HUD integration</p>
           <div class="portfolio-tags">
             <span class="tag">Arduino</span>
             <span class="tag">3D Printing</span>
@@ -1079,6 +1125,45 @@
     </div>
   </div>
 
+  <!-- Experience & Education -->
+  <section id="experience" class="experience-section fade-in-section">
+    <h2 class="stats-title">Experience & Education</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>Freelance Developer</h3>
+        <span>Nov 2023 – Present · Remote</span>
+      </div>
+      <div class="timeline-item">
+        <h3>Technical Assistant – The Mill</h3>
+        <span>Jul 2024 · Los Angeles, CA</span>
+      </div>
+      <div class="timeline-item">
+        <h3>Engineering Assistant – Technicolor Group</h3>
+        <span>Jul 2024 · Los Angeles, CA</span>
+      </div>
+      <div class="timeline-item">
+        <h3>Assistant Lighting Technician – The Picture Of Dorian Gray</h3>
+        <span>Mar 2024 · Theatre Royal Haymarket</span>
+      </div>
+      <div class="timeline-item">
+        <h3>Videographer – Argus Bermuda</h3>
+        <span>Feb 2024 · Bermuda</span>
+      </div>
+      <div class="timeline-item">
+        <h3>University of Winchester</h3>
+        <span>BSc Computer Software Engineering · Starting Sep 2025</span>
+      </div>
+      <div class="timeline-item">
+        <h3>Prendergast School</h3>
+        <span>A Levels · Sep 2023 – Jul 2025</span>
+      </div>
+      <div class="timeline-item">
+        <h3>Computer Science Prize</h3>
+        <span>Prendergast School · Jun 2025</span>
+      </div>
+    </div>
+  </section>
+
   <!-- Stats Section -->
   <section class="stats-section">
     <h2 class="stats-title">By the Numbers</h2>
@@ -1120,7 +1205,7 @@
       <a href="index.html#skills" class="footer-link">Skills</a>
       <a href="index.html#contact" class="footer-link">Contact</a>
       <a href="#" class="footer-link">GitHub</a>
-      <a href="#" class="footer-link">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/connor-colyer-14a669261/" class="footer-link">LinkedIn</a>
     </div>
   </footer>
 
@@ -1164,25 +1249,39 @@
     // Enhanced custom cursor
     const cursor = document.querySelector('.cursor');
     const cursorFollower = document.querySelector('.cursor-follower');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = -100, cursorY = -100;
+    let followerX = -100, followerY = -100;
+
+    const lerp = (a, b, n) => (1 - n) * a + n * b;
 
     document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-      
-      setTimeout(() => {
-        cursorFollower.style.left = e.clientX - 10 + 'px';
-        cursorFollower.style.top = e.clientY - 10 + 'px';
-      }, 100);
-    });
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, { passive: true });
+
+    function renderCursor() {
+      cursorX = lerp(cursorX, mouseX, 0.25);
+      cursorY = lerp(cursorY, mouseY, 0.25);
+      followerX = lerp(followerX, mouseX, 0.15);
+      followerY = lerp(followerY, mouseY, 0.15);
+
+      cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+      cursorFollower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
+
+      requestAnimationFrame(renderCursor);
+    }
+
+    renderCursor();
 
     // Cursor hover effects
-    const hoverElements = document.querySelectorAll('a, button, .portfolio-item, .filter-btn');
+    const hoverElements = document.querySelectorAll('a, button, .portfolio-item, .filter-btn, .timeline-item');
     hoverElements.forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursor.classList.add('hover');
         cursorFollower.classList.add('hover');
       });
-      
+
       el.addEventListener('mouseleave', () => {
         cursor.classList.remove('hover');
         cursorFollower.classList.remove('hover');
@@ -1265,6 +1364,21 @@
       if (statsSection) {
         statsObserver.observe(statsSection);
       }
+
+      // Observe experience section
+      const expObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateExperience();
+            expObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      const expSection = document.getElementById('experience');
+      if (expSection) {
+        expObserver.observe(expSection);
+      }
     }
 
     // Enhanced stats animation
@@ -1295,6 +1409,15 @@
           }, 40);
         });
       }, 800);
+    }
+
+    function animateExperience() {
+      const items = document.querySelectorAll('.timeline-item');
+      items.forEach((item, index) => {
+        setTimeout(() => {
+          item.classList.add('visible');
+        }, index * 150);
+      });
     }
 
     // Enhanced page transitions
