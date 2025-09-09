@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connor Colyer - Full Portfolio</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Connor Colyer - Full Portfolio</title>
+<style>
     * {
       margin: 0;
       padding: 0;
@@ -843,373 +844,390 @@
         gap: 1rem;
       }
     }
-  </style>
-</head>
+  
+/* Ripple node */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .2;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+/* Contact form */
+.contact-section { margin-top: 4rem; }
+.contact-section .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.contact-section input, .contact-section textarea {
+  width: 100%; padding: 12px 14px; border-radius: 12px;
+  border: 1px solid var(--border-color, #333); background: var(--bg-card, #111);
+  color: var(--text, #eaeaea);
+}
+.contact-section .btn { margin-top: 12px; }
+.contact-status { margin-top: 8px; font-size: .95rem; color: var(--text-secondary, #aaa); }
+@media (max-width: 640px){
+  .contact-section .fields { grid-template-columns: 1fr; }
+}
+</style>
+<link href="/favicon.ico" rel="icon" type="image/x-icon"/><meta content="Connor Colyer — Software Engineer" property="og:title"/><meta content="Full‑stack developer and creative. Software engineering, videography, and theatre lighting. University of Winchester." property="og:description"/><meta content="/og-image.png" property="og:image"/><meta content="https://YOUR_DOMAIN_OR_GHPAGES_URL" property="og:url"/><meta content="website" property="og:type"/><meta content="summary_large_image" name="twitter:card"/><meta content="Connor Colyer — Software Engineer" name="twitter:title"/><meta content="Full‑stack developer and creative. Software engineering, videography, and theatre lighting. University of Winchester." name="twitter:description"/><meta content="/og-image.png" name="twitter:image"/></head>
 <body>
-  <!-- Page Transition -->
-  <div class="page-transition" id="pageTransition"></div>
+<!-- Page Transition -->
+<div class="page-transition" id="pageTransition"></div>
+<!-- Loader -->
+<div class="loader" id="loader">
+<div class="loader-circle"></div>
+</div>
+<!-- Custom Cursor -->
+<div class="cursor"></div>
+<div class="cursor-follower"></div>
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<!-- Header -->
+<header class="header" id="header">
+<div class="header-content">
+<a class="logo" href="index.html">Connor Colyer</a>
+<nav class="nav-links">
+<a class="nav-link" href="#development">Development</a>
+<a class="nav-link" href="#videography">Videography</a>
+<a class="nav-link" href="#research">Research</a>
+<button class="theme-toggle" id="theme-toggle">
+<svg fill="currentColor" height="20" viewbox="0 0 24 24" width="20">
+<path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.844a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"></path>
+</svg>
+</button>
+<a class="back-home" href="index.html" id="backHome">← Back Home</a>
+</nav>
+</div>
+</header>
+<!-- Portfolio Hero -->
+<section class="portfolio-hero">
+<h1 class="portfolio-title">Complete Portfolio</h1>
+<p class="portfolio-subtitle">Explore my journey through technology, creativity, and innovation</p>
+</section>
+<!-- Filter Tabs -->
+<div class="filter-container">
+<button class="filter-btn active" data-filter="all">All Projects</button>
+<button class="filter-btn" data-filter="development">Development</button>
+<button class="filter-btn" data-filter="videography">Videography</button>
+<button class="filter-btn" data-filter="research">Research</button>
+<button class="filter-btn" data-filter="hardware">Hardware</button>
+</div>
+<!-- Portfolio Grid -->
+<div class="portfolio-grid" id="portfolioGrid">
+<!-- Development Projects -->
+<div class="portfolio-item" data-category="development">
+<div class="portfolio-image">
+<img alt="Spectra AI" src="https://miro.medium.com/v2/resize:fit:1400/1*Gc7oQOfQpZ3gMB2WoQjh-g.jpeg"/>
+<span class="portfolio-type">Development</span>
+<div class="portfolio-overlay">
+<h3>Spectra AI</h3>
+<p>Revolutionary screen-aware intelligence system using computer vision and NLP</p>
+<div class="portfolio-tags">
+<span class="tag">Python</span>
+<span class="tag">AI/ML</span>
+<span class="tag">Computer Vision</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="development">
+<div class="portfolio-image">
+<img alt="AI Chat Bot" src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Development</span>
+<div class="portfolio-overlay">
+<h3>Neural Chat Interface</h3>
+<p>Advanced conversational AI with multi-modal capabilities</p>
+<div class="portfolio-tags">
+<span class="tag">Python</span>
+<span class="tag">React</span>
+<span class="tag">WebSocket</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="development">
+<div class="portfolio-image">
+<img alt="Blockchain App" src="https://images.unsplash.com/photo-1516383740770-fbcc5ccbece0?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Development</span>
+<div class="portfolio-overlay">
+<h3>Decentralized Identity Platform</h3>
+<p>Blockchain-based identity verification system</p>
+<div class="portfolio-tags">
+<span class="tag">Solidity</span>
+<span class="tag">Web3</span>
+<span class="tag">React</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="development">
+<div class="portfolio-image">
+<img alt="Data Visualization" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Development</span>
+<div class="portfolio-overlay">
+<h3>Real-time Analytics Dashboard</h3>
+<p>Interactive data visualization platform for IoT devices</p>
+<div class="portfolio-tags">
+<span class="tag">D3.js</span>
+<span class="tag">Node.js</span>
+<span class="tag">MongoDB</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Videography Projects -->
+<div class="portfolio-item" data-category="videography">
+<div class="portfolio-image">
+<img alt="Project Aconite" src="https://images.unsplash.com/photo-1560807707-108b5f74f6db?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Interactive</span>
+<div class="portfolio-overlay">
+<h3>Project Aconite</h3>
+<p>Experimental narrative exploring transformation and resilience through generative visuals</p>
+<div class="portfolio-tags">
+<span class="tag">WebGL</span>
+<span class="tag">Three.js</span>
+<span class="tag">CSS</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="videography">
+<div class="portfolio-image">
+<img alt="Tech Documentary" src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Videography</span>
+<div class="portfolio-overlay">
+<h3>The Future of AI</h3>
+<p>Documentary exploring artificial intelligence's impact on society</p>
+<div class="portfolio-tags">
+<span class="tag">Sony A7S III</span>
+<span class="tag">Premiere Pro</span>
+<span class="tag">Motion Graphics</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="videography">
+<div class="portfolio-image">
+<img alt="Concert Film" src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Videography</span>
+<div class="portfolio-overlay">
+<h3>London Underground Sessions</h3>
+<p>Capturing the raw energy of London's underground music scene</p>
+<div class="portfolio-tags">
+<span class="tag">Multi-cam</span>
+<span class="tag">Live Recording</span>
+<span class="tag">Audio Sync</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="videography">
+<div class="portfolio-image">
+<img alt="Corporate Video" src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Videography</span>
+<div class="portfolio-overlay">
+<h3>Innovation Labs</h3>
+<p>Corporate showcase of cutting-edge technology development</p>
+<div class="portfolio-tags">
+<span class="tag">Corporate</span>
+<span class="tag">Interviews</span>
+<span class="tag">B-roll</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Research Projects -->
+<div class="portfolio-item" data-category="research">
+<div class="portfolio-image">
+<img alt="Neural Interface" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Human_EEG_artefacts.png/960px-Human_EEG_artefacts.png"/>
+<span class="portfolio-type">Research</span>
+<div class="portfolio-overlay">
+<h3>Neural Interface Research</h3>
+<p>Brain-computer interfaces for direct neural control</p>
+<div class="portfolio-tags">
+<span class="tag">EEG</span>
+<span class="tag">Signal Processing</span>
+<span class="tag">Machine Learning</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="research">
+<div class="portfolio-image">
+<img alt="Quantum Computing" src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Research</span>
+<div class="portfolio-overlay">
+<h3>Quantum Algorithm Optimization</h3>
+<p>Research into quantum computing applications for AI</p>
+<div class="portfolio-tags">
+<span class="tag">Quantum</span>
+<span class="tag">Algorithms</span>
+<span class="tag">Optimization</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="research">
+<div class="portfolio-image">
+<img alt="Climate Research" src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Research</span>
+<div class="portfolio-overlay">
+<h3>Climate Data Analysis</h3>
+<p>Machine learning approaches to climate change prediction</p>
+<div class="portfolio-tags">
+<span class="tag">Data Science</span>
+<span class="tag">Climate</span>
+<span class="tag">Modeling</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Hardware Projects -->
+<div class="portfolio-item" data-category="hardware">
+<div class="portfolio-image">
+<img alt="Hardware Prototype" src="https://images.unsplash.com/photo-1581091870627-1c1e8aaaad49?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Hardware</span>
+<div class="portfolio-overlay">
+<h3>Hardware Prototype</h3>
+<p>Wearable robotics concept with servo-actuated joints and HUD integration</p>
+<div class="portfolio-tags">
+<span class="tag">Arduino</span>
+<span class="tag">3D Printing</span>
+<span class="tag">Servo Control</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="hardware">
+<div class="portfolio-image">
+<img alt="Smart Home" src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Hardware</span>
+<div class="portfolio-overlay">
+<h3>Smart Home Automation</h3>
+<p>IoT-based home automation system with voice control</p>
+<div class="portfolio-tags">
+<span class="tag">IoT</span>
+<span class="tag">Raspberry Pi</span>
+<span class="tag">Voice Control</span>
+</div>
+</div>
+</div>
+</div>
+<div class="portfolio-item" data-category="hardware">
+<div class="portfolio-image">
+<img alt="Drone Project" src="https://images.unsplash.com/photo-1559163499-413811fb2344?w=600&amp;h=400&amp;fit=crop"/>
+<span class="portfolio-type">Hardware</span>
+<div class="portfolio-overlay">
+<h3>Autonomous Surveillance Drone</h3>
+<p>AI-powered drone for automated security monitoring</p>
+<div class="portfolio-tags">
+<span class="tag">Computer Vision</span>
+<span class="tag">Flight Control</span>
+<span class="tag">Autonomous</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Experience & Education -->
+<section class="experience-section fade-in-section" id="experience">
+<h2 class="stats-title">Experience &amp; Education</h2>
+<div class="timeline">
+<div class="timeline-item">
+<h3>Freelance Developer</h3>
+<span>Nov 2023 – Present · Remote</span>
+</div>
+<div class="timeline-item">
+<h3>Technical Assistant – The Mill</h3>
+<span>Jul 2024 · Los Angeles, CA</span>
+</div>
+<div class="timeline-item">
+<h3>Engineering Assistant – Technicolor Group</h3>
+<span>Jul 2024 · Los Angeles, CA</span>
+</div>
+<div class="timeline-item">
+<h3>Assistant Lighting Technician – The Picture Of Dorian Gray</h3>
+<span>Mar 2024 · Theatre Royal Haymarket</span>
+</div>
+<div class="timeline-item">
+<h3>Videographer – Argus Bermuda</h3>
+<span>Feb 2024 · Bermuda</span>
+</div>
+<div class="timeline-item">
+<h3>University of Winchester</h3>
+<span>BSc Computer Software Engineering · Starting Sep 2025</span>
+</div>
+<div class="timeline-item">
+<h3>Prendergast School</h3>
+<span>A Levels · Sep 2023 – Jul 2025</span>
+</div>
+<div class="timeline-item">
+<h3>Computer Science Prize</h3>
+<span>Prendergast School · Jun 2025</span>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="stats-section">
+<h2 class="stats-title">By the Numbers</h2>
+<div class="stats-grid">
+<div class="stat-card">
+<span class="stat-number" data-target="50">0</span>
+<div class="stat-label">Projects Completed</div>
+</div>
+<div class="stat-card">
+<span class="stat-number" data-target="15">0</span>
+<div class="stat-label">Technologies Mastered</div>
+</div>
+<div class="stat-card">
+<span class="stat-number" data-target="100">0</span>
+<div class="stat-label">Hours of Video Edited</div>
+</div>
+<div class="stat-card">
+<span class="stat-number" data-target="5">0</span>
+<div class="stat-label">Research Papers</div>
+</div>
+</div>
+</section>
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+<div class="lightbox-close" id="lightboxClose">
+<svg fill="white" height="24" viewbox="0 0 24 24" width="24">
+<path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+</svg>
+</div>
+<div class="lightbox-content" id="lightboxContent"></div>
+</div>
+<!-- Footer -->
 
-  <!-- Loader -->
-  <div class="loader" id="loader">
-    <div class="loader-circle"></div>
-  </div>
-
-  <!-- Custom Cursor -->
-  <div class="cursor"></div>
-  <div class="cursor-follower"></div>
-
-  <!-- Scroll Progress -->
-  <div class="scroll-progress" id="scrollProgress"></div>
-
-  <!-- Header -->
-  <header class="header" id="header">
-    <div class="header-content">
-      <a href="index.html" class="logo">Connor Colyer</a>
-      <nav class="nav-links">
-        <a href="#development" class="nav-link">Development</a>
-        <a href="#videography" class="nav-link">Videography</a>
-        <a href="#research" class="nav-link">Research</a>
-        <button class="theme-toggle" id="theme-toggle">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.844a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
-          </svg>
-        </button>
-        <a href="index.html" class="back-home" id="backHome">← Back Home</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Portfolio Hero -->
-  <section class="portfolio-hero">
-    <h1 class="portfolio-title">Complete Portfolio</h1>
-    <p class="portfolio-subtitle">Explore my journey through technology, creativity, and innovation</p>
-  </section>
-
-  <!-- Filter Tabs -->
-  <div class="filter-container">
-    <button class="filter-btn active" data-filter="all">All Projects</button>
-    <button class="filter-btn" data-filter="development">Development</button>
-    <button class="filter-btn" data-filter="videography">Videography</button>
-    <button class="filter-btn" data-filter="research">Research</button>
-    <button class="filter-btn" data-filter="hardware">Hardware</button>
-  </div>
-
-  <!-- Portfolio Grid -->
-  <div class="portfolio-grid" id="portfolioGrid">
-    <!-- Development Projects -->
-    <div class="portfolio-item" data-category="development">
-      <div class="portfolio-image">
-        <img src="https://miro.medium.com/v2/resize:fit:1400/1*Gc7oQOfQpZ3gMB2WoQjh-g.jpeg" alt="Spectra AI">
-        <span class="portfolio-type">Development</span>
-        <div class="portfolio-overlay">
-          <h3>Spectra AI</h3>
-          <p>Revolutionary screen-aware intelligence system using computer vision and NLP</p>
-          <div class="portfolio-tags">
-            <span class="tag">Python</span>
-            <span class="tag">AI/ML</span>
-            <span class="tag">Computer Vision</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="development">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=400&fit=crop" alt="AI Chat Bot">
-        <span class="portfolio-type">Development</span>
-        <div class="portfolio-overlay">
-          <h3>Neural Chat Interface</h3>
-          <p>Advanced conversational AI with multi-modal capabilities</p>
-          <div class="portfolio-tags">
-            <span class="tag">Python</span>
-            <span class="tag">React</span>
-            <span class="tag">WebSocket</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="development">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1516383740770-fbcc5ccbece0?w=600&h=400&fit=crop" alt="Blockchain App">
-        <span class="portfolio-type">Development</span>
-        <div class="portfolio-overlay">
-          <h3>Decentralized Identity Platform</h3>
-          <p>Blockchain-based identity verification system</p>
-          <div class="portfolio-tags">
-            <span class="tag">Solidity</span>
-            <span class="tag">Web3</span>
-            <span class="tag">React</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="development">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" alt="Data Visualization">
-        <span class="portfolio-type">Development</span>
-        <div class="portfolio-overlay">
-          <h3>Real-time Analytics Dashboard</h3>
-          <p>Interactive data visualization platform for IoT devices</p>
-          <div class="portfolio-tags">
-            <span class="tag">D3.js</span>
-            <span class="tag">Node.js</span>
-            <span class="tag">MongoDB</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Videography Projects -->
-    <div class="portfolio-item" data-category="videography">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1560807707-108b5f74f6db?w=600&h=400&fit=crop" alt="Project Aconite">
-        <span class="portfolio-type">Interactive</span>
-        <div class="portfolio-overlay">
-          <h3>Project Aconite</h3>
-          <p>Experimental narrative exploring transformation and resilience through generative visuals</p>
-          <div class="portfolio-tags">
-            <span class="tag">WebGL</span>
-            <span class="tag">Three.js</span>
-            <span class="tag">CSS</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="videography">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=400&fit=crop" alt="Tech Documentary">
-        <span class="portfolio-type">Videography</span>
-        <div class="portfolio-overlay">
-          <h3>The Future of AI</h3>
-          <p>Documentary exploring artificial intelligence's impact on society</p>
-          <div class="portfolio-tags">
-            <span class="tag">Sony A7S III</span>
-            <span class="tag">Premiere Pro</span>
-            <span class="tag">Motion Graphics</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="videography">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&h=400&fit=crop" alt="Concert Film">
-        <span class="portfolio-type">Videography</span>
-        <div class="portfolio-overlay">
-          <h3>London Underground Sessions</h3>
-          <p>Capturing the raw energy of London's underground music scene</p>
-          <div class="portfolio-tags">
-            <span class="tag">Multi-cam</span>
-            <span class="tag">Live Recording</span>
-            <span class="tag">Audio Sync</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="videography">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=400&fit=crop" alt="Corporate Video">
-        <span class="portfolio-type">Videography</span>
-        <div class="portfolio-overlay">
-          <h3>Innovation Labs</h3>
-          <p>Corporate showcase of cutting-edge technology development</p>
-          <div class="portfolio-tags">
-            <span class="tag">Corporate</span>
-            <span class="tag">Interviews</span>
-            <span class="tag">B-roll</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Research Projects -->
-    <div class="portfolio-item" data-category="research">
-      <div class="portfolio-image">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Human_EEG_artefacts.png/960px-Human_EEG_artefacts.png" alt="Neural Interface">
-        <span class="portfolio-type">Research</span>
-        <div class="portfolio-overlay">
-          <h3>Neural Interface Research</h3>
-          <p>Brain-computer interfaces for direct neural control</p>
-          <div class="portfolio-tags">
-            <span class="tag">EEG</span>
-            <span class="tag">Signal Processing</span>
-            <span class="tag">Machine Learning</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="research">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop" alt="Quantum Computing">
-        <span class="portfolio-type">Research</span>
-        <div class="portfolio-overlay">
-          <h3>Quantum Algorithm Optimization</h3>
-          <p>Research into quantum computing applications for AI</p>
-          <div class="portfolio-tags">
-            <span class="tag">Quantum</span>
-            <span class="tag">Algorithms</span>
-            <span class="tag">Optimization</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="research">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&h=400&fit=crop" alt="Climate Research">
-        <span class="portfolio-type">Research</span>
-        <div class="portfolio-overlay">
-          <h3>Climate Data Analysis</h3>
-          <p>Machine learning approaches to climate change prediction</p>
-          <div class="portfolio-tags">
-            <span class="tag">Data Science</span>
-            <span class="tag">Climate</span>
-            <span class="tag">Modeling</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Hardware Projects -->
-    <div class="portfolio-item" data-category="hardware">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1581091870627-1c1e8aaaad49?w=600&h=400&fit=crop" alt="Hardware Prototype">
-        <span class="portfolio-type">Hardware</span>
-        <div class="portfolio-overlay">
-          <h3>Hardware Prototype</h3>
-          <p>Wearable robotics concept with servo-actuated joints and HUD integration</p>
-          <div class="portfolio-tags">
-            <span class="tag">Arduino</span>
-            <span class="tag">3D Printing</span>
-            <span class="tag">Servo Control</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="hardware">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=400&fit=crop" alt="Smart Home">
-        <span class="portfolio-type">Hardware</span>
-        <div class="portfolio-overlay">
-          <h3>Smart Home Automation</h3>
-          <p>IoT-based home automation system with voice control</p>
-          <div class="portfolio-tags">
-            <span class="tag">IoT</span>
-            <span class="tag">Raspberry Pi</span>
-            <span class="tag">Voice Control</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="portfolio-item" data-category="hardware">
-      <div class="portfolio-image">
-        <img src="https://images.unsplash.com/photo-1559163499-413811fb2344?w=600&h=400&fit=crop" alt="Drone Project">
-        <span class="portfolio-type">Hardware</span>
-        <div class="portfolio-overlay">
-          <h3>Autonomous Surveillance Drone</h3>
-          <p>AI-powered drone for automated security monitoring</p>
-          <div class="portfolio-tags">
-            <span class="tag">Computer Vision</span>
-            <span class="tag">Flight Control</span>
-            <span class="tag">Autonomous</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Experience & Education -->
-  <section id="experience" class="experience-section fade-in-section">
-    <h2 class="stats-title">Experience & Education</h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <h3>Freelance Developer</h3>
-        <span>Nov 2023 – Present · Remote</span>
-      </div>
-      <div class="timeline-item">
-        <h3>Technical Assistant – The Mill</h3>
-        <span>Jul 2024 · Los Angeles, CA</span>
-      </div>
-      <div class="timeline-item">
-        <h3>Engineering Assistant – Technicolor Group</h3>
-        <span>Jul 2024 · Los Angeles, CA</span>
-      </div>
-      <div class="timeline-item">
-        <h3>Assistant Lighting Technician – The Picture Of Dorian Gray</h3>
-        <span>Mar 2024 · Theatre Royal Haymarket</span>
-      </div>
-      <div class="timeline-item">
-        <h3>Videographer – Argus Bermuda</h3>
-        <span>Feb 2024 · Bermuda</span>
-      </div>
-      <div class="timeline-item">
-        <h3>University of Winchester</h3>
-        <span>BSc Computer Software Engineering · Starting Sep 2025</span>
-      </div>
-      <div class="timeline-item">
-        <h3>Prendergast School</h3>
-        <span>A Levels · Sep 2023 – Jul 2025</span>
-      </div>
-      <div class="timeline-item">
-        <h3>Computer Science Prize</h3>
-        <span>Prendergast School · Jun 2025</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats Section -->
-  <section class="stats-section">
-    <h2 class="stats-title">By the Numbers</h2>
-    <div class="stats-grid">
-      <div class="stat-card">
-        <span class="stat-number" data-target="50">0</span>
-        <div class="stat-label">Projects Completed</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" data-target="15">0</span>
-        <div class="stat-label">Technologies Mastered</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" data-target="100">0</span>
-        <div class="stat-label">Hours of Video Edited</div>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number" data-target="5">0</span>
-        <div class="stat-label">Research Papers</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <div class="lightbox-close" id="lightboxClose">
-      <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
-        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </div>
-    <div class="lightbox-content" id="lightboxContent"></div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p class="footer-text">Built with passion for innovation and creativity</p>
-    <div class="footer-links">
-      <a href="index.html#about" class="footer-link">About</a>
-      <a href="index.html#skills" class="footer-link">Skills</a>
-      <a href="index.html#contact" class="footer-link">Contact</a>
-      <a href="#" class="footer-link">GitHub</a>
-      <a href="https://www.linkedin.com/in/connor-colyer-14a669261/" class="footer-link">LinkedIn</a>
-    </div>
-  </footer>
-
-  <script>
+<section class="contact-section reveal" id="contact">
+<h2>Contact</h2>
+<p>Got a project or role in mind? Drop a message.</p>
+<form action="https://formspree.io/f/YOUR_FORMSPREE_ID" id="contactForm" method="POST">
+<div class="fields">
+<input name="name" placeholder="Your name" required="" type="text"/>
+<input name="_replyto" placeholder="Your email" required="" type="email"/>
+</div>
+<textarea name="message" placeholder="Your message" required="" rows="5"></textarea>
+<button class="btn" type="submit">Send</button>
+<p aria-live="polite" class="contact-status" id="contactStatus"></p>
+</form>
+<!-- Optional EmailJS route (requires adding their SDK). 
+       If you prefer EmailJS, replace the Formspree action above and include:
+       emailjs.init('YOUR_PUBLIC_KEY'); emailjs.send('YOUR_SERVICE_ID','YOUR_TEMPLATE_ID', {...});
+  -->
+</section>
+<footer class="footer">
+<p class="footer-text">Built with passion for innovation and creativity</p>
+<div class="footer-links">
+<a class="footer-link" href="index.html#about">About</a>
+<a class="footer-link" href="index.html#skills">Skills</a>
+<a class="footer-link" href="index.html#contact">Contact</a>
+<a class="footer-link" href="#">GitHub</a>
+<a class="footer-link" href="https://www.linkedin.com/in/connor-colyer-14a669261/">LinkedIn</a>
+</div>
+<div class="socials"><ul><li><a class="button" href="YOUR_LINKEDIN_URL">LinkedIn</a></li><li><a class="button" href="YOUR_GITHUB_URL">GitHub</a></li><li><a class="button" href="mailto:YOUR_EMAIL_ADDRESS">Email</a></li></ul></div></footer>
+<script>
     // Theme Detection and Toggle
     const detectTheme = () => {
       const savedTheme = localStorage.getItem('theme');
@@ -1523,5 +1541,100 @@
       }
     });
   </script>
-</body>
+<script>
+/* ===== Micro-interactions (no libs) ===== */
+(() => {
+  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduce) return;
+
+  // 1) Scroll-reveal using IntersectionObserver + Web Animations API
+  const revealEls = document.querySelectorAll('.reveal, .animate, .timeline-item, .stat-card, .portfolio-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.animate(
+          [
+            {opacity: 0, transform: 'translateY(12px) scale(0.98)'},
+            {opacity: 1, transform: 'translateY(0) scale(1)'}
+          ],
+          {duration: 500, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards'}
+        );
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.15});
+  revealEls.forEach(el => observer.observe(el));
+
+  // 2) Soft hover lift for cards and buttons
+  const hovEls = document.querySelectorAll('.card, .stat-card, .portfolio-item .portfolio-image, .btn, a.button, button');
+  hovEls.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      el.animate([{transform: 'translateY(0)'}, {transform: 'translateY(-2px)'}],
+        {duration: 120, fill: 'forwards', easing: 'ease-out'});
+      el.style.willChange = 'transform';
+    });
+    el.addEventListener('mouseleave', () => {
+      el.animate([{transform: getComputedStyle(el).transform}, {transform: 'translateY(0)'}],
+        {duration: 150, fill: 'forwards'});
+    });
+  });
+
+  // 3) Hero parallax shimmer
+  const hero = document.querySelector('.hero, .hero-content');
+  if (hero) {
+    hero.addEventListener('pointermove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      hero.animate(
+        [{transform: `perspective(800px) rotateY(${x*2}deg) rotateX(${ -y*2}deg)`},
+         {transform: 'perspective(800px) rotateY(0deg) rotateX(0deg)'}],
+        {duration: 400, fill: 'forwards'}
+      );
+    });
+  }
+
+  // 4) Ripple on primary buttons
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn, button, .button');
+    if (!btn) return;
+    const r = document.createElement('span');
+    r.className = 'ripple';
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    r.style.width = r.style.height = size + 'px';
+    r.style.left = (e.clientX - rect.left - size/2) + 'px';
+    r.style.top = (e.clientY - rect.top - size/2) + 'px';
+    btn.style.position = 'relative';
+    btn.style.overflow = 'hidden';
+    btn.appendChild(r);
+    r.animate([{opacity: .25, transform: 'scale(0.2)'},{opacity: 0, transform: 'scale(1)'}], {duration: 450, easing: 'ease-out'})
+     .addEventListener('finish', ()=> r.remove());
+  });
+})();
+</script><script>
+// Contact form AJAX (progress + graceful fallback)
+(() => {
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('contactStatus');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.textContent = 'Sending...';
+    try {
+      const data = new FormData(form);
+      const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+      if (res.ok) {
+        form.reset();
+        status.textContent = 'Thanks! I’ll get back to you soon.';
+      } else {
+        status.textContent = 'Hmm, that failed. Email me directly instead.';
+      }
+    } catch (err) {
+      status.textContent = 'Network error — please try again.';
+    }
+  });
+})();
+</script></body>
 </html>
