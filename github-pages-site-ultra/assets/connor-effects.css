@@ -1,0 +1,70 @@
+
+/* ===== Connor Effects — MAX edition (additive) ===== */
+
+/* Global smooth scrolling */
+html { scroll-behavior: smooth; }
+
+/* Animated background gradient + subtle noise */
+:root {
+  --fx-h1: #9b8cff;
+  --fx-h2: #21d4fd;
+  --fx-bg1: #0c0c12;
+  --fx-bg2: #0b1018;
+}
+body::before {
+  content:""; position: fixed; inset: -10% -10% -10% -10%; z-index: -2;
+  background: radial-gradient(60% 80% at 10% 10%, rgba(33,212,253,.16), transparent 60%),
+              radial-gradient(60% 80% at 90% 20%, rgba(155,140,255,.14), transparent 60%),
+              linear-gradient(120deg, var(--fx-bg1), var(--fx-bg2));
+  filter: saturate(1.05);
+  animation: fx-bg-pan 18s ease-in-out infinite alternate;
+}
+@keyframes fx-bg-pan { 
+  0% { transform: translate3d(-2%, -1%, 0) scale(1.02); } 
+  100% { transform: translate3d(2%, 1%, 0) scale(1.02); } 
+}
+body::after {
+  content:""; position: fixed; inset:0; z-index: -1; pointer-events:none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><filter id='n'><feTurbulence baseFrequency='0.8' numOctaves='2' stitchTiles='stitch' type='fractalNoise'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity:.18; mix-blend-mode: soft-light;
+}
+
+/* Reveal (with will-change by default) */
+.reveal { opacity: 0; transform: translateY(20px) scale(.98); will-change: transform, opacity; }
+.reveal.visible { opacity: 1; transform: translateY(0) scale(1); transition: opacity .65s cubic-bezier(.2,.8,.2,1), transform .65s cubic-bezier(.2,.8,.2,1); }
+.reveal[data-stagger] .reveal-child { opacity:0; transform: translateY(10px); }
+.reveal[data-stagger].visible .reveal-child { opacity:1; transform:none; transition: opacity .5s ease, transform .5s ease; }
+.reveal[data-stagger].visible .reveal-child:nth-child(1){ transition-delay:.05s }
+.reveal[data-stagger].visible .reveal-child:nth-child(2){ transition-delay:.12s }
+.reveal[data-stagger].visible .reveal-child:nth-child(3){ transition-delay:.2s }
+.reveal[data-stagger].visible .reveal-child:nth-child(4){ transition-delay:.28s }
+.reveal[data-stagger].visible .reveal-child:nth-child(5){ transition-delay:.36s }
+
+/* 3D Tiles (cards/projects) */
+.tilt-3d { perspective: 900px; transform-style: preserve-3d; }
+.tilt-3d .tilt-inner { transform: rotateX(0) rotateY(0); transform-style: preserve-3d; transition: transform .18s ease, box-shadow .18s ease; will-change: transform; }
+.tilt-3d:hover .tilt-inner { box-shadow: 0 18px 48px rgba(0,0,0,.35); }
+.tilt-3d .tilt-glare { position:absolute; inset:0; pointer-events:none; border-radius: inherit;
+  background: radial-gradient(220px 140px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.18), transparent 40%);
+  opacity: 0; transition: opacity .2s ease; mix-blend-mode: screen; }
+.tilt-3d:hover .tilt-glare { opacity: .6; }
+
+/* Magnetic buttons */
+.magnetic { position: relative; will-change: transform; transition: transform .15s ease; }
+.magnetic .magnet-ink { position:absolute; inset:0; background: radial-gradient(120px 120px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.12), transparent 60%); opacity:0; pointer-events:none; transition: opacity .2s ease; border-radius: inherit; }
+.magnetic:hover .magnet-ink { opacity:.6; }
+
+/* Ripple for clicks */
+.fx-rip-wrap { position: relative; overflow: hidden; }
+.fx-ripple { position:absolute; border-radius:50%; background: currentColor; opacity:.22; transform: scale(0); pointer-events:none; animation: fx-ripple .65s ease-out forwards; }
+@keyframes fx-ripple { to { transform: scale(3.6); opacity: 0; } }
+
+/* Skeleton shimmer */
+.fx-skeleton { position:relative; background: rgba(255,255,255,.06); color: transparent; }
+.fx-skeleton::after { content:""; position:absolute; inset:0; background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.10) 45%, transparent 90%); transform: translateX(-100%); animation: fx-shimmer 1.2s ease-in-out infinite; }
+@keyframes fx-shimmer { to { transform: translateX(100%); } }
+
+/* Progress + BackToTop */
+#scrollProgress { height: 3px; background: linear-gradient(90deg, var(--fx-h1), var(--fx-h2)); transform-origin:0 50%; transform: scaleX(0); position:fixed; top:0; left:0; right:0; z-index:9999; }
+#backToTop { position:fixed; right:1rem; bottom:1rem; opacity:0; pointer-events:none; transform: translateY(8px); transition: opacity .2s ease, transform .2s ease; }
+#backToTop.show { opacity:1; pointer-events:auto; transform: translateY(0); }
