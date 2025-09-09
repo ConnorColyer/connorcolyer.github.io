@@ -1208,15 +1208,119 @@ a:not(.button):not(.btn):hover { background-size: 100% 2px; }
 /* Smooth anchor offset if sticky headers exist */
 html { scroll-behavior: smooth; }
 .anchor-offset { scroll-margin-top: 80px; }
+
+/* ===== Skeleton shimmer ===== */
+.skeleton {
+  position: relative;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  border-radius: 12px;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.img-wrap { position: relative; overflow: hidden; border-radius: 16px; }
+.img-wrap img { display: block; width: 100%; height: auto; }
+
+/* ===== Command Palette ===== */
+#cmdk {
+  position: fixed; inset: 0;
+  display: none; place-items: center;
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(6px);
+  z-index: 100000;
+}
+#cmdk.show { display: grid; }
+#cmdk .cmdk-dialog {
+  width: min(680px, 92vw);
+  background: var(--bg-card, #111);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+  padding: 12px;
+}
+#cmdk-input {
+  width: 100%; border: 1px solid var(--border-color, #333);
+  background: transparent; color: var(--text, #eee);
+  padding: 12px 14px; border-radius: 12px;
+  margin-bottom: 8px; font-size: 16px;
+}
+#cmdk-list { list-style: none; margin: 0; padding: 0; max-height: 50vh; overflow: auto; }
+#cmdk-list li { padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; }
+#cmdk-list li[aria-selected="true"] { background: rgba(255,255,255,.06); }
+#cmdk-list a { color: var(--text, #eee); text-decoration: none; }
+
+/* ==== Global hardening & polish ==== */
+body, * { cursor: auto !important; }
+#loader { transition: opacity .35s ease; }
+.skip-link {
+  position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed; left: 16px; top: 16px; width: auto; height: auto; padding: 10px 12px;
+  background: var(--bg-card, #111); color: var(--text, #fff);
+  border: 1px solid var(--border-color, #333); border-radius: 10px; z-index: 10001;
+}
+
+/* Shimmer skeleton */
+.skeleton {
+  position: relative; background: #1a1a1a; overflow: hidden; color: transparent;
+}
+.skeleton::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.08) 45%, transparent 90%);
+  transform: translateX(-100%);
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+@keyframes shimmer { to { transform: translateX(100%); } }
+
+/* Palette chips / tags */
+.tag { border-radius: 999px; padding: 6px 10px; border: 1px solid var(--border-color,#333); }
+
+/* Modal base */
+.modal-mask {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  display: none; align-items: flex-start; justify-content: center; padding-top: 12vh; z-index: 10000;
+}
+.modal-mask.show { display: flex; }
+.modal {
+  width: min(720px, 92vw); background: var(--bg-card, #0f0f0f);
+  border: 1px solid var(--border-color,#333); border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.55);
+}
+.modal header { padding: 12px 14px; border-bottom: 1px solid var(--border-color,#333); }
+.modal input {
+  width: 100%; padding: 12px 14px; background: transparent; color: var(--text,#eaeaea);
+  border: none; outline: none; font-size: 1rem;
+}
+.modal .results { max-height: 50vh; overflow: auto; }
+.modal .result { padding: 10px 14px; border-top: 1px solid var(--border-color,#222); display:flex; gap:10px; align-items:center; }
+.modal .result:hover, .modal .result.active { background: rgba(255,255,255,.06); cursor: pointer; }
+.modal .hint { padding: 8px 14px; color: var(--text-secondary,#aaa); font-size: .9rem; }
 </style>
-</head>
-<body>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Connor Colyer",
+  "jobTitle": "Software Engineer",
+  "url": "https://YOUR_DOMAIN_OR_GHPAGES_URL",
+  "email": "mailto:YOUR_EMAIL_ADDRESS",
+  "sameAs": [
+    "YOUR_LINKEDIN_URL",
+    "YOUR_GITHUB_URL"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Winchester",
+    "addressRegion": "England",
+    "addressCountry": "UK"
+  }
+}</script></head>
+<body id="main"><a class="skip-link" href="#main">Skip to content</a>
 <!-- Page Transition -->
 <div class="page-transition" id="pageTransition"></div>
 <!-- Loader -->
-<div class="loader" id="loader">
-<div class="loader-circle"></div>
-</div>
 <!-- Theme Toggle -->
 <button class="theme-toggle" id="theme-toggle">
 <svg fill="currentColor" height="24" viewbox="0 0 24 24" width="24">
@@ -1228,7 +1332,6 @@ html { scroll-behavior: smooth; }
 <span>Full Portfolio →</span>
 </a>
 <!-- Custom Cursor -->
-
 <div class="cursor-follower"></div>
 <!-- Scroll Progress -->
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -1478,7 +1581,6 @@ html { scroll-behavior: smooth; }
 <div id="modalContent"></div>
 </div>
 </div>
-
 <button aria-label="Back to top" id="toTop">↑</button><script>
 /* ===== UX Enhancements ===== */
 (() => {
@@ -1556,5 +1658,266 @@ html { scroll-behavior: smooth; }
     img.decoding = 'async';
   });
 })();
-</script></body>
+</script><script>
+/* ===== Loader kill + safety net ===== */
+(() => {
+  const kill = () => {
+    const selectors = [
+      '#preloader','#loader','#loading','#page-loader','.preloader','.loader','.loading','.page-loader','.spinner','.screen-loader'
+    ];
+    selectors.forEach(sel => document.querySelectorAll(sel).forEach(n => n.remove()));
+    document.documentElement.classList.remove('loading');
+    document.body.classList.remove('loading');
+    // undo any inline locks
+    document.body.style.overflow = '';
+    document.body.style.opacity = '';
+  };
+  // Try ASAP
+  kill();
+  // DOM ready
+  document.addEventListener('DOMContentLoaded', kill);
+  // Final safety on load
+  window.addEventListener('load', kill);
+  // Nuclear option after 2s
+  setTimeout(kill, 2000);
+})();
+</script><script>
+/* ===== Skeleton image loader ===== */
+(() => {
+  const wrapImg = (img) => {
+    if (img.closest('.img-wrap')) return;
+    const w = document.createElement('div');
+    w.className = 'img-wrap skeleton';
+    img.parentNode.insertBefore(w, img);
+    w.appendChild(img);
+    const clear = () => w.classList.remove('skeleton');
+    if (img.complete) { clear(); }
+    else {
+      img.addEventListener('load', clear, {once:true});
+      img.addEventListener('error', clear, {once:true});
+    }
+  };
+  document.querySelectorAll('img').forEach(img => wrapImg(img));
+})();
+</script>
+<div aria-hidden="true" id="cmdk">
+<div aria-label="Command Palette" aria-modal="true" class="cmdk-dialog" role="dialog">
+<input autocomplete="off" id="cmdk-input" placeholder="Search sections &amp; links..." spellcheck="false" type="text"/>
+<ul id="cmdk-list" role="listbox"></ul>
+</div>
+</div>
+<script>
+/* ===== Command Palette (Ctrl/Cmd+K) ===== */
+(() => {
+  const el = document.getElementById('cmdk');
+  if (!el) return;
+  const input = document.getElementById('cmdk-input');
+  const list = document.getElementById('cmdk-list');
+
+  const collectLinks = () => {
+    const items = [];
+    // Sections
+    document.querySelectorAll('section[id]').forEach(sec => {
+      items.push({label: sec.querySelector('h2,h3')?.textContent?.trim() || sec.id, href: `#${sec.id}`});
+    });
+    // Nav + prominent links
+    document.querySelectorAll('a[href]').forEach(a => {
+      const href = a.getAttribute('href');
+      const txt = a.textContent.trim();
+      if (!href || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+      if (href.startsWith('#') || href.startsWith('/') || href.startsWith('http')) {
+        if (txt.length >= 2) items.push({label: txt, href});
+      }
+    });
+    // Deduplicate
+    const seen = new Set();
+    return items.filter(i => {
+      const key = i.label + '|' + i.href;
+      if (seen.has(key)) return false; seen.add(key); return true;
+    });
+  };
+
+  let data = collectLinks();
+  let index = 0;
+
+  const render = (q='') => {
+    const term = q.toLowerCase();
+    const results = data.filter(d => d.label.toLowerCase().includes(term) || d.href.toLowerCase().includes(term)).slice(0, 20);
+    list.innerHTML = '';
+    results.forEach((d, i) => {
+      const li = document.createElement('li');
+      li.setAttribute('role','option');
+      li.setAttribute('aria-selected', String(i===index));
+      const a = document.createElement('a');
+      a.href = d.href; a.textContent = d.label;
+      const small = document.createElement('small'); small.textContent = d.href; small.style.opacity = .6;
+      li.appendChild(a); li.appendChild(small);
+      list.appendChild(li);
+    });
+  };
+
+  const open = () => { el.classList.add('show'); el.setAttribute('aria-hidden','false'); input.value=''; index=0; data=collectLinks(); render(); input.focus(); };
+  const close = () => { el.classList.remove('show'); el.setAttribute('aria-hidden','true'); };
+
+  document.addEventListener('keydown', (e) => {
+    const k = e.key.toLowerCase();
+    const mod = e.metaKey || e.ctrlKey;
+    if (mod && k === 'k') { e.preventDefault(); el.classList.contains('show') ? close() : open(); }
+    else if (el.classList.contains('show')) {
+      if (k === 'escape') close();
+      else if (k === 'arrowdown') { e.preventDefault(); index = Math.min(index+1, list.children.length-1); render(input.value); }
+      else if (k === 'arrowup') { e.preventDefault(); index = Math.max(index-1, 0); render(input.value); }
+      else if (k === 'enter') {
+        e.preventDefault();
+        const li = list.children[index];
+        if (li) li.querySelector('a').click();
+        close();
+      }
+    }
+  });
+  input.addEventListener('input', () => { index=0; render(input.value); });
+  el.addEventListener('click', (e) => { if (e.target === el) close(); });
+})();
+</script><script>
+/* ===== Animated project filter (if present) ===== */
+(() => {
+  const buttons = document.querySelectorAll('.filter-btn[data-filter]');
+  const grid = document.querySelector('#portfolioGrid, .portfolio-grid, .grid');
+  if (!buttons.length || !grid) return;
+  const items = grid.querySelectorAll('.portfolio-item');
+  const show = (cat) => {
+    items.forEach(it => {
+      const match = (cat === 'all' || it.dataset.category === cat);
+      it.animate([{opacity: 1}, {opacity: 0}], {duration: 150, fill: 'forwards'}).addEventListener('finish', () => {
+        it.style.display = match ? '' : 'none';
+        if (match) it.animate([{opacity: 0, transform:'translateY(6px)'}, {opacity: 1, transform:'translateY(0)'}], {duration: 220, easing:'ease-out', fill:'forwards'});
+      });
+    });
+  };
+  buttons.forEach(btn => btn.addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    show(btn.dataset.filter);
+  }));
+})();
+</script><script>
+/* ==== Reliability & enhancements ==== */
+(() => {
+  // 0) Loader unblocker
+  const onReady = () => {
+    const loader = document.getElementById('loader');
+    if (loader) { loader.style.opacity = 0; setTimeout(()=> loader.remove(), 420); }
+    document.documentElement.classList.add('ready');
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', onReady);
+  } else { onReady(); }
+
+  // 1) Kill any stray custom cursors (just in case)
+  document.querySelectorAll('.custom-cursor, .cursor, [data-cursor]').forEach(n => n.remove());
+
+  // 2) Add skeletons to images until loaded
+  const imgs = document.querySelectorAll('img');
+  imgs.forEach(img => {
+    if (img.complete && img.naturalWidth > 0) return; // already loaded
+    img.classList.add('skeleton');
+    const clear = () => img.classList.remove('skeleton');
+    img.addEventListener('load', clear, {once:true});
+    img.addEventListener('error', clear, {once:true});
+  });
+
+  // 3) Command Palette (Cmd/Ctrl+K)
+  const mask = document.getElementById('cmdk-mask');
+  const input = document.getElementById('cmdk-input');
+  const list = document.getElementById('cmdk-results');
+  const index = [];
+  // collect sections and nav links
+  document.querySelectorAll('h1, h2, h3, nav a[href], a[href^="#"]').forEach(el => {
+    const text = (el.textContent || '').trim();
+    if (!text) return;
+    let href = '#';
+    if (el.getAttribute('href')) href = el.getAttribute('href');
+    else if (el.id) href = `#${el.id}`;
+    const id = href.startsWith('#') ? href.slice(1) : null;
+    if (id && !document.getElementById(id)) {
+      // add anchor to previous section if needed
+      const sec = el.closest('section') || el;
+      if (sec && !sec.id) sec.id = text.toLowerCase().replace(/\s+/g,'-');
+      href = `#${sec.id}`;
+    }
+    index.push({text, href});
+  });
+
+  let activeIdx = -1;
+  const render = (q='') => {
+    const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+    const matches = index.filter(i => terms.every(t => i.text.toLowerCase().includes(t))).slice(0,30);
+    list.innerHTML = '';
+    matches.forEach((m, i) => {
+      const div = document.createElement('div');
+      div.className = 'result';
+      div.dataset.href = m.href;
+      div.innerHTML = `<span>↳</span><span>${m.text}</span>`;
+      if (i === 0) div.classList.add('active');
+      list.appendChild(div);
+    });
+    activeIdx = matches.length ? 0 : -1;
+  };
+
+  const open = () => { mask.classList.add('show'); input.value=''; render(''); input.focus(); };
+  const close = () => { mask.classList.remove('show'); };
+
+  document.addEventListener('keydown', (e) => {
+    const k = e.key.toLowerCase();
+    const mod = e.ctrlKey || e.metaKey;
+    if (mod && k === 'k') { e.preventDefault(); open(); }
+    if (k === 'escape' && mask.classList.contains('show')) { close(); }
+  });
+  mask?.addEventListener('click', (e) => { if (e.target === mask) close(); });
+  input?.addEventListener('input', (e) => render(e.target.value));
+  list?.addEventListener('click', (e) => {
+    const item = e.target.closest('.result');
+    if (!item) return;
+    close(); location.href = item.dataset.href;
+  });
+  input?.addEventListener('keydown', (e) => {
+    const items = Array.from(list.querySelectorAll('.result'));
+    if (!items.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx+1, items.length-1); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx = Math.max(activeIdx-1, 0); }
+    if (e.key === 'Enter') { e.preventDefault(); items[activeIdx]?.click(); }
+    items.forEach((el,i)=> el.classList.toggle('active', i===activeIdx));
+  });
+
+  // 4) Portfolio filter animations
+  const grid = document.querySelector('#portfolioGrid, .portfolio-grid');
+  const buttons = document.querySelectorAll('.filter-btn');
+  if (grid && buttons.length) {
+    buttons.forEach(btn => btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter || 'all';
+      buttons.forEach(b => b.classList.toggle('active', b===btn));
+      const items = grid.querySelectorAll('.portfolio-item');
+      items.forEach(it => {
+        const ok = filter === 'all' || (it.dataset.category || '').toLowerCase() === filter.toLowerCase();
+        if (ok) {
+          it.animate([{opacity:0, transform:'scale(.98)'},{opacity:1, transform:'scale(1)'}], {duration:220, fill:'forwards', easing:'ease-out'});
+          it.style.display = '';
+        } else {
+          const a = it.animate([{opacity:1, transform:'scale(1)'},{opacity:0, transform:'scale(.98)'}], {duration:180, fill:'forwards'});
+          a.addEventListener('finish', ()=> it.style.display='none');
+        }
+      });
+    }));
+  }
+})();
+</script>
+<!-- Command Palette -->
+<div aria-labelledby="cmdk-title" aria-modal="true" class="modal-mask" id="cmdk-mask" role="dialog" style="display:none">
+<div class="modal">
+<header><input aria-label="Command palette input" id="cmdk-input" placeholder="Search sections, links…  (Press ⌘K / Ctrl+K)" type="text"/></header>
+<div class="results" id="cmdk-results"></div>
+<div class="hint">Press Esc to close • Enter to open</div>
+</div>
+</div>
+</body>
 </html>
