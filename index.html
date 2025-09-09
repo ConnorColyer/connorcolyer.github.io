@@ -2109,7 +2109,6 @@ window.addEventListener('resize', () => {
   }, 250);
 });
   </script>
-
 <section class="contact-section reveal" id="contact">
 <h2>Contact</h2>
 <p>Got a project or role in mind? Drop a message.</p>
@@ -2165,19 +2164,52 @@ window.addEventListener('resize', () => {
     });
   });
 
-  // 3) Hero parallax shimmer
+  // 3) Hero parallax — rAF + lerp (no per-mousemove WAAPI spam)
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
   const hero = document.querySelector('.hero, .hero-content');
-  if (hero) {
-    hero.addEventListener('pointermove', (e) => {
+  if (hero && !coarse) {
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+    let raf = null;
+    const MAX_ROT = 3; // degrees
+    const PERSPECTIVE = 800;
+    const LERP = 0.12;
+
+    const step = () => {
+      const dx = targetX - currentX;
+      const dy = targetY - currentY;
+      currentX += dx * LERP;
+      currentY += dy * LERP;
+      hero.style.transform = `perspective(${PERSPECTIVE}px) rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+      raf = (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) ? requestAnimationFrame(step) : null;
+    };
+
+    const queue = (x, y) => {
+      targetX = Math.max(-MAX_ROT, Math.min(MAX_ROT, x));
+      targetY = Math.max(-MAX_ROT, Math.min(MAX_ROT, y));
+      if (!raf) raf = requestAnimationFrame(step);
+    };
+
+    hero.style.willChange = 'transform';
+    const onMove = (e) => {
       const rect = hero.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      hero.animate(
-        [{transform: `perspective(800px) rotateY(${x*2}deg) rotateX(${ -y*2}deg)`},
-         {transform: 'perspective(800px) rotateY(0deg) rotateX(0deg)'}],
-        {duration: 400, fill: 'forwards'}
-      );
-    });
+      queue(x * 2 * MAX_ROT, -y * 2 * MAXROT); // typo fixed below
+    };
+
+    // Fix typo: MAXROT -> MAX_ROT
+    const onMoveFixed = (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      queue(x * 2 * MAX_ROT, -y * 2 * MAX_ROT);
+    };
+
+    hero.addEventListener('pointermove', onMoveFixed);
+    hero.addEventListener('pointerleave', () => {
+      queue(0, 0);
+    }, {passive: true});
   }
 
   // 4) Ripple on primary buttons
