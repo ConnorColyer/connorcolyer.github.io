@@ -10,8 +10,7 @@
   try {
     if (!qs('#scrollProgress')) { const d=document.createElement('div'); d.id='scrollProgress'; document.body.prepend(d); }
     if (!qs('#backToTop')) { const b=document.createElement('button'); b.id='backToTop'; b.textContent='↑'; b.setAttribute('aria-label','Back to top'); document.body.appendChild(b); }
-    const hero = qs('.hero, .hero-content, header, .title, .masthead');
-    if (hero && !qs('#particles', hero)) { const c=document.createElement('canvas'); c.id='particles'; c.setAttribute('aria-hidden','true'); hero.prepend(c); }
+      // Particle canvas injection removed in favor of WebGPU background
     if (!qs('.modal-root')) { const r=document.createElement('div'); r.className='modal-root'; r.innerHTML=`
       <div class="modal-scrim" data-close></div>
       <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
