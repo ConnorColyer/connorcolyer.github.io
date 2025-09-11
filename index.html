@@ -73,7 +73,7 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg-dark);
       color: var(--text-primary);
-      line-height: 1.6;
+      line-height: 1.8;
       overflow-x: hidden;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
@@ -191,13 +191,17 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease, background 0.3s ease;
+      animation: pulse 6s ease-in-out infinite;
       z-index: 100;
     }
 
     #themeToggle:hover {
-      transform: rotate(180deg);
       background: var(--primary);
+    }
+
+    #themeToggle.active {
+      transform: rotate(180deg);
     }
 
     #themeToggle:focus-visible {
@@ -228,6 +232,7 @@
       text-align: center;
       z-index: 1;
       padding: 2rem;
+      animation: float 10s ease-in-out infinite;
     }
 
     h1 {
@@ -257,7 +262,7 @@
       font-size: 0.9rem;
       color: var(--text-secondary);
       margin-bottom: 3rem;
-      animation: fadeInUp 1s ease 0.4s backwards;
+      animation: fadeInUp 1s ease 0.4s backwards, float 6s ease-in-out infinite;
     }
 
     @keyframes fadeInUp {
@@ -271,9 +276,27 @@
       }
     }
 
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 var(--primary);
+      }
+      50% {
+        box-shadow: 0 0 0 8px transparent;
+      }
+    }
+
     /* Sections */
     section {
-      padding: 5rem 5%;
+      padding: 6rem 5%;
       max-width: 1200px;
       margin: 0 auto;
     }

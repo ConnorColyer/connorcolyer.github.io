@@ -3,6 +3,22 @@
 (() => {
   if (window.__connorFX) return; window.__connorFX = true;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try {
+    const root = document.documentElement;
+    const btn = document.getElementById('themeToggle');
+    const apply = (t) => {
+      root.setAttribute('data-theme', t);
+      localStorage.setItem('theme', t);
+      if (btn) btn.classList.toggle('active', t === 'light');
+    };
+    const stored = localStorage.getItem('theme');
+    const pref = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    apply(stored || pref);
+    if (btn) btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      apply(next);
+    });
+  } catch {}
   try { document.documentElement.insertAdjacentHTML('beforeend', '<style>body,*{cursor:auto!important}</style>'); } catch {}
   const hideLoader = () => { const loader = document.getElementById('loader'); if (!loader) return; loader.style.transition='opacity .35s ease'; loader.style.opacity='0'; setTimeout(()=>{ try{ loader.remove(); }catch{} },420); };
   const onReady = () => hideLoader();
