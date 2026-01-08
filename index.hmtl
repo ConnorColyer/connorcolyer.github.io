@@ -1,0 +1,1247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+
+  <title>Connor Colyer — Full-stack engineer & creative technologist</title>
+  <meta name="description" content="Connor Colyer — full-stack engineer and creative technologist in Winchester, UK. Web design, automation, and modern product builds. Projects: Cortex, Aconite, Auralis." />
+  <link rel="canonical" href="https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Connor Colyer — Full-stack engineer & creative technologist" />
+  <meta property="og:description" content="Modern websites that convert, automation that saves time, and experimental builds that go hard." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/" />
+  <!-- Optional: add /og.png to your repo and uncomment -->
+  <!-- <meta property="og:image" content="https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/og.png" /> -->
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Connor Colyer — Full-stack engineer & creative technologist" />
+  <meta name="twitter:description" content="Web design + automation + product engineering. Based in Winchester." />
+
+  <meta name="robots" content="index,follow" />
+
+  <!-- JSON-LD (Person) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Connor Colyer",
+    "jobTitle": "Full-stack engineer and creative technologist",
+    "address": { "@type": "PostalAddress", "addressLocality": "Winchester", "addressCountry": "UK" },
+    "email": "mailto:connorcolyer@icloud.com",
+    "telephone": "+44 7902 346502",
+    "url": "https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/"
+  }
+  </script>
+
+  <style>
+    /* ----------------------------
+       Base + Theme
+    ---------------------------- */
+    :root{
+      --bg: #0b0f19;
+      --bg2: #0b1224;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --faint: rgba(255,255,255,.55);
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --accent: #b7ffb2;
+      --accent2: #a7c5ff;
+      --warn: #ffd28a;
+
+      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+
+      --maxw: 1100px;
+      --pad: clamp(16px, 3vw, 28px);
+
+      --h1: clamp(40px, 5vw, 62px);
+      --h2: clamp(24px, 3vw, 34px);
+      --h3: 18px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    [data-theme="light"]{
+      --bg: #f6f7fb;
+      --bg2: #eef2ff;
+      --panel: rgba(20,25,35,.06);
+      --panel2: rgba(20,25,35,.08);
+      --text: rgba(10,12,16,.92);
+      --muted: rgba(10,12,16,.72);
+      --faint: rgba(10,12,16,.55);
+      --border: rgba(10,12,16,.12);
+      --shadow: 0 18px 45px rgba(10,12,16,.12);
+      --accent: #1e7b3d;
+      --accent2: #1f4fd6;
+      --warn: #9a5b00;
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background: radial-gradient(1200px 700px at 10% 10%, var(--bg2), transparent 60%),
+                  radial-gradient(900px 600px at 90% 10%, rgba(167,197,255,.25), transparent 55%),
+                  radial-gradient(900px 600px at 40% 90%, rgba(183,255,178,.18), transparent 55%),
+                  linear-gradient(180deg, var(--bg), var(--bg));
+      overflow-x:hidden;
+    }
+
+    a{ color: inherit; }
+    .muted{ color: var(--muted); }
+    .faint{ color: var(--faint); }
+
+    /* Skip link */
+    .skip{
+      position:absolute;
+      top:10px; left:10px;
+      transform: translateY(-200%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+      z-index: 9999;
+      backdrop-filter: blur(10px);
+    }
+    .skip:focus{ transform: translateY(0); outline: 2px solid var(--accent2); }
+
+    /* ----------------------------
+       Slowly moving background
+    ---------------------------- */
+    .bg-wrap{
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .bg-blob{
+      position:absolute;
+      width: 60vmax;
+      height: 60vmax;
+      border-radius: 999px;
+      filter: blur(55px);
+      opacity: .55;
+      mix-blend-mode: screen;
+      transform: translate3d(0,0,0);
+      animation: floaty 28s ease-in-out infinite;
+      background: radial-gradient(circle at 30% 30%, rgba(167,197,255,.55), transparent 60%),
+                  radial-gradient(circle at 70% 70%, rgba(183,255,178,.45), transparent 60%);
+    }
+    .bg-blob.b2{
+      width: 52vmax;
+      height: 52vmax;
+      left: 55%;
+      top: 45%;
+      opacity: .45;
+      animation-duration: 36s;
+      animation-direction: reverse;
+      background: radial-gradient(circle at 40% 30%, rgba(255,210,138,.45), transparent 60%),
+                  radial-gradient(circle at 70% 70%, rgba(167,197,255,.35), transparent 60%);
+    }
+    .bg-grid{
+      position:absolute;
+      inset:-20%;
+      opacity: .10;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.12) 1px, transparent 1px);
+      background-size: 60px 60px;
+      transform: rotate(7deg);
+      animation: drift 50s linear infinite;
+    }
+    [data-theme="light"] .bg-grid{
+      opacity: .08;
+      background-image:
+        linear-gradient(to right, rgba(0,0,0,.18) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,.18) 1px, transparent 1px);
+    }
+
+    @keyframes floaty{
+      0%   { transform: translate(-10%, -12%) scale(1); }
+      50%  { transform: translate(12%, 10%) scale(1.05); }
+      100% { transform: translate(-10%, -12%) scale(1); }
+    }
+    @keyframes drift{
+      0% { transform: translate3d(0,0,0) rotate(7deg); }
+      100% { transform: translate3d(-120px, -120px, 0) rotate(7deg); }
+    }
+
+    /* Motion preferences */
+    @media (prefers-reduced-motion: reduce){
+      .bg-blob, .bg-grid { animation: none !important; }
+      * { scroll-behavior: auto !important; }
+    }
+
+    /* ----------------------------
+       Layout
+    ---------------------------- */
+    .container{
+      width: min(var(--maxw), 100%);
+      margin: 0 auto;
+      padding: 0 var(--pad);
+    }
+
+    header{
+      position: sticky;
+      top:0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    [data-theme="light"] header{
+      background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,255,255,0));
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 220px;
+    }
+    .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 6px rgba(183,255,178,.12);
+    }
+    .brand strong{ font-weight: 750; letter-spacing: .2px; }
+    .brand span{ font-size: 13px; color: var(--faint); display:block; margin-top: 2px; }
+
+    nav ul{
+      display:flex;
+      gap: 6px;
+      list-style: none;
+      padding:0;
+      margin:0;
+      align-items:center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    nav a{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      text-decoration:none;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    nav a:hover{
+      color: var(--text);
+      background: var(--panel);
+      border-color: var(--border);
+    }
+    nav a.active{
+      color: var(--text);
+      background: var(--panel2);
+      border-color: var(--border);
+    }
+
+    .nav-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content: flex-end;
+      min-width: 220px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      text-decoration:none;
+      font-weight: 650;
+      font-size: 14px;
+      box-shadow: none;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: var(--panel2);
+      border-color: rgba(255,255,255,.2);
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(183,255,178,.22), rgba(167,197,255,.18));
+      border-color: rgba(183,255,178,.35);
+    }
+    [data-theme="light"] .btn.primary{
+      border-color: rgba(31,79,214,.25);
+      background: linear-gradient(135deg, rgba(31,79,214,.12), rgba(30,123,61,.10));
+    }
+
+    .icon{
+      width: 16px; height: 16px;
+      display:inline-block;
+    }
+
+    .theme-toggle{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 40px; height: 40px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      cursor: pointer;
+      color: var(--text);
+      transition: transform .12s ease, background .12s ease;
+    }
+    .theme-toggle:hover{ transform: translateY(-1px); background: var(--panel2); }
+
+    /* ----------------------------
+       Sections
+    ---------------------------- */
+    main{ padding: 26px 0 60px; }
+    section{
+      padding: 56px 0;
+      scroll-margin-top: 88px;
+    }
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    h1{
+      font-size: var(--h1);
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    h2{
+      font-size: var(--h2);
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    h3{
+      margin: 0 0 8px;
+      font-size: var(--h3);
+      letter-spacing: 0;
+    }
+    p{ margin: 10px 0 0; line-height: 1.6; color: var(--muted); }
+
+    .grid{
+      display:grid;
+      gap: 14px;
+    }
+    .grid.two{ grid-template-columns: 1.3fr .7fr; }
+    .grid.cards{ grid-template-columns: repeat(12, 1fr); }
+
+    .card{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card.pad{ padding: 18px; }
+    .card.soft{ box-shadow:none; }
+
+    .hero{
+      padding-top: 24px;
+    }
+    .hero .lead{
+      font-size: 16px;
+      max-width: 62ch;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+    .hero .cta{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .pillrow{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    [data-theme="light"] .pill{ background: rgba(0,0,0,.03); }
+
+    .stat{
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .stat strong{
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+    .stat span{
+      display:block;
+      margin-top: 6px;
+      color: var(--faint);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    /* Projects */
+    .project{
+      grid-column: span 6;
+      padding: 18px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 180px;
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+    }
+    .project:hover{
+      transform: translateY(-2px);
+      background: var(--panel2);
+      border-color: rgba(255,255,255,.18);
+    }
+    .project .top{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .tag{
+      display:inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .chip{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--faint);
+      border: 1px solid var(--border);
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+    }
+    [data-theme="light"] .chip{ background: rgba(0,0,0,.03); }
+
+    .project .links{
+      display:flex;
+      gap: 10px;
+      margin-top: auto;
+      flex-wrap: wrap;
+    }
+    .link{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      text-decoration:none;
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+      font-size: 13px;
+    }
+    .link:hover{ color: var(--text); background: rgba(255,255,255,.06); }
+
+    /* Timeline */
+    .timeline{
+      display:grid;
+      gap: 12px;
+    }
+    .item{
+      display:grid;
+      grid-template-columns: 140px 1fr;
+      gap: 14px;
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+    }
+    [data-theme="light"] .item{ background: rgba(0,0,0,.03); }
+
+    .when{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--faint);
+      margin-top: 4px;
+    }
+    .role{
+      font-weight: 750;
+    }
+    .place{
+      color: var(--faint);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .bullets{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* Skills */
+    .skill-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .skill{
+      grid-column: span 4;
+      padding: 16px;
+    }
+    .skill .chips{ margin-top: 10px; display:flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Contact */
+    form{
+      display:grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .field{
+      display:grid;
+      gap: 6px;
+    }
+    label{ font-size: 13px; color: var(--faint); }
+    input, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+    [data-theme="light"] input, [data-theme="light"] textarea{
+      background: rgba(0,0,0,.03);
+    }
+    input:focus, textarea:focus{
+      border-color: rgba(167,197,255,.6);
+      box-shadow: 0 0 0 4px rgba(167,197,255,.15);
+    }
+    textarea{ min-height: 120px; resize: vertical; }
+
+    .contact-row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .mini{
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    footer{
+      padding: 40px 0 60px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    [data-theme="light"] footer{ border-top: 1px solid rgba(0,0,0,.08); }
+
+    .foot{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--faint);
+      font-size: 13px;
+    }
+
+    /* Reveal on scroll */
+    .reveal{
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.show{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .grid.two{ grid-template-columns: 1fr; }
+      .project{ grid-column: span 12; }
+      .skill{ grid-column: span 12; }
+      .item{ grid-template-columns: 1fr; }
+      .brand{ min-width: unset; }
+      .nav-actions{ min-width: unset; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-blob" style="left:-10%; top:-12%;"></div>
+    <div class="bg-blob b2"></div>
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="dot"></div>
+          <div>
+            <strong>Connor Colyer</strong>
+            <span>Full-stack engineer & creative technologist</span>
+          </div>
+        </div>
+
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="#home" data-link>Home</a></li>
+            <li><a href="#work" data-link>Work</a></li>
+            <li><a href="#skills" data-link>Skills</a></li>
+            <li><a href="#awards" data-link>Awards</a></li>
+            <li><a href="#contact" data-link>Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <a class="btn primary" href="mailto:connorcolyer@icloud.com?subject=Website%20project%20enquiry">
+            Hire me
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 17 17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <div class="container">
+      <!-- HERO -->
+      <section id="home" class="hero reveal">
+        <div class="grid two">
+          <div class="card pad soft">
+            <h1>Web design that converts.<br/>Engineering that ships.</h1>
+            <p class="lead">
+              I’m Connor — a full-stack engineer and creative technologist in Winchester. I build clean websites for local businesses,
+              automation that saves time, and experimental projects at the edge of “why would you do that” (in the best way).
+            </p>
+
+            <div class="cta">
+              <a class="btn primary" href="#work">View projects</a>
+              <a class="btn" href="#contact">Get in touch</a>
+              <button class="btn" id="copyEmail" type="button" aria-label="Copy email">
+                Copy email
+                <span style="font-family:var(--mono); font-size:12px; opacity:.85;">connorcolyer@icloud.com</span>
+              </button>
+            </div>
+
+            <div class="pillrow" aria-label="Quick facts">
+              <span class="pill">📍 Winchester, UK</span>
+              <span class="pill">🧠 Full-stack + systems</span>
+              <span class="pill">🎭 Theatre tech background</span>
+              <span class="pill">⚙️ Automation + integrations</span>
+            </div>
+          </div>
+
+          <div class="grid" style="gap:12px;">
+            <div class="card pad">
+              <div class="stat">
+                <strong>Available for</strong>
+                <span>Small business sites, landing pages, automation, and product builds.</span>
+              </div>
+            </div>
+            <div class="card pad">
+              <div class="stat">
+                <strong>Typical builds</strong>
+                <span>£300–£1,500 depending on scope. Fast turnaround, no nonsense.</span>
+              </div>
+            </div>
+            <div class="card pad">
+              <div class="stat">
+                <strong>Stack</strong>
+                <span><span style="font-family:var(--mono);">HTML/CSS • JS • React • Python • Rust • Git • PostgreSQL</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORK -->
+      <section id="work" class="reveal">
+        <div class="section-head">
+          <div>
+            <h2>Selected work</h2>
+            <p>Real projects, real intent. No made-up metrics.</p>
+          </div>
+        </div>
+
+        <div class="grid cards">
+          <article class="card project reveal" data-project>
+            <div class="top">
+              <div>
+                <h3>Cortex</h3>
+                <div class="when">Experimental • BCI / EEG concept</div>
+              </div>
+              <span class="chip">Research</span>
+            </div>
+            <p class="muted">
+              A concept exploring EEG-driven prediction and human-computer interaction. Focus: signal pipelines, real-time thinking, and usable outputs.
+            </p>
+            <div class="tag">
+              <span class="chip">Python</span>
+              <span class="chip">Signal processing</span>
+              <span class="chip">Realtime systems</span>
+            </div>
+            <div class="links">
+              <a class="link" href="#" onclick="openModal('cortex');return false;">Case study</a>
+              <a class="link" href="#contact">Work with me</a>
+            </div>
+          </article>
+
+          <article class="card project reveal" data-project>
+            <div class="top">
+              <div>
+                <h3>Aconite</h3>
+                <div class="when">Rust orbital simulator</div>
+              </div>
+              <span class="chip">Simulation</span>
+            </div>
+            <p class="muted">
+              A physics-leaning orbital sim with numerical integration vibes. Focus: correctness, stability, and building tooling around the math.
+            </p>
+            <div class="tag">
+              <span class="chip">Rust</span>
+              <span class="chip">Numerical methods</span>
+              <span class="chip">Visualization</span>
+            </div>
+            <div class="links">
+              <a class="link" href="#" onclick="openModal('aconite');return false;">Case study</a>
+              <a class="link" href="#contact">Work with me</a>
+            </div>
+          </article>
+
+          <article class="card project reveal" data-project>
+            <div class="top">
+              <div>
+                <h3>Auralis</h3>
+                <div class="when">macOS dashboard concept</div>
+              </div>
+              <span class="chip">UI/UX</span>
+            </div>
+            <p class="muted">
+              A clean desktop dashboard concept focused on clarity: data, motion, and calm interfaces that don’t scream at you.
+            </p>
+            <div class="tag">
+              <span class="chip">Design</span>
+              <span class="chip">Frontend</span>
+              <span class="chip">Systems thinking</span>
+            </div>
+            <div class="links">
+              <a class="link" href="#" onclick="openModal('auralis');return false;">Case study</a>
+              <a class="link" href="#contact">Work with me</a>
+            </div>
+          </article>
+
+          <article class="card project reveal" data-project>
+            <div class="top">
+              <div>
+                <h3>Local Service Sites</h3>
+                <div class="when">Small business templates</div>
+              </div>
+              <span class="chip">Web</span>
+            </div>
+            <p class="muted">
+              Fast, modern landing pages for local businesses (dog walkers, PTs, cleaners, trades). Built to turn Google traffic into enquiries.
+            </p>
+            <div class="tag">
+              <span class="chip">HTML/CSS</span>
+              <span class="chip">SEO</span>
+              <span class="chip">Conversion</span>
+            </div>
+            <div class="links">
+              <a class="link" href="#" onclick="openModal('localsites');return false;">Case study</a>
+              <a class="link" href="#contact">Get a site</a>
+            </div>
+          </article>
+        </div>
+
+        <div style="margin-top:14px;" class="card pad reveal">
+          <h3>Services</h3>
+          <p class="muted">
+            If you’re a small business: I can build a clean site that looks legit, loads fast, and makes it easy for customers to contact you.
+          </p>
+          <div class="pillrow">
+            <span class="pill">Landing pages that convert</span>
+            <span class="pill">Small business sites (GitHub Pages / Squarespace / custom)</span>
+            <span class="pill">Automation + integrations (forms → email/Sheets/CRM)</span>
+            <span class="pill">Refreshes + speed/SEO fixes</span>
+          </div>
+          <p class="mini">Typical builds: <strong>£300–£1,500</strong> depending on scope. Quick turnaround, clear deliverables.</p>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section id="experience" class="reveal">
+        <div class="section-head">
+          <div>
+            <h2>Experience</h2>
+            <p>Engineering + production environments where “it has to work” is the whole point.</p>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="item reveal">
+            <div>
+              <div class="role">Freelance Developer</div>
+              <div class="place">Self-employed (Remote)</div>
+              <div class="when">2023 – Present</div>
+            </div>
+            <div>
+              <ul class="bullets">
+                <li>Design and build full-stack applications across web and native environments.</li>
+                <li>Work with Python, Rust, HTML/CSS/JavaScript, and modern frameworks.</li>
+                <li>Explain technical concepts to non-technical clients and turn messy ideas into shippable steps.</li>
+                <li>Build experimental projects exploring real-time systems, simulation, and HCI.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="item reveal">
+            <div>
+              <div class="role">Technical Assistant</div>
+              <div class="place">The Mill (VFX Studio) — Los Angeles</div>
+              <div class="when">Jul 2024</div>
+            </div>
+            <div>
+              <ul class="bullets">
+                <li>Supported engineering teams on internal tools connecting 3D lighting data to post-production workflows.</li>
+                <li>Assisted non-engineering staff by explaining technical processes and system behaviour.</li>
+                <li>Worked in high-pressure production environments requiring precision and reliability.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="item reveal">
+            <div>
+              <div class="role">Engineering Assistant</div>
+              <div class="place">Technicolor Group — Los Angeles</div>
+              <div class="when">Aug 2024</div>
+            </div>
+            <div>
+              <ul class="bullets">
+                <li>Prototyped automation scripts for live-lighting metadata transfer into render pipelines.</li>
+                <li>Collaborated with multidisciplinary teams across engineering and creative departments.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="item reveal">
+            <div>
+              <div class="role">Assistant Lighting Technician</div>
+              <div class="place">The Picture of Dorian Gray — Theatre Royal Haymarket</div>
+              <div class="when">Mar 2024</div>
+            </div>
+            <div>
+              <ul class="bullets">
+                <li>Supported cue programming, rig focus, and live performance operations.</li>
+                <li>Worked with senior technical staff to deliver consistent, high-quality shows.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="item reveal">
+            <div>
+              <div class="role">Lighting Designer & Technician</div>
+              <div class="place">Colfe’s School — London</div>
+              <div class="when">2018 – 2023</div>
+            </div>
+            <div>
+              <ul class="bullets">
+                <li>Trained and supervised 30+ student technicians, many with no prior technical experience.</li>
+                <li>Delivered calm instruction under time pressure and live show conditions.</li>
+                <li>Mentored peers and successors in technical operation, problem-solving, and confidence building.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills" class="reveal">
+        <div class="section-head">
+          <div>
+            <h2>Skills</h2>
+            <p>Tools are tools. The real skill is making them behave.</p>
+          </div>
+        </div>
+
+        <div class="skill-grid">
+          <div class="card pad skill reveal">
+            <h3>Programming & Software</h3>
+            <p class="muted">Full-stack builds, systems projects, and clean engineering habits.</p>
+            <div class="chips">
+              <span class="chip">Python</span><span class="chip">JavaScript</span><span class="chip">HTML/CSS</span>
+              <span class="chip">React</span><span class="chip">Rust</span><span class="chip">Git</span>
+              <span class="chip">PostgreSQL</span><span class="chip">macOS</span>
+            </div>
+          </div>
+
+          <div class="card pad skill reveal">
+            <h3>Communication & Mentoring</h3>
+            <p class="muted">Explaining complex systems like a human, not a manual.</p>
+            <div class="chips">
+              <span class="chip">Client comms</span><span class="chip">Beginner support</span>
+              <span class="chip">Problem breakdown</span><span class="chip">Small-group mentoring</span>
+            </div>
+          </div>
+
+          <div class="card pad skill reveal">
+            <h3>Creative & Technical Tools</h3>
+            <p class="muted">Production workflows, live ops, and media tooling.</p>
+            <div class="chips">
+              <span class="chip">ETC EOS</span><span class="chip">Cue programming</span>
+              <span class="chip">OBS</span><span class="chip">Final Cut Pro</span><span class="chip">DaVinci Resolve</span>
+              <span class="chip">VS Code</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AWARDS -->
+      <section id="awards" class="reveal">
+        <div class="section-head">
+          <div>
+            <h2>Awards & achievements</h2>
+            <p>Proof I’m not just winging it (even if I look like I am).</p>
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: repeat(12,1fr); gap:12px;">
+          <div class="card pad reveal" style="grid-column: span 6;">
+            <h3>Academic</h3>
+            <ul class="bullets">
+              <li>Computer Science Prize — Colfe’s School & Prendergast 6th Form (2022, 2023, 2025)</li>
+              <li>Extracurricular Attainment Award — Prendergast 6th Form (2025)</li>
+            </ul>
+          </div>
+
+          <div class="card pad reveal" style="grid-column: span 6;">
+            <h3>Technical + leadership</h3>
+            <ul class="bullets">
+              <li>Technical Theatre Prize — Colfe’s School (2021, 2022, 2023)</li>
+              <li>1st XI Cricket Captain — Colfe’s School (2020 – 2022)</li>
+              <li>Grade 8 Drums — Colfe’s School (2023)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card pad reveal" style="margin-top:12px;">
+          <h3>Education</h3>
+          <p class="muted">
+            University of Winchester — BSc (Hons) Software Engineering (2025 – Present)<br/>
+            Prendergast 6th Form — A Levels: Computer Science, Mathematics, Biology (2023 – 2025)<br/>
+            Colfe’s School — GCSEs: 10 subjects incl. Computer Science (2012 – 2023)
+          </p>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="reveal">
+        <div class="section-head">
+          <div>
+            <h2>Contact</h2>
+            <p>Tell me what you need, your timeline, and your budget. I’ll reply with a clear plan.</p>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div class="card pad reveal">
+            <h3>Send a message</h3>
+            <p class="muted">This form opens your email app with everything prefilled (works great on mobile).</p>
+
+            <form id="contactForm">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" autocomplete="name" placeholder="Your name" required />
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+              </div>
+              <div class="field">
+                <label for="message">What are we building?</label>
+                <textarea id="message" name="message" placeholder="E.g. 1-page site for a local business. Need bookings + WhatsApp button. Live in 7 days." required></textarea>
+              </div>
+
+              <button class="btn primary" type="submit">
+                Email Connor
+                <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="2" />
+                  <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <div class="mini" id="formNote" aria-live="polite"></div>
+            </form>
+          </div>
+
+          <div class="grid" style="gap:12px;">
+            <div class="card pad reveal">
+              <h3>Direct</h3>
+              <p class="muted">
+                Email: <a href="mailto:connorcolyer@icloud.com">connorcolyer@icloud.com</a><br/>
+                Phone: <a href="tel:+447902346502">+44 07902 346502</a><br/>
+                Location: Winchester, UK
+              </p>
+              <div class="contact-row">
+                <a class="btn" href="mailto:connorcolyer@icloud.com?subject=Website%20project%20enquiry">Email</a>
+                <a class="btn" href="tel:+447902346502">Call</a>
+                <a class="btn" href="#work">See work</a>
+              </div>
+            </div>
+
+            <div class="card pad reveal">
+              <h3>Social</h3>
+              <p class="muted">Drop your links here when ready:</p>
+              <div class="contact-row">
+                <a class="btn" href="#" title="Add your GitHub link">GitHub</a>
+                <a class="btn" href="#" title="Add your LinkedIn link">LinkedIn</a>
+                <a class="btn" href="#" title="Add your portfolio/other">Other</a>
+              </div>
+              <p class="mini faint">Tip: keep socials clean. One good repo beats 20 dead ones.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="foot">
+        <div>© <span id="year"></span> Connor Colyer</div>
+        <div class="faint">Built as a single-file site for GitHub Pages • Fast, minimal, shippable</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <dialog id="modal" style="border:none; padding:0; border-radius:22px; max-width:min(720px, 92vw); width:100%; background:transparent;">
+    <div class="card pad" style="position:relative;">
+      <button class="theme-toggle" id="closeModal" style="position:absolute; right:14px; top:14px;" aria-label="Close">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <h3 id="modalTitle">Project</h3>
+      <p id="modalBody" class="muted"></p>
+      <div class="pillrow" id="modalChips" style="margin-top:14px;"></div>
+      <div class="contact-row" style="margin-top:14px;">
+        <a class="btn primary" href="#contact" onclick="document.getElementById('modal').close()">Enquire</a>
+        <button class="btn" type="button" onclick="document.getElementById('modal').close()">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    // ----------------------------
+    // Theme (persisted)
+    // ----------------------------
+    const root = document.documentElement;
+    const storedTheme = localStorage.getItem('theme');
+    const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    if (storedTheme) root.setAttribute('data-theme', storedTheme);
+    else root.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const current = root.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    // ----------------------------
+    // Footer year
+    // ----------------------------
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ----------------------------
+    // Copy email
+    // ----------------------------
+    const copyBtn = document.getElementById('copyEmail');
+    copyBtn.addEventListener('click', async () => {
+      const email = 'connorcolyer@icloud.com';
+      try{
+        await navigator.clipboard.writeText(email);
+        copyBtn.textContent = 'Copied ✓';
+        setTimeout(() => (copyBtn.innerHTML = 'Copy email <span style="font-family:var(--mono); font-size:12px; opacity:.85;">' + email + '</span>'), 1200);
+      }catch(e){
+        window.location.href = 'mailto:' + email;
+      }
+    });
+
+    // ----------------------------
+    // Active nav (IntersectionObserver)
+    // ----------------------------
+    const links = [...document.querySelectorAll('a[data-link]')];
+    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+    const setActive = (id) => {
+      links.forEach(a => {
+        const active = a.getAttribute('href') === '#' + id;
+        a.classList.toggle('active', active);
+      });
+    };
+
+    const obs = new IntersectionObserver((entries) => {
+      const visible = entries.filter(e => e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+      if (visible && visible.target && visible.target.id) setActive(visible.target.id);
+    }, { rootMargin: "-40% 0px -55% 0px", threshold: [0.1, 0.2, 0.3] });
+
+    sections.forEach(s => obs.observe(s));
+
+    // Smooth scroll (respect reduced motion)
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.style.scrollBehavior = 'smooth';
+    }
+
+    // ----------------------------
+    // Reveal on scroll
+    // ----------------------------
+    const reveals = document.querySelectorAll('.reveal');
+    const rObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('show');
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(el => rObs.observe(el));
+
+    // ----------------------------
+    // Contact form -> mailto
+    // ----------------------------
+    const form = document.getElementById('contactForm');
+    const note = document.getElementById('formNote');
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const msg = document.getElementById('message').value.trim();
+
+      const subject = encodeURIComponent(`Website enquiry — ${name}`);
+      const body = encodeURIComponent(
+`Name: ${name}
+Email: ${email}
+
+Message:
+${msg}
+
+---
+Sent via connorcolyer site`
+      );
+
+      note.textContent = "Opening your email app…";
+      window.location.href = `mailto:connorcolyer@icloud.com?subject=${subject}&body=${body}`;
+      setTimeout(()=> note.textContent = "If nothing opened, email me directly: connorcolyer@icloud.com", 1200);
+    });
+
+    // ----------------------------
+    // Simple modal case studies
+    // ----------------------------
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const modalChips = document.getElementById('modalChips');
+    const closeModal = document.getElementById('closeModal');
+
+    const PROJECTS = {
+      cortex: {
+        title: "Cortex — EEG / BCI concept",
+        body: "Explores EEG-driven prediction and HCI. The interesting part is the pipeline: noisy inputs, real-time constraints, and turning signals into usable interactions without pretending it's magic.",
+        chips: ["Python", "Signal processing", "Realtime systems"]
+      },
+      aconite: {
+        title: "Aconite — Rust orbital simulator",
+        body: "A physics-leaning orbital simulator with numerical integration. Focus: stability, correctness, and building tooling around the math so it’s actually usable (not just a graph that looks cool).",
+        chips: ["Rust", "Numerical methods", "Simulation"]
+      },
+      auralis: {
+        title: "Auralis — macOS dashboard concept",
+        body: "A clean dashboard concept with calm UI and strong information hierarchy. The goal is clarity and speed — interfaces that feel like instruments, not distractions.",
+        chips: ["UI/UX", "Frontend", "Systems thinking"]
+      },
+      localsites: {
+        title: "Local Service Sites — conversion templates",
+        body: "Fast landing pages built to turn Google traffic into enquiries. Designed for small businesses: clear CTA, fast load, mobile-first layout, SEO basics, and simple contact flows (form + WhatsApp/call).",
+        chips: ["SEO", "Conversion", "Mobile-first"]
+      }
+    };
+
+    window.openModal = (key) => {
+      const p = PROJECTS[key];
+      if (!p) return;
+      modalTitle.textContent = p.title;
+      modalBody.textContent = p.body;
+      modalChips.innerHTML = "";
+      p.chips.forEach(c => {
+        const el = document.createElement('span');
+        el.className = 'pill';
+        el.textContent = c;
+        modalChips.appendChild(el);
+      });
+      if (typeof modal.showModal === "function") modal.showModal();
+    };
+
+    closeModal.addEventListener('click', () => modal.close());
+    modal.addEventListener('click', (e) => {
+      // close if clicking backdrop
+      const rect = modal.getBoundingClientRect();
+      const inside = (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom);
+      if (!inside) modal.close();
+    });
+  </script>
+</body>
+</html>
