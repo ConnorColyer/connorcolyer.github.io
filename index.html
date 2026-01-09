@@ -1610,7 +1610,7 @@
     root.setAttribute('data-theme', storedTheme || (prefersLight ? 'light' : 'dark'));
 
     const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => toggleTheme());
+    themeToggle?.addEventListener('click', () => toggleTheme());
 
     function toggleTheme(){
       const current = root.getAttribute('data-theme') || 'dark';
@@ -1655,12 +1655,12 @@
        Copy email / phone
     ========================================================= */
     const copyEmailBtn = document.getElementById('copyEmail');
-    copyEmailBtn.addEventListener('click', async () => {
+    copyEmailBtn?.addEventListener('click', async () => {
       await copyToClipboard('connorcolyer@icloud.com', 'Email copied', 'Paste it anywhere.');
     });
 
     const copyPhoneBtn = document.getElementById('copyPhone');
-    copyPhoneBtn.addEventListener('click', async () => {
+    copyPhoneBtn?.addEventListener('click', async () => {
       await copyToClipboard('+44 07902 346502', 'Phone copied', 'Ready to paste.');
     });
 
@@ -1719,34 +1719,20 @@
        Reveal on scroll
     ========================================================= */
     const reveals = document.querySelectorAll('.reveal');
-    const rObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('show');
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(el => rObs.observe(el));
+    if ('IntersectionObserver' in window){
+      const rObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('show');
+        });
+      }, { threshold: 0.12 });
+      reveals.forEach(el => rObs.observe(el));
+    }else{
+      reveals.forEach(el => el.classList.add('show'));
+    }
 
     /* =========================================================
        Contact form -> mailto
     ========================================================= */
-    const form = document.getElementById('contactForm');
-    const note = document.getElementById('formNote');
-
-    form.addEventListener('submit', (ev) => {
-      ev.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const budget = document.getElementById('budget').value;
-      const timeline = document.getElementById('timeline').value;
-      const msg = document.getElementById('message').value.trim();
-
-      const subject = encodeURIComponent(`Project enquiry — ${name}`);
-      const body = encodeURIComponent(
-        
-    /* =========================================================
-       Contact form -> mailto
-    ========================================================= */
-        
     const form = document.getElementById('contactForm');
     const note = document.getElementById('formNote');
 
@@ -2056,93 +2042,6 @@ Anything to avoid:`;
     });
 
     /* =========================================================
-       Small helpers
-    ========================================================= */
-    function jumpToEl(el){
-      if (!el) return;
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function toggleTheme(){
-      const current = root.getAttribute('data-theme') || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-      toast('Theme', next === 'dark' ? 'Dark mode' : 'Light mode');
-    }
-
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'","&#39;");
-    }
-
-    async function copyToClipboard(text, title='Copied', desc=''){
-      try{
-        await navigator.clipboard.writeText(text);
-        toast(title, desc || text);
-      }catch(err){
-        // Fallback: create a temporary input
-        const tmp = document.createElement('input');
-        tmp.value = text;
-        document.body.appendChild(tmp);
-        tmp.select();
-        try{
-          document.execCommand('copy');
-          toast(title, desc || text);
-        }catch(e){
-          toast('Copy failed', 'Tap and hold to copy manually.');
-        }finally{
-          document.body.removeChild(tmp);
-        }
-      }
-    }
-
-    /* =========================================================
-       Toast notifications
-    ========================================================= */
-    const toastEl = document.getElementById('toast');
-    const toastTitleEl = document.getElementById('toastTitle');
-    const toastDescEl = document.getElementById('toastDesc');
-
-    let toastTimer = null;
-
-    function toast(title, desc){
-      if (!toastEl) return;
-
-      toastTitleEl.textContent = title || '';
-      toastDescEl.textContent = desc || '';
-      toastEl.classList.add('show');
-
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2400);
-    }
-
-    document.getElementById('toastClose')?.addEventListener('click', () => {
-      toastEl?.classList.remove('show');
-      if (toastTimer) clearTimeout(toastTimer);
-    });
-
-    /* =========================================================
-       Back to top button
-    ========================================================= */
-    const toTop = document.getElementById('toTop');
-    const SHOW_TOP_AFTER = 520;
-
-    function updateToTop(){
-      if (!toTop) return;
-      if (window.scrollY > SHOW_TOP_AFTER) toTop.classList.add('show');
-      else toTop.classList.remove('show');
-    }
-    window.addEventListener('scroll', updateToTop, { passive: true });
-    updateToTop();
-
-    toTop?.addEventListener('click', () => jumpToEl(document.getElementById('home')));
-
-    /* =========================================================
        CV download button (expects /cv.pdf in repo)
     ========================================================= */
     const cvBtn = document.getElementById('cvBtn');
@@ -2180,7 +2079,7 @@ Anything to avoid:`;
       // Force reflow + ensure fixed positioning covers mobile bars
       bg.style.height = window.innerHeight + 'px';
       // also update the grid inset to exceed viewport
-      const grid = document.querySelector('.bg-grid');
+      const grid = document.querySelector('.grid');
       if (grid) grid.style.inset = '-30%';
     }
     window.addEventListener('resize', fixBackgroundSeam);
@@ -2209,5 +2108,3 @@ Anything to avoid:`;
     /* =========================================================
        Done
     ========================================================= */
-
-
