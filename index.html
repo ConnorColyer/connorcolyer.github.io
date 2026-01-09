@@ -1719,16 +1719,12 @@
        Reveal on scroll
     ========================================================= */
     const reveals = document.querySelectorAll('.reveal');
-    if ('IntersectionObserver' in window){
-      const rObs = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) e.target.classList.add('show');
-        });
-      }, { threshold: 0.12 });
-      reveals.forEach(el => rObs.observe(el));
-    }else{
-      reveals.forEach(el => el.classList.add('show'));
-    }
+    const rObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('show');
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => rObs.observe(el));
 
     /* =========================================================
        Contact form -> mailto
@@ -2108,3 +2104,4 @@ Anything to avoid:`;
     /* =========================================================
        Done
     ========================================================= */
+
