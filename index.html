@@ -751,86 +751,6 @@
       pointer-events:auto;
     }
 
-    /* Command palette */
-    .palette-backdrop{
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-    }
-    [data-theme="light"] .palette-backdrop{ background: rgba(10,12,16,.28); }
-    .palette-backdrop.open{ display:flex; }
-    .palette{
-      width: min(720px, 100%);
-      border-radius: 18px;
-      border: 1px solid var(--border);
-      background: rgba(0,0,0,.42);
-      backdrop-filter: blur(16px);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    [data-theme="light"] .palette{ background: rgba(255,255,255,.8); }
-    .palette-top{
-      padding: 12px;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      display:flex;
-      gap: 10px;
-      align-items:center;
-    }
-    [data-theme="light"] .palette-top{ border-bottom: 1px solid rgba(0,0,0,.10); }
-    .palette-top input{
-      border:none;
-      background: transparent;
-      width:100%;
-      padding: 10px 10px;
-      outline:none;
-      color: var(--text);
-      font-size: 14px;
-    }
-    .palette-list{
-      padding: 6px;
-      display:grid;
-      gap: 6px;
-      max-height: 360px;
-      overflow:auto;
-    }
-    .cmd{
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 10px 10px;
-      border-radius: 12px;
-      border: 1px solid transparent;
-      cursor:pointer;
-      color: var(--muted);
-      background: transparent;
-      text-align:left;
-    }
-    .cmd:hover, .cmd.active{
-      background: rgba(255,255,255,.06);
-      border-color: var(--border);
-      color: var(--text);
-    }
-    [data-theme="light"] .cmd:hover, [data-theme="light"] .cmd.active{
-      background: rgba(0,0,0,.05);
-    }
-    .kbd{
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--faint);
-      border: 1px solid var(--border);
-      padding: 4px 8px;
-      border-radius: 10px;
-      background: rgba(255,255,255,.03);
-      white-space: nowrap;
-    }
-
     /* Dialog backdrop */
     dialog::backdrop{
       background: rgba(0,0,0,.45);
@@ -876,22 +796,6 @@
   <!-- Toast container -->
   <div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Command Palette -->
-  <div class="palette-backdrop" id="paletteBackdrop" role="dialog" aria-modal="true" aria-label="Command palette">
-    <div class="palette" role="document">
-      <div class="palette-top">
-        <span class="kbd">⌘/Ctrl + K</span>
-        <input id="paletteInput" placeholder="Type a command… (e.g. 'contact', 'theme', 'cv')" />
-        <button class="theme-toggle" id="paletteClose" aria-label="Close command palette">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-      <div class="palette-list" id="paletteList"></div>
-    </div>
-  </div>
-
   <header>
     <div class="container">
       <div class="nav">
@@ -921,10 +825,6 @@
               <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" stroke="currentColor" stroke-width="2"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
-          </button>
-
-          <button class="btn ghost" type="button" id="openPalette" aria-label="Open command palette">
-            <span style="font-family:var(--mono);">⌘K</span>
           </button>
 
           <a class="btn primary" href="mailto:connorcolyer@icloud.com?subject=Website%20project%20enquiry">
@@ -1046,9 +946,6 @@
           <div>
             <h2>Selected work</h2>
             <p>Real projects, real intent. No made-up metrics.</p>
-          </div>
-          <div class="pillrow" style="margin:0;">
-            <span class="pill">Tip: press <span class="hint">/</span> for commands</span>
           </div>
         </div>
 
@@ -1268,7 +1165,6 @@
             </ul>
             <div class="cta2">
               <a class="btn primary" href="#contact" onclick="prefillQuote('Premium');">Get Premium quote</a>
-              <button class="btn" type="button" id="openPalette2">Open commands</button>
             </div>
           </div>
         </div>
@@ -1731,12 +1627,6 @@
     }else{
       reveals.forEach(el => el.classList.add('show'));
     }
-    const rObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('show');
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(el => rObs.observe(el));
 
     /* =========================================================
        Contact form -> mailto
@@ -1910,133 +1800,6 @@ Anything to avoid:`;
     });
 
     /* =========================================================
-       Command palette (⌘/Ctrl+K + /)
-    ========================================================= */
-    const paletteBackdrop = document.getElementById('paletteBackdrop');
-    const paletteInput = document.getElementById('paletteInput');
-    const paletteList = document.getElementById('paletteList');
-    const paletteClose = document.getElementById('paletteClose');
-    const openPaletteBtn = document.getElementById('openPalette');
-    const openPaletteBtn2 = document.getElementById('openPalette2');
-
-    const COMMANDS = [
-      { label: "Go: Home", key: "H", run: () => jump("#home") },
-      { label: "Go: Work", key: "W", run: () => jump("#work") },
-      { label: "Go: Process", key: "P", run: () => jump("#process") },
-      { label: "Go: Packages", key: "G", run: () => jump("#packages") },
-      { label: "Go: Experience", key: "E", run: () => jump("#experience") },
-      { label: "Go: Skills", key: "S", run: () => jump("#skills") },
-      { label: "Go: Awards", key: "A", run: () => jump("#awards") },
-      { label: "Go: Contact", key: "C", run: () => jump("#contact") },
-
-      { label: "Action: Toggle theme", key: "T", run: () => toggleTheme() },
-      { label: "Action: Copy email", key: "M", run: () => copyToClipboard('connorcolyer@icloud.com','Email copied','Paste it anywhere.') },
-      { label: "Action: Copy phone", key: "N", run: () => copyToClipboard('+44 07902 346502','Phone copied','Ready to paste.') },
-      { label: "Action: Download CV", key: "D", run: () => document.getElementById('cvBtn')?.click() },
-
-      // Replace these once you set real links:
-      { label: "Open: GitHub (add your link)", key: "", run: () => toast('Heads up', 'Set your GitHub link in the Contact > Social buttons.') },
-      { label: "Open: LinkedIn (add your link)", key: "", run: () => toast('Heads up', 'Set your LinkedIn link in the Contact > Social buttons.') },
-    ];
-
-    function jump(hash){
-      const el = document.querySelector(hash);
-      if (!el) return;
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      closePalette();
-    }
-
-    function openPalette(){
-      paletteBackdrop.classList.add('open');
-      paletteInput.value = "";
-      renderCommands("");
-      setTimeout(() => paletteInput.focus(), 0);
-    }
-    function closePalette(){
-      paletteBackdrop.classList.remove('open');
-    }
-
-    openPaletteBtn?.addEventListener('click', openPalette);
-    openPaletteBtn2?.addEventListener('click', openPalette);
-    paletteClose?.addEventListener('click', closePalette);
-
-    paletteBackdrop.addEventListener('click', (e) => {
-      if (e.target === paletteBackdrop) closePalette();
-    });
-
-    function renderCommands(filter){
-      const q = (filter || "").toLowerCase().trim();
-      const items = COMMANDS
-        .filter(c => c.label.toLowerCase().includes(q))
-        .slice(0, 12);
-
-      paletteList.innerHTML = "";
-      items.forEach((c, idx) => {
-        const btn = document.createElement('button');
-        btn.type = "button";
-        btn.className = "cmd" + (idx === 0 ? " active" : "");
-        btn.innerHTML = `
-          <span>${escapeHtml(c.label)}</span>
-          <span class="kbd">${escapeHtml(c.key || '↵')}</span>
-        `;
-        btn.addEventListener('click', () => { c.run(); closePalette(); });
-        paletteList.appendChild(btn);
-      });
-    }
-
-    function setActiveCmd(delta){
-      const cmds = [...paletteList.querySelectorAll('.cmd')];
-      const idx = cmds.findIndex(el => el.classList.contains('active'));
-      const next = Math.max(0, Math.min(cmds.length - 1, idx + delta));
-      cmds.forEach(el => el.classList.remove('active'));
-      if (cmds[next]) cmds[next].classList.add('active');
-      cmds[next]?.scrollIntoView({ block: 'nearest' });
-    }
-
-    paletteInput.addEventListener('input', (e) => renderCommands(e.target.value));
-
-    paletteInput.addEventListener('keydown', (e) => {
-      const cmds = [...paletteList.querySelectorAll('.cmd')];
-      const active = paletteList.querySelector('.cmd.active');
-      const activeIdx = cmds.indexOf(active);
-
-      if (e.key === "Escape"){ closePalette(); return; }
-      if (e.key === "ArrowDown"){ e.preventDefault(); setActiveCmd(1); return; }
-      if (e.key === "ArrowUp"){ e.preventDefault(); setActiveCmd(-1); return; }
-      if (e.key === "Enter"){
-        e.preventDefault();
-        const chosen = cmds[activeIdx] || cmds[0];
-        chosen?.click();
-      }
-    });
-
-    // Global hotkeys: Cmd/Ctrl+K and "/" (when not typing)
-    window.addEventListener('keydown', (e) => {
-      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
-      const typing = tag === "input" || tag === "textarea" || tag === "select" || e.target?.isContentEditable;
-
-      const isCmdK = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k";
-      if (isCmdK){
-        e.preventDefault();
-        paletteBackdrop.classList.contains('open') ? closePalette() : openPalette();
-        return;
-      }
-
-      if (!typing && e.key === "/"){
-        e.preventDefault();
-        openPalette();
-        return;
-      }
-
-      // Quick single-key shortcuts when not typing
-      if (!typing && !paletteBackdrop.classList.contains('open')){
-        if (e.key === "t" || e.key === "T") toggleTheme();
-        if (e.key === "g" || e.key === "G") jump("#packages");
-        if (e.key === "c" || e.key === "C") jump("#contact");
-      }
-    });
-
-    /* =========================================================
        Modal (accessibility polish)
     ========================================================= */
     modal.addEventListener('click', (e) => {
@@ -2116,4 +1879,3 @@ Anything to avoid:`;
     /* =========================================================
        Done
     ========================================================= */
-
