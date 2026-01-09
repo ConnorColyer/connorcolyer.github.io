@@ -6,25 +6,22 @@
   <meta name="color-scheme" content="light dark" />
 
   <title>Connor Colyer — Full-stack engineer & creative technologist</title>
-  <meta name="description" content="Connor Colyer — full-stack engineer and creative technologist in Winchester, UK. Web design, automation, and modern product builds. Projects: Cortex, Aconite, Auralis." />
-  <link rel="canonical" href="https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/" />
+  <meta name="description" content="Connor Colyer — full-stack engineer and creative technologist in Winchester, UK. Web design that converts, automation that saves time, and product builds that ship." />
+  <meta name="robots" content="index,follow" />
 
-  <!-- Open Graph -->
+  <!-- Replace these with your GitHub Pages URL -->
+  <link rel="canonical" href="https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/" />
   <meta property="og:title" content="Connor Colyer — Full-stack engineer & creative technologist" />
-  <meta property="og:description" content="Modern websites that convert, automation that saves time, and experimental builds that go hard." />
+  <meta property="og:description" content="Web design that converts, automation that saves time, and product engineering that ships." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/" />
-  <!-- Optional: add /og.png to your repo and uncomment -->
+  <!-- Optional OG image: add og.png and uncomment -->
   <!-- <meta property="og:image" content="https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/og.png" /> -->
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Connor Colyer — Full-stack engineer & creative technologist" />
   <meta name="twitter:description" content="Web design + automation + product engineering. Based in Winchester." />
 
-  <meta name="robots" content="index,follow" />
-
-  <!-- JSON-LD (Person) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -39,31 +36,32 @@
   </script>
 
   <style>
-    /* ----------------------------
-       Base + Theme
-    ---------------------------- */
+    /* =========================================================
+       Theme
+    ========================================================= */
     :root{
       --bg: #0b0f19;
-      --bg2: #0b1224;
-      --panel: rgba(255,255,255,.06);
-      --panel2: rgba(255,255,255,.08);
+      --bg2:#0b1224;
       --text: rgba(255,255,255,.92);
       --muted: rgba(255,255,255,.72);
       --faint: rgba(255,255,255,.55);
       --border: rgba(255,255,255,.12);
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
       --shadow: 0 18px 45px rgba(0,0,0,.35);
+
       --accent: #b7ffb2;
-      --accent2: #a7c5ff;
+      --accent2:#a7c5ff;
       --warn: #ffd28a;
 
       --radius-xl: 22px;
       --radius-lg: 16px;
       --radius-md: 12px;
 
-      --maxw: 1100px;
+      --maxw: 1120px;
       --pad: clamp(16px, 3vw, 28px);
 
-      --h1: clamp(40px, 5vw, 62px);
+      --h1: clamp(38px, 5vw, 62px);
       --h2: clamp(24px, 3vw, 34px);
       --h3: 18px;
 
@@ -73,121 +71,169 @@
 
     [data-theme="light"]{
       --bg: #f6f7fb;
-      --bg2: #eef2ff;
-      --panel: rgba(20,25,35,.06);
-      --panel2: rgba(20,25,35,.08);
+      --bg2:#eef2ff;
       --text: rgba(10,12,16,.92);
       --muted: rgba(10,12,16,.72);
       --faint: rgba(10,12,16,.55);
       --border: rgba(10,12,16,.12);
+      --panel: rgba(20,25,35,.06);
+      --panel2: rgba(20,25,35,.09);
       --shadow: 0 18px 45px rgba(10,12,16,.12);
+
       --accent: #1e7b3d;
-      --accent2: #1f4fd6;
+      --accent2:#1f4fd6;
       --warn: #9a5b00;
     }
 
-    *{ box-sizing: border-box; }
+    *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
       font-family: var(--sans);
       color: var(--text);
-      background: radial-gradient(1200px 700px at 10% 10%, var(--bg2), transparent 60%),
-                  radial-gradient(900px 600px at 90% 10%, rgba(167,197,255,.25), transparent 55%),
-                  radial-gradient(900px 600px at 40% 90%, rgba(183,255,178,.18), transparent 55%),
-                  linear-gradient(180deg, var(--bg), var(--bg));
+      background: var(--bg);
       overflow-x:hidden;
     }
-
-    a{ color: inherit; }
+    a{ color:inherit; }
+    p{ margin: 10px 0 0; line-height:1.6; color: var(--muted); }
     .muted{ color: var(--muted); }
     .faint{ color: var(--faint); }
 
-    /* Skip link */
+    /* =========================================================
+       Skip link + focus
+    ========================================================= */
+    :focus-visible{
+      outline: 2px solid rgba(167,197,255,.85);
+      outline-offset: 3px;
+      border-radius: 10px;
+    }
     .skip{
       position:absolute;
       top:10px; left:10px;
-      transform: translateY(-200%);
+      transform: translateY(-220%);
       background: var(--panel);
       border: 1px solid var(--border);
       padding: 10px 12px;
       border-radius: 10px;
       z-index: 9999;
       backdrop-filter: blur(10px);
+      text-decoration:none;
     }
-    .skip:focus{ transform: translateY(0); outline: 2px solid var(--accent2); }
+    .skip:focus{ transform: translateY(0); }
 
-    /* ----------------------------
-       Slowly moving background
-    ---------------------------- */
+    /* =========================================================
+       Background (seamless)
+       - NO transform-based tiling
+       - Drift uses background-position
+    ========================================================= */
     .bg-wrap{
       position: fixed;
       inset: 0;
-      z-index: -2;
-      overflow: hidden;
+      z-index: -3;
       pointer-events: none;
+      overflow:hidden;
     }
-    .bg-blob{
-      position:absolute;
-      width: 60vmax;
-      height: 60vmax;
-      border-radius: 999px;
-      filter: blur(55px);
-      opacity: .55;
-      mix-blend-mode: screen;
-      transform: translate3d(0,0,0);
-      animation: floaty 28s ease-in-out infinite;
-      background: radial-gradient(circle at 30% 30%, rgba(167,197,255,.55), transparent 60%),
-                  radial-gradient(circle at 70% 70%, rgba(183,255,178,.45), transparent 60%);
-    }
-    .bg-blob.b2{
-      width: 52vmax;
-      height: 52vmax;
-      left: 55%;
-      top: 45%;
-      opacity: .45;
-      animation-duration: 36s;
-      animation-direction: reverse;
-      background: radial-gradient(circle at 40% 30%, rgba(255,210,138,.45), transparent 60%),
-                  radial-gradient(circle at 70% 70%, rgba(167,197,255,.35), transparent 60%);
-    }
-    .bg-grid{
+
+    /* Big soft wash */
+    .bg-wash{
       position:absolute;
       inset:-20%;
-      opacity: .10;
-      background-image:
-        linear-gradient(to right, rgba(255,255,255,.12) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,.12) 1px, transparent 1px);
-      background-size: 60px 60px;
-      transform: rotate(7deg);
-      animation: drift 50s linear infinite;
+      background:
+        radial-gradient(900px 600px at 10% 10%, rgba(167,197,255,.20), transparent 60%),
+        radial-gradient(900px 600px at 90% 15%, rgba(183,255,178,.18), transparent 60%),
+        radial-gradient(900px 700px at 35% 95%, rgba(255,210,138,.12), transparent 62%),
+        radial-gradient(1200px 900px at 70% 70%, rgba(167,197,255,.10), transparent 65%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      filter: saturate(1.02);
     }
-    [data-theme="light"] .bg-grid{
-      opacity: .08;
+
+    /* Blobs: huge, slow, no seams */
+    .blob{
+      position:absolute;
+      width: 70vmax; height: 70vmax;
+      border-radius: 999px;
+      filter: blur(60px);
+      opacity: .55;
+      transform: translate3d(0,0,0);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(167,197,255,.42), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(183,255,178,.36), transparent 60%);
+      animation: blobFloat 34s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+    .blob.b2{
+      width: 60vmax; height: 60vmax;
+      opacity:.42;
+      left: 55%;
+      top: 42%;
+      animation-duration: 44s;
+      animation-direction: reverse;
+      background:
+        radial-gradient(circle at 40% 30%, rgba(255,210,138,.34), transparent 62%),
+        radial-gradient(circle at 70% 70%, rgba(167,197,255,.28), transparent 62%);
+    }
+
+    @keyframes blobFloat{
+      0%   { transform: translate(-10%, -12%) scale(1); }
+      50%  { transform: translate(12%, 10%) scale(1.06); }
+      100% { transform: translate(-10%, -12%) scale(1); }
+    }
+
+    /* Grid: drift via background-position ONLY */
+    .grid{
+      position:absolute;
+      inset:-40%;
+      opacity: .12;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.11) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.11) 1px, transparent 1px);
+      background-size: 64px 64px;
+      background-position: 0 0, 0 0;
+      animation: gridDrift 60s linear infinite;
+      will-change: background-position;
+      transform: rotate(7deg);
+      transform-origin: center;
+      filter: blur(.15px);
+    }
+    [data-theme="light"] .grid{
+      opacity:.09;
       background-image:
         linear-gradient(to right, rgba(0,0,0,.18) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(0,0,0,.18) 1px, transparent 1px);
     }
-
-    @keyframes floaty{
-      0%   { transform: translate(-10%, -12%) scale(1); }
-      50%  { transform: translate(12%, 10%) scale(1.05); }
-      100% { transform: translate(-10%, -12%) scale(1); }
-    }
-    @keyframes drift{
-      0% { transform: translate3d(0,0,0) rotate(7deg); }
-      100% { transform: translate3d(-120px, -120px, 0) rotate(7deg); }
+    @keyframes gridDrift{
+      0%   { background-position: 0 0, 0 0; }
+      100% { background-position: -220px -220px, -220px -220px; }
     }
 
-    /* Motion preferences */
+    /* Vignette mask to kill any edge artifacts */
+    .vignette{
+      position:absolute;
+      inset:-10%;
+      background:
+        radial-gradient(1200px 900px at 50% 50%,
+          rgba(0,0,0,0) 55%,
+          rgba(0,0,0,.45) 100%);
+      opacity:.85;
+      mix-blend-mode: multiply;
+    }
+    [data-theme="light"] .vignette{
+      background:
+        radial-gradient(1200px 900px at 50% 50%,
+          rgba(255,255,255,0) 55%,
+          rgba(255,255,255,.55) 100%);
+      mix-blend-mode: screen;
+      opacity:.65;
+    }
+
     @media (prefers-reduced-motion: reduce){
-      .bg-blob, .bg-grid { animation: none !important; }
-      * { scroll-behavior: auto !important; }
+      .blob, .grid { animation:none !important; }
+      html{ scroll-behavior:auto !important; }
     }
 
-    /* ----------------------------
+    /* =========================================================
        Layout
-    ---------------------------- */
+    ========================================================= */
     .container{
       width: min(var(--maxw), 100%);
       margin: 0 auto;
@@ -199,11 +245,11 @@
       top:0;
       z-index: 50;
       backdrop-filter: blur(14px);
-      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
+      background: linear-gradient(180deg, rgba(0,0,0,.38), rgba(0,0,0,0));
       border-bottom: 1px solid rgba(255,255,255,.06);
     }
     [data-theme="light"] header{
-      background: linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,255,255,0));
+      background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,0));
       border-bottom: 1px solid rgba(0,0,0,.06);
     }
 
@@ -218,16 +264,16 @@
       display:flex;
       align-items:center;
       gap:10px;
-      min-width: 220px;
+      min-width: 250px;
     }
     .dot{
       width: 10px;
       height: 10px;
       border-radius: 50%;
       background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent2));
-      box-shadow: 0 0 0 6px rgba(183,255,178,.12);
+      box-shadow: 0 0 0 6px rgba(183,255,178,.10);
     }
-    .brand strong{ font-weight: 750; letter-spacing: .2px; }
+    .brand strong{ font-weight: 780; letter-spacing: .2px; }
     .brand span{ font-size: 13px; color: var(--faint); display:block; margin-top: 2px; }
 
     nav ul{
@@ -238,11 +284,10 @@
       margin:0;
       align-items:center;
       flex-wrap: wrap;
-      justify-content: flex-end;
+      justify-content:center;
     }
     nav a{
       display:inline-flex;
-      gap:8px;
       align-items:center;
       text-decoration:none;
       padding: 10px 12px;
@@ -266,8 +311,8 @@
       display:flex;
       gap:10px;
       align-items:center;
-      justify-content: flex-end;
-      min-width: 220px;
+      justify-content:flex-end;
+      min-width: 250px;
     }
 
     .btn{
@@ -280,15 +325,15 @@
       background: var(--panel);
       color: var(--text);
       text-decoration:none;
-      font-weight: 650;
+      font-weight: 680;
       font-size: 14px;
-      box-shadow: none;
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
     }
     .btn:hover{
       transform: translateY(-1px);
       background: var(--panel2);
-      border-color: rgba(255,255,255,.2);
+      border-color: rgba(255,255,255,.20);
     }
     .btn.primary{
       background: linear-gradient(135deg, rgba(183,255,178,.22), rgba(167,197,255,.18));
@@ -298,10 +343,8 @@
       border-color: rgba(31,79,214,.25);
       background: linear-gradient(135deg, rgba(31,79,214,.12), rgba(30,123,61,.10));
     }
-
-    .icon{
-      width: 16px; height: 16px;
-      display:inline-block;
+    .btn.ghost{
+      background: transparent;
     }
 
     .theme-toggle{
@@ -318,14 +361,11 @@
     }
     .theme-toggle:hover{ transform: translateY(-1px); background: var(--panel2); }
 
-    /* ----------------------------
-       Sections
-    ---------------------------- */
+    .icon{ width: 16px; height: 16px; display:inline-block; }
+
     main{ padding: 26px 0 60px; }
-    section{
-      padding: 56px 0;
-      scroll-margin-top: 88px;
-    }
+    section{ padding: 58px 0; scroll-margin-top: 92px; }
+
     .section-head{
       display:flex;
       align-items:flex-end;
@@ -345,19 +385,18 @@
       letter-spacing: -0.01em;
       margin: 0;
     }
-    h3{
-      margin: 0 0 8px;
-      font-size: var(--h3);
-      letter-spacing: 0;
-    }
-    p{ margin: 10px 0 0; line-height: 1.6; color: var(--muted); }
+    h3{ margin: 0 0 8px; font-size: var(--h3); }
 
-    .grid{
+    .grid2{
       display:grid;
       gap: 14px;
+      grid-template-columns: 1.25fr .75fr;
     }
-    .grid.two{ grid-template-columns: 1.3fr .7fr; }
-    .grid.cards{ grid-template-columns: repeat(12, 1fr); }
+    .stack-col{
+      display:grid;
+      gap: 12px;
+      align-content:start;
+    }
 
     .card{
       background: var(--panel);
@@ -372,13 +411,13 @@
     .hero{
       padding-top: 24px;
     }
-    .hero .lead{
+    .lead{
       font-size: 16px;
-      max-width: 62ch;
-      color: var(--muted);
+      max-width: 68ch;
       margin-top: 14px;
     }
-    .hero .cta{
+
+    .cta{
       display:flex;
       gap: 10px;
       flex-wrap: wrap;
@@ -400,35 +439,58 @@
       background: rgba(255,255,255,.04);
       color: var(--muted);
       font-size: 13px;
+      user-select:none;
     }
     [data-theme="light"] .pill{ background: rgba(0,0,0,.03); }
 
-    .stat{
-      display:flex;
-      align-items:flex-start;
-      justify-content: space-between;
+    .micro{
+      display:grid;
       gap: 10px;
     }
-    .stat strong{
-      font-size: 18px;
-      letter-spacing: -0.01em;
+    .micro .row{
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items:flex-start;
     }
-    .stat span{
+    .micro strong{
+      font-size: 16px;
+      letter-spacing: -.01em;
+    }
+    .micro small{
       display:block;
       margin-top: 6px;
       color: var(--faint);
       font-size: 13px;
       line-height: 1.35;
     }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      font-size: 12px;
+      color: var(--faint);
+      font-family: var(--mono);
+      white-space: nowrap;
+    }
 
     /* Projects */
+    .cards{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: repeat(12, 1fr);
+    }
     .project{
       grid-column: span 6;
       padding: 18px;
       display:flex;
       flex-direction: column;
       gap: 10px;
-      min-height: 180px;
+      min-height: 220px;
       transition: transform .14s ease, background .14s ease, border-color .14s ease;
     }
     .project:hover{
@@ -438,14 +500,9 @@
     }
     .project .top{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content: space-between;
       gap: 10px;
-    }
-    .tag{
-      display:inline-flex;
-      gap: 8px;
-      flex-wrap: wrap;
     }
     .chip{
       font-family: var(--mono);
@@ -455,14 +512,38 @@
       padding: 5px 8px;
       border-radius: 999px;
       background: rgba(255,255,255,.04);
+      user-select:none;
     }
     [data-theme="light"] .chip{ background: rgba(0,0,0,.03); }
 
-    .project .links{
+    .kvs{
+      display:grid;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .kv{
+      display:grid;
+      grid-template-columns: 92px 1fr;
+      gap: 10px;
+      align-items: baseline;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .kv b{
+      color: var(--faint);
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .links{
       display:flex;
       gap: 10px;
-      margin-top: auto;
       flex-wrap: wrap;
+      margin-top: auto;
     }
     .link{
       display:inline-flex;
@@ -485,7 +566,7 @@
     }
     .item{
       display:grid;
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: 160px 1fr;
       gap: 14px;
       padding: 16px;
       border-radius: var(--radius-lg);
@@ -493,27 +574,10 @@
       background: rgba(255,255,255,.03);
     }
     [data-theme="light"] .item{ background: rgba(0,0,0,.03); }
-
-    .when{
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--faint);
-      margin-top: 4px;
-    }
-    .role{
-      font-weight: 750;
-    }
-    .place{
-      color: var(--faint);
-      font-size: 13px;
-      margin-top: 4px;
-    }
-    .bullets{
-      margin: 10px 0 0;
-      padding-left: 18px;
-      color: var(--muted);
-      line-height: 1.55;
-    }
+    .when{ font-family: var(--mono); font-size: 12px; color: var(--faint); margin-top: 6px; }
+    .role{ font-weight: 780; }
+    .place{ color: var(--faint); font-size: 13px; margin-top: 4px; }
+    .bullets{ margin: 10px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.55; }
 
     /* Skills */
     .skill-grid{
@@ -521,24 +585,59 @@
       grid-template-columns: repeat(12, 1fr);
       gap: 12px;
     }
-    .skill{
-      grid-column: span 4;
-      padding: 16px;
-    }
+    .skill{ grid-column: span 4; padding: 16px; }
     .skill .chips{ margin-top: 10px; display:flex; gap: 8px; flex-wrap: wrap; }
 
+    /* Packages */
+    .packages{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+    .pkg{ grid-column: span 4; padding: 16px; display:flex; flex-direction:column; gap: 10px; }
+    .price{
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--faint);
+    }
+    .pkg ul{ margin: 8px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.55; }
+    .pkg .cta2{ margin-top:auto; display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* Proof */
+    .proof{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .proof .box{ grid-column: span 6; padding: 16px; }
+    .proof .box ul{ margin: 8px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.55; }
+
+    /* Process */
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .step{ grid-column: span 3; padding: 16px; }
+    .step .n{
+      display:inline-flex;
+      width: 30px; height: 30px;
+      border-radius: 999px;
+      align-items:center;
+      justify-content:center;
+      font-family: var(--mono);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--faint);
+      margin-bottom: 8px;
+    }
+
     /* Contact */
-    form{
-      display:grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .field{
-      display:grid;
-      gap: 6px;
-    }
+    form{ display:grid; gap: 10px; margin-top: 12px; }
+    .field{ display:grid; gap: 6px; }
     label{ font-size: 13px; color: var(--faint); }
-    input, textarea{
+    input, textarea, select{
       width:100%;
       padding: 12px 12px;
       border-radius: 12px;
@@ -548,10 +647,10 @@
       font: inherit;
       outline: none;
     }
-    [data-theme="light"] input, [data-theme="light"] textarea{
+    [data-theme="light"] input, [data-theme="light"] textarea, [data-theme="light"] select{
       background: rgba(0,0,0,.03);
     }
-    input:focus, textarea:focus{
+    input:focus, textarea:focus, select:focus{
       border-color: rgba(167,197,255,.6);
       box-shadow: 0 0 0 4px rgba(167,197,255,.15);
     }
@@ -568,13 +667,17 @@
       color: var(--muted);
       margin-top: 10px;
     }
+    .hint{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--faint);
+    }
 
     footer{
       padding: 40px 0 60px;
       border-top: 1px solid rgba(255,255,255,.08);
     }
     [data-theme="light"] footer{ border-top: 1px solid rgba(0,0,0,.08); }
-
     .foot{
       display:flex;
       align-items:center;
@@ -585,25 +688,168 @@
       font-size: 13px;
     }
 
-    /* Reveal on scroll */
-    .reveal{
+    /* Reveal */
+    .reveal{ opacity: 0; transform: translateY(10px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.show{ opacity: 1; transform: translateY(0); }
+
+    /* Toast */
+    .toast-wrap{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 1000;
+      display:grid;
+      gap: 10px;
+      max-width: min(360px, calc(100vw - 28px));
+    }
+    .toast{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.35);
+      color: var(--text);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      animation: toastIn .18s ease both;
+    }
+    [data-theme="light"] .toast{ background: rgba(255,255,255,.75); }
+    .toast p{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .toast strong{ display:block; margin-bottom: 2px; }
+    .toast button{
+      border:none;
+      background: transparent;
+      color: var(--faint);
+      cursor:pointer;
+      padding: 0 4px;
+      font-size: 18px;
+      line-height: 1;
+    }
+    @keyframes toastIn{
+      from{ transform: translateY(6px); opacity: 0; }
+      to{ transform: translateY(0); opacity: 1; }
+    }
+
+    /* Back to top */
+    .top-btn{
+      position: fixed;
+      left: 14px;
+      bottom: 14px;
+      z-index: 999;
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity .55s ease, transform .55s ease;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
     }
-    .reveal.show{
+    .top-btn.show{
       opacity: 1;
       transform: translateY(0);
+      pointer-events:auto;
+    }
+
+    /* Command palette */
+    .palette-backdrop{
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+      display:none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    [data-theme="light"] .palette-backdrop{ background: rgba(10,12,16,.28); }
+    .palette-backdrop.open{ display:flex; }
+    .palette{
+      width: min(720px, 100%);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.42);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    [data-theme="light"] .palette{ background: rgba(255,255,255,.8); }
+    .palette-top{
+      padding: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+    [data-theme="light"] .palette-top{ border-bottom: 1px solid rgba(0,0,0,.10); }
+    .palette-top input{
+      border:none;
+      background: transparent;
+      width:100%;
+      padding: 10px 10px;
+      outline:none;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .palette-list{
+      padding: 6px;
+      display:grid;
+      gap: 6px;
+      max-height: 360px;
+      overflow:auto;
+    }
+    .cmd{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      cursor:pointer;
+      color: var(--muted);
+      background: transparent;
+      text-align:left;
+    }
+    .cmd:hover, .cmd.active{
+      background: rgba(255,255,255,.06);
+      border-color: var(--border);
+      color: var(--text);
+    }
+    [data-theme="light"] .cmd:hover, [data-theme="light"] .cmd.active{
+      background: rgba(0,0,0,.05);
+    }
+    .kbd{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--faint);
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.03);
+      white-space: nowrap;
+    }
+
+    /* Dialog backdrop */
+    dialog::backdrop{
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+    }
+    [data-theme="light"] dialog::backdrop{
+      background: rgba(10,12,16,.26);
     }
 
     /* Responsive */
     @media (max-width: 980px){
-      .grid.two{ grid-template-columns: 1fr; }
-      .project{ grid-column: span 12; }
-      .skill{ grid-column: span 12; }
-      .item{ grid-template-columns: 1fr; }
+      .grid2{ grid-template-columns: 1fr; }
       .brand{ min-width: unset; }
       .nav-actions{ min-width: unset; }
+      .project{ grid-column: span 12; }
+      .skill{ grid-column: span 12; }
+      .pkg{ grid-column: span 12; }
+      .step{ grid-column: span 12; }
+      .proof .box{ grid-column: span 12; }
+      .item{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -612,9 +858,37 @@
   <a class="skip" href="#content">Skip to content</a>
 
   <div class="bg-wrap" aria-hidden="true">
-    <div class="bg-grid"></div>
-    <div class="bg-blob" style="left:-10%; top:-12%;"></div>
-    <div class="bg-blob b2"></div>
+    <div class="bg-wash"></div>
+    <div class="grid"></div>
+    <div class="blob" style="left:-12%; top:-14%;"></div>
+    <div class="blob b2"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- Back to top -->
+  <div class="top-btn" id="topBtn">
+    <button class="btn" type="button" onclick="window.scrollTo({top:0, behavior: 'smooth'})" aria-label="Back to top">
+      ↑ Top
+    </button>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Command Palette -->
+  <div class="palette-backdrop" id="paletteBackdrop" role="dialog" aria-modal="true" aria-label="Command palette">
+    <div class="palette" role="document">
+      <div class="palette-top">
+        <span class="kbd">⌘/Ctrl + K</span>
+        <input id="paletteInput" placeholder="Type a command… (e.g. 'contact', 'theme', 'cv')" />
+        <button class="theme-toggle" id="paletteClose" aria-label="Close command palette">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="palette-list" id="paletteList"></div>
+    </div>
   </div>
 
   <header>
@@ -632,6 +906,8 @@
           <ul>
             <li><a href="#home" data-link>Home</a></li>
             <li><a href="#work" data-link>Work</a></li>
+            <li><a href="#process" data-link>Process</a></li>
+            <li><a href="#experience" data-link>Experience</a></li>
             <li><a href="#skills" data-link>Skills</a></li>
             <li><a href="#awards" data-link>Awards</a></li>
             <li><a href="#contact" data-link>Contact</a></li>
@@ -645,6 +921,11 @@
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
+
+          <button class="btn ghost" type="button" id="openPalette" aria-label="Open command palette">
+            <span style="font-family:var(--mono);">⌘K</span>
+          </button>
+
           <a class="btn primary" href="mailto:connorcolyer@icloud.com?subject=Website%20project%20enquiry">
             Hire me
             <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -659,12 +940,13 @@
 
   <main id="content">
     <div class="container">
+
       <!-- HERO -->
       <section id="home" class="hero reveal">
-        <div class="grid two">
+        <div class="grid2">
           <div class="card pad soft">
             <h1>Web design that converts.<br/>Engineering that ships.</h1>
-            <p class="lead">
+            <p class="lead muted">
               I’m Connor — a full-stack engineer and creative technologist in Winchester. I build clean websites for local businesses,
               automation that saves time, and experimental projects at the edge of “why would you do that” (in the best way).
             </p>
@@ -674,8 +956,16 @@
               <a class="btn" href="#contact">Get in touch</a>
               <button class="btn" id="copyEmail" type="button" aria-label="Copy email">
                 Copy email
-                <span style="font-family:var(--mono); font-size:12px; opacity:.85;">connorcolyer@icloud.com</span>
+                <span class="hint">connorcolyer@icloud.com</span>
               </button>
+              <a class="btn" href="./cv.pdf" id="cvBtn" download>
+                Download CV
+                <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 3v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="m8 11 4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </a>
             </div>
 
             <div class="pillrow" aria-label="Quick facts">
@@ -683,26 +973,66 @@
               <span class="pill">🧠 Full-stack + systems</span>
               <span class="pill">🎭 Theatre tech background</span>
               <span class="pill">⚙️ Automation + integrations</span>
+              <span class="pill">⏱ Replies within ~24h</span>
             </div>
           </div>
 
-          <div class="grid" style="gap:12px;">
-            <div class="card pad">
-              <div class="stat">
-                <strong>Available for</strong>
-                <span>Small business sites, landing pages, automation, and product builds.</span>
+          <div class="stack-col">
+            <div class="card pad micro">
+              <div class="row">
+                <div>
+                  <strong>Availability</strong>
+                  <small>Taking <b>1–2 small projects</b> at a time to keep quality high.</small>
+                </div>
+                <span class="badge">LIVE</span>
+              </div>
+              <div class="cta" style="margin-top:10px;">
+                <a class="btn primary" href="#packages">Get a quote</a>
+                <a class="btn" href="#process">How it works</a>
               </div>
             </div>
-            <div class="card pad">
-              <div class="stat">
-                <strong>Typical builds</strong>
-                <span>£300–£1,500 depending on scope. Fast turnaround, no nonsense.</span>
+
+            <div class="card pad micro">
+              <div class="row">
+                <div>
+                  <strong>Typical builds</strong>
+                  <small>£300–£1,500 depending on scope. Fast turnaround, clear deliverables.</small>
+                </div>
+                <span class="badge">NO NONSENSE</span>
+              </div>
+              <div class="pillrow" style="margin-top:10px;">
+                <span class="pill">Landing page</span>
+                <span class="pill">Small business site</span>
+                <span class="pill">Integrations</span>
               </div>
             </div>
-            <div class="card pad">
-              <div class="stat">
-                <strong>Stack</strong>
-                <span><span style="font-family:var(--mono);">HTML/CSS • JS • React • Python • Rust • Git • PostgreSQL</span></span>
+
+            <div class="card pad micro">
+              <div class="row">
+                <div>
+                  <strong>Stack</strong>
+                  <small><span style="font-family:var(--mono);">HTML/CSS • JS • React • Python • Rust • Git • PostgreSQL</span></small>
+                </div>
+                <span class="badge">SHIPPER</span>
+              </div>
+              <div class="cta" style="margin-top:10px;">
+                <button class="btn" type="button" id="copyPhone">Copy phone</button>
+                <a class="btn" href="tel:+447902346502">Call</a>
+              </div>
+            </div>
+
+            <div class="card pad micro">
+              <div class="row">
+                <div>
+                  <strong>Now</strong>
+                  <small>Building: <b>Aconite</b> (orbital sim) + a repeatable template for local business sites.</small>
+                </div>
+                <span class="badge">ACTIVE</span>
+              </div>
+              <div class="pillrow" style="margin-top:10px;">
+                <span class="pill">Numerical sims</span>
+                <span class="pill">Conversion sites</span>
+                <span class="pill">Automation</span>
               </div>
             </div>
           </div>
@@ -716,10 +1046,13 @@
             <h2>Selected work</h2>
             <p>Real projects, real intent. No made-up metrics.</p>
           </div>
+          <div class="pillrow" style="margin:0;">
+            <span class="pill">Tip: press <span class="hint">/</span> for commands</span>
+          </div>
         </div>
 
-        <div class="grid cards">
-          <article class="card project reveal" data-project>
+        <div class="cards">
+          <article class="card project reveal">
             <div class="top">
               <div>
                 <h3>Cortex</h3>
@@ -727,21 +1060,26 @@
               </div>
               <span class="chip">Research</span>
             </div>
-            <p class="muted">
-              A concept exploring EEG-driven prediction and human-computer interaction. Focus: signal pipelines, real-time thinking, and usable outputs.
-            </p>
-            <div class="tag">
+
+            <div class="kvs">
+              <div class="kv"><b>Problem</b><span>Turn noisy EEG inputs into usable, real-time interaction ideas.</span></div>
+              <div class="kv"><b>Approach</b><span>Signal pipelines + constraints-first design (no magic claims).</span></div>
+              <div class="kv"><b>Outcome</b><span>Clear direction for a system that could be tested, not just imagined.</span></div>
+            </div>
+
+            <div class="pillrow">
               <span class="chip">Python</span>
               <span class="chip">Signal processing</span>
               <span class="chip">Realtime systems</span>
             </div>
+
             <div class="links">
               <a class="link" href="#" onclick="openModal('cortex');return false;">Case study</a>
               <a class="link" href="#contact">Work with me</a>
             </div>
           </article>
 
-          <article class="card project reveal" data-project>
+          <article class="card project reveal">
             <div class="top">
               <div>
                 <h3>Aconite</h3>
@@ -749,21 +1087,26 @@
               </div>
               <span class="chip">Simulation</span>
             </div>
-            <p class="muted">
-              A physics-leaning orbital sim with numerical integration vibes. Focus: correctness, stability, and building tooling around the math.
-            </p>
-            <div class="tag">
+
+            <div class="kvs">
+              <div class="kv"><b>Problem</b><span>Model orbits with stability and correctness, not vibes.</span></div>
+              <div class="kv"><b>Approach</b><span>Numerical integration + tooling around the math for usability.</span></div>
+              <div class="kv"><b>Outcome</b><span>A base engine that can be extended into visual + interactive sims.</span></div>
+            </div>
+
+            <div class="pillrow">
               <span class="chip">Rust</span>
               <span class="chip">Numerical methods</span>
-              <span class="chip">Visualization</span>
+              <span class="chip">Simulation</span>
             </div>
+
             <div class="links">
               <a class="link" href="#" onclick="openModal('aconite');return false;">Case study</a>
               <a class="link" href="#contact">Work with me</a>
             </div>
           </article>
 
-          <article class="card project reveal" data-project>
+          <article class="card project reveal">
             <div class="top">
               <div>
                 <h3>Auralis</h3>
@@ -771,21 +1114,26 @@
               </div>
               <span class="chip">UI/UX</span>
             </div>
-            <p class="muted">
-              A clean desktop dashboard concept focused on clarity: data, motion, and calm interfaces that don’t scream at you.
-            </p>
-            <div class="tag">
+
+            <div class="kvs">
+              <div class="kv"><b>Problem</b><span>Dashboards often scream. This one should feel calm and useful.</span></div>
+              <div class="kv"><b>Approach</b><span>Hierarchy-first UI, motion as feedback, not decoration.</span></div>
+              <div class="kv"><b>Outcome</b><span>A design direction for a polished desktop companion app.</span></div>
+            </div>
+
+            <div class="pillrow">
               <span class="chip">Design</span>
               <span class="chip">Frontend</span>
               <span class="chip">Systems thinking</span>
             </div>
+
             <div class="links">
               <a class="link" href="#" onclick="openModal('auralis');return false;">Case study</a>
               <a class="link" href="#contact">Work with me</a>
             </div>
           </article>
 
-          <article class="card project reveal" data-project>
+          <article class="card project reveal">
             <div class="top">
               <div>
                 <h3>Local Service Sites</h3>
@@ -793,14 +1141,19 @@
               </div>
               <span class="chip">Web</span>
             </div>
-            <p class="muted">
-              Fast, modern landing pages for local businesses (dog walkers, PTs, cleaners, trades). Built to turn Google traffic into enquiries.
-            </p>
-            <div class="tag">
-              <span class="chip">HTML/CSS</span>
+
+            <div class="kvs">
+              <div class="kv"><b>Problem</b><span>Great businesses losing enquiries due to no site / weak CTA flow.</span></div>
+              <div class="kv"><b>Approach</b><span>Fast landing pages built for conversion + SEO + mobile.</span></div>
+              <div class="kv"><b>Outcome</b><span>A repeatable template system for quick, high-quality builds.</span></div>
+            </div>
+
+            <div class="pillrow">
               <span class="chip">SEO</span>
               <span class="chip">Conversion</span>
+              <span class="chip">Mobile-first</span>
             </div>
+
             <div class="links">
               <a class="link" href="#" onclick="openModal('localsites');return false;">Case study</a>
               <a class="link" href="#contact">Get a site</a>
@@ -808,10 +1161,11 @@
           </article>
         </div>
 
-        <div style="margin-top:14px;" class="card pad reveal">
-          <h3>Services</h3>
+        <div class="card pad reveal" style="margin-top:12px;">
+          <h3>What I do (for small businesses)</h3>
           <p class="muted">
-            If you’re a small business: I can build a clean site that looks legit, loads fast, and makes it easy for customers to contact you.
+            Clean websites that look legit, load fast, and make customers contact you.
+            If you want bookings, enquiries, or a simple product/service pitch — this is the lane.
           </p>
           <div class="pillrow">
             <span class="pill">Landing pages that convert</span>
@@ -819,7 +1173,141 @@
             <span class="pill">Automation + integrations (forms → email/Sheets/CRM)</span>
             <span class="pill">Refreshes + speed/SEO fixes</span>
           </div>
-          <p class="mini">Typical builds: <strong>£300–£1,500</strong> depending on scope. Quick turnaround, clear deliverables.</p>
+        </div>
+      </section>
+
+      <!-- PROCESS -->
+      <section id="process" class="reveal">
+        <div class="section-head">
+          <div>
+            <h2>Process</h2>
+            <p>How we go from “idea” to “live link” without chaos.</p>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="card step reveal">
+            <div class="n">1</div>
+            <h3>Quick call</h3>
+            <p class="muted">10–15 mins to nail goals, audience, and what “success” means.</p>
+            <p class="mini faint">Output: clear scope + timeline.</p>
+          </div>
+          <div class="card step reveal">
+            <div class="n">2</div>
+            <h3>Direction</h3>
+            <p class="muted">I propose a layout + copy structure. You pick the vibe. We lock it.</p>
+            <p class="mini faint">Output: draft + content checklist.</p>
+          </div>
+          <div class="card step reveal">
+            <div class="n">3</div>
+            <h3>Build</h3>
+            <p class="muted">Fast, responsive site. Two revision rounds so it stays shippable.</p>
+            <p class="mini faint">Output: near-final preview link.</p>
+          </div>
+          <div class="card step reveal">
+            <div class="n">4</div>
+            <h3>Launch</h3>
+            <p class="muted">Deploy, SEO basics, handover. You get a site you can actually maintain.</p>
+            <p class="mini faint">Output: live link + support options.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PACKAGES -->
+      <section id="packages" class="reveal">
+        <div class="section-head">
+          <div>
+            <h2>Packages</h2>
+            <p>Simple starting points. Final quote depends on scope.</p>
+          </div>
+        </div>
+
+        <div class="packages">
+          <div class="card pkg reveal">
+            <h3>Starter</h3>
+            <div class="price">£300–£500</div>
+            <p class="muted">One-page site that looks legit and converts.</p>
+            <ul>
+              <li>Hero + services + testimonials</li>
+              <li>Clear CTA (call / WhatsApp / enquiry)</li>
+              <li>Mobile-first + fast load</li>
+              <li>Basic SEO + analytics hook</li>
+            </ul>
+            <div class="cta2">
+              <a class="btn primary" href="#contact" onclick="prefillQuote('Starter');">Get Starter quote</a>
+              <a class="btn" href="#process">See process</a>
+            </div>
+          </div>
+
+          <div class="card pkg reveal">
+            <h3>Small Business</h3>
+            <div class="price">£600–£1,200</div>
+            <p class="muted">Multi-page site with structure, proof, and polish.</p>
+            <ul>
+              <li>3–6 pages (Home, About, Services, Contact…)</li>
+              <li>Better copy + UX flow</li>
+              <li>Forms + email routing</li>
+              <li>More SEO (structure + metadata)</li>
+            </ul>
+            <div class="cta2">
+              <a class="btn primary" href="#contact" onclick="prefillQuote('Small Business');">Get quote</a>
+              <a class="btn" href="./cv.pdf" download>See CV</a>
+            </div>
+          </div>
+
+          <div class="card pkg reveal">
+            <h3>Premium + Integrations</h3>
+            <div class="price">£1,200–£1,500</div>
+            <p class="muted">When you need automation, bookings, or more complex flows.</p>
+            <ul>
+              <li>Booking / enquiry pipelines</li>
+              <li>Automation (Sheets/CRM/email)</li>
+              <li>Performance + accessibility pass</li>
+              <li>Handover + optional maintenance</li>
+            </ul>
+            <div class="cta2">
+              <a class="btn primary" href="#contact" onclick="prefillQuote('Premium');">Get Premium quote</a>
+              <button class="btn" type="button" id="openPalette2">Open commands</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card pad reveal" style="margin-top:12px;">
+          <h3>Maintenance</h3>
+          <p class="muted">Optional. If you want me on standby: <b>£25–£40/month</b> depending on changes.</p>
+          <p class="mini faint">Or ad-hoc support: £60/hr. No lock-in.</p>
+        </div>
+      </section>
+
+      <!-- PROOF -->
+      <section id="proof" class="reveal">
+        <div class="section-head">
+          <div>
+            <h2>Proof</h2>
+            <p>Why you can trust I won’t ghost you or ship nonsense.</p>
+          </div>
+        </div>
+
+        <div class="proof">
+          <div class="card box reveal">
+            <h3>Production environments</h3>
+            <p class="muted">I’ve worked in places where reliability matters because people are waiting on you.</p>
+            <ul>
+              <li>The Mill — supported internal tool workflows (VFX pipelines)</li>
+              <li>Technicolor — prototyped automation for render/lighting metadata</li>
+              <li>Theatre ops — live cues, zero room for “oops”</li>
+            </ul>
+          </div>
+
+          <div class="card box reveal">
+            <h3>Mentoring + communication</h3>
+            <p class="muted">If you’re non-technical, you’ll still feel in control.</p>
+            <ul>
+              <li>Trained and supervised 30+ student technicians</li>
+              <li>Explained complex processes to non-engineers under pressure</li>
+              <li>Strong handover so you’re not dependent on me forever</li>
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -959,7 +1447,7 @@
           </div>
         </div>
 
-        <div class="grid" style="grid-template-columns: repeat(12,1fr); gap:12px;">
+        <div class="cards" style="grid-template-columns: repeat(12,1fr);">
           <div class="card pad reveal" style="grid-column: span 6;">
             <h3>Academic</h3>
             <ul class="bullets">
@@ -997,10 +1485,10 @@
           </div>
         </div>
 
-        <div class="grid two">
+        <div class="grid2">
           <div class="card pad reveal">
             <h3>Send a message</h3>
-            <p class="muted">This form opens your email app with everything prefilled (works great on mobile).</p>
+            <p class="muted">This opens your email app with everything prefilled (works great on mobile).</p>
 
             <form id="contactForm">
               <div class="field">
@@ -1011,6 +1499,27 @@
                 <label for="email">Email</label>
                 <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
               </div>
+
+              <div class="field">
+                <label for="budget">Budget</label>
+                <select id="budget" name="budget">
+                  <option value="Not sure">Not sure yet</option>
+                  <option value="£300–£500">£300–£500</option>
+                  <option value="£600–£1,200">£600–£1,200</option>
+                  <option value="£1,200–£1,500">£1,200–£1,500</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="timeline">Timeline</label>
+                <select id="timeline" name="timeline">
+                  <option value="ASAP">ASAP</option>
+                  <option value="1–2 weeks">1–2 weeks</option>
+                  <option value="2–4 weeks">2–4 weeks</option>
+                  <option value="Flexible">Flexible</option>
+                </select>
+              </div>
+
               <div class="field">
                 <label for="message">What are we building?</label>
                 <textarea id="message" name="message" placeholder="E.g. 1-page site for a local business. Need bookings + WhatsApp button. Live in 7 days." required></textarea>
@@ -1023,11 +1532,16 @@
                   <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
               </button>
+
               <div class="mini" id="formNote" aria-live="polite"></div>
+
+              <p class="mini faint">
+                What happens next: I’ll reply with a short plan + an honest quote. If it’s a fit, we ship.
+              </p>
             </form>
           </div>
 
-          <div class="grid" style="gap:12px;">
+          <div class="stack-col">
             <div class="card pad reveal">
               <h3>Direct</h3>
               <p class="muted">
@@ -1036,9 +1550,9 @@
                 Location: Winchester, UK
               </p>
               <div class="contact-row">
-                <a class="btn" href="mailto:connorcolyer@icloud.com?subject=Website%20project%20enquiry">Email</a>
+                <a class="btn" href="mailto:connorcolyer@icloud.com?subject=Project%20enquiry">Email</a>
                 <a class="btn" href="tel:+447902346502">Call</a>
-                <a class="btn" href="#work">See work</a>
+                <a class="btn" href="./cv.pdf" download>Download CV</a>
               </div>
             </div>
 
@@ -1063,13 +1577,13 @@
     <div class="container">
       <div class="foot">
         <div>© <span id="year"></span> Connor Colyer</div>
-        <div class="faint">Built as a single-file site for GitHub Pages • Fast, minimal, shippable</div>
+        <div class="faint">Single-file build for GitHub Pages • Fast • Accessible • Shippable</div>
       </div>
     </div>
   </footer>
 
   <!-- Modal -->
-  <dialog id="modal" style="border:none; padding:0; border-radius:22px; max-width:min(720px, 92vw); width:100%; background:transparent;">
+  <dialog id="modal" style="border:none; padding:0; border-radius:22px; max-width:min(780px, 92vw); width:100%; background:transparent;">
     <div class="card pad" style="position:relative;">
       <button class="theme-toggle" id="closeModal" style="position:absolute; right:14px; top:14px;" aria-label="Close">
         <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1087,110 +1601,235 @@
   </dialog>
 
   <script>
-    // ----------------------------
-    // Theme (persisted)
-    // ----------------------------
+    /* =========================================================
+       Theme (persisted)
+    ========================================================= */
     const root = document.documentElement;
     const storedTheme = localStorage.getItem('theme');
     const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-    if (storedTheme) root.setAttribute('data-theme', storedTheme);
-    else root.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+    root.setAttribute('data-theme', storedTheme || (prefersLight ? 'light' : 'dark'));
 
-    document.getElementById('themeToggle').addEventListener('click', () => {
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => toggleTheme());
+
+    function toggleTheme(){
       const current = root.getAttribute('data-theme') || 'dark';
       const next = current === 'dark' ? 'light' : 'dark';
       root.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
-    });
+      toast('Theme updated', next === 'dark' ? 'Dark mode on.' : 'Light mode on.');
+    }
 
-    // ----------------------------
-    // Footer year
-    // ----------------------------
+    /* Footer year */
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // ----------------------------
-    // Copy email
-    // ----------------------------
-    const copyBtn = document.getElementById('copyEmail');
-    copyBtn.addEventListener('click', async () => {
-      const email = 'connorcolyer@icloud.com';
-      try{
-        await navigator.clipboard.writeText(email);
-        copyBtn.textContent = 'Copied ✓';
-        setTimeout(() => (copyBtn.innerHTML = 'Copy email <span style="font-family:var(--mono); font-size:12px; opacity:.85;">' + email + '</span>'), 1200);
-      }catch(e){
-        window.location.href = 'mailto:' + email;
-      }
-    });
-
-    // ----------------------------
-    // Active nav (IntersectionObserver)
-    // ----------------------------
-    const links = [...document.querySelectorAll('a[data-link]')];
-    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-
-    const setActive = (id) => {
-      links.forEach(a => {
-        const active = a.getAttribute('href') === '#' + id;
-        a.classList.toggle('active', active);
-      });
-    };
-
-    const obs = new IntersectionObserver((entries) => {
-      const visible = entries.filter(e => e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
-      if (visible && visible.target && visible.target.id) setActive(visible.target.id);
-    }, { rootMargin: "-40% 0px -55% 0px", threshold: [0.1, 0.2, 0.3] });
-
-    sections.forEach(s => obs.observe(s));
-
-    // Smooth scroll (respect reduced motion)
+    /* Smooth scroll */
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.documentElement.style.scrollBehavior = 'smooth';
     }
 
-    // ----------------------------
-    // Reveal on scroll
-    // ----------------------------
+    /* =========================================================
+       Toasts
+    ========================================================= */
+    const toastWrap = document.getElementById('toastWrap');
+    function toast(title, message){
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.innerHTML = `
+        <div>
+          <strong>${escapeHtml(title)}</strong>
+          <p>${escapeHtml(message)}</p>
+        </div>
+        <button aria-label="Dismiss">×</button>
+      `;
+      const btn = el.querySelector('button');
+      btn.addEventListener('click', () => el.remove());
+      toastWrap.appendChild(el);
+      setTimeout(()=> { if (el.isConnected) el.remove(); }, 3800);
+    }
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+    }
+
+    /* =========================================================
+       Copy email / phone
+    ========================================================= */
+    const copyEmailBtn = document.getElementById('copyEmail');
+    copyEmailBtn.addEventListener('click', async () => {
+      await copyToClipboard('connorcolyer@icloud.com', 'Email copied', 'Paste it anywhere.');
+    });
+
+    const copyPhoneBtn = document.getElementById('copyPhone');
+    copyPhoneBtn.addEventListener('click', async () => {
+      await copyToClipboard('+44 07902 346502', 'Phone copied', 'Ready to paste.');
+    });
+
+    async function copyToClipboard(text, tTitle, tMsg){
+      try{
+        await navigator.clipboard.writeText(text);
+        toast(tTitle, tMsg);
+      }catch(e){
+        // Fallback: mailto if clipboard blocked
+        toast('Copy failed', 'Your browser blocked clipboard. Try selecting and copying manually.');
+      }
+    }
+
+    /* =========================================================
+       Back to top visibility
+    ========================================================= */
+    const topBtn = document.getElementById('topBtn');
+    window.addEventListener('scroll', () => {
+      const show = window.scrollY > 500;
+      topBtn.classList.toggle('show', show);
+    }, { passive:true });
+
+    /* =========================================================
+       Active nav (fixed)
+       - Observe all linked sections
+       - Choose the one closest to top (stable)
+    ========================================================= */
+    const navLinks = [...document.querySelectorAll('a[data-link]')];
+    const sectionById = new Map();
+    navLinks.forEach(a => {
+      const id = a.getAttribute('href').slice(1);
+      const sec = document.getElementById(id);
+      if (sec) sectionById.set(id, sec);
+    });
+
+    function setActive(id){
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+
+    // A stable “closest to top” scroll spy
+    const spyIds = [...sectionById.keys()];
+    function onScrollSpy(){
+      const y = window.scrollY + 120; // header offset
+      let current = spyIds[0];
+      for (const id of spyIds){
+        const el = sectionById.get(id);
+        if (!el) continue;
+        if (el.offsetTop <= y) current = id;
+      }
+      setActive(current);
+    }
+    window.addEventListener('scroll', onScrollSpy, { passive:true });
+    window.addEventListener('load', onScrollSpy);
+
+    /* =========================================================
+       Reveal on scroll
+    ========================================================= */
     const reveals = document.querySelectorAll('.reveal');
     const rObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) e.target.classList.add('show');
       });
     }, { threshold: 0.12 });
-
     reveals.forEach(el => rObs.observe(el));
 
-    // ----------------------------
-    // Contact form -> mailto
-    // ----------------------------
+    /* =========================================================
+       Contact form -> mailto
+    ========================================================= */
     const form = document.getElementById('contactForm');
     const note = document.getElementById('formNote');
+
     form.addEventListener('submit', (ev) => {
       ev.preventDefault();
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
+      const budget = document.getElementById('budget').value;
+      const timeline = document.getElementById('timeline').value;
       const msg = document.getElementById('message').value.trim();
 
-      const subject = encodeURIComponent(`Website enquiry — ${name}`);
+      const subject = encodeURIComponent(`Project enquiry — ${name}`);
       const body = encodeURIComponent(
-`Name: ${name}
-Email: ${email}
+        
+    /* =========================================================
+       Contact form -> mailto
+    ========================================================= */
+        
+    const form = document.getElementById('contactForm');
+    const note = document.getElementById('formNote');
 
-Message:
-${msg}
+    function buildMailto({ name, email, budget, timeline, message, packageName }){
+      const subj = packageName
+        ? `Website enquiry (${packageName}) — ${name || 'New lead'}`
+        : `Project enquiry — ${name || 'New lead'}`;
 
----
-Sent via connorcolyer site`
-      );
+      const lines = [
+        `Name: ${name || ''}`,
+        `Email: ${email || ''}`,
+        `Budget: ${budget || 'Not sure'}`,
+        `Timeline: ${timeline || 'Not sure'}`,
+        packageName ? `Package: ${packageName}` : null,
+        ``,
+        `Message:`,
+        `${message || ''}`,
+        ``,
+        `---`,
+        `Sent via connorcolyer site`
+      ].filter(Boolean);
 
-      note.textContent = "Opening your email app…";
-      window.location.href = `mailto:connorcolyer@icloud.com?subject=${subject}&body=${body}`;
-      setTimeout(()=> note.textContent = "If nothing opened, email me directly: connorcolyer@icloud.com", 1200);
+      const subject = encodeURIComponent(subj);
+      const body = encodeURIComponent(lines.join('\n'));
+      return `mailto:connorcolyer@icloud.com?subject=${subject}&body=${body}`;
+    }
+
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const budget = document.getElementById('budget').value;
+      const timeline = document.getElementById('timeline').value;
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message){
+        toast('Missing details', 'Please fill in your name, email, and message.');
+        return;
+      }
+
+      note.textContent = 'Opening your email app…';
+      window.location.href = buildMailto({ name, email, budget, timeline, message });
+
+      setTimeout(() => {
+        note.textContent = 'If nothing opened, email me directly: connorcolyer@icloud.com';
+      }, 1200);
     });
 
-    // ----------------------------
-    // Simple modal case studies
-    // ----------------------------
+    // Package CTA helper (called from buttons)
+    window.prefillQuote = (packageName) => {
+      try{
+        // Set defaults so user sees it in the form too
+        const budgetEl = document.getElementById('budget');
+        const timelineEl = document.getElementById('timeline');
+        if (packageName === 'Starter') budgetEl.value = '£300–£500';
+        if (packageName === 'Small Business') budgetEl.value = '£600–£1,200';
+        if (packageName === 'Premium') budgetEl.value = '£1,200–£1,500';
+        if (!timelineEl.value) timelineEl.value = 'ASAP';
+
+        const msgEl = document.getElementById('message');
+        const current = msgEl.value.trim();
+        const template =
+`I’m interested in the ${packageName} package.
+
+Business / project:
+Goals:
+Must-haves (e.g. booking button, WhatsApp, enquiry form):
+Any example sites you like:
+Anything to avoid:`;
+
+        if (!current) msgEl.value = template;
+
+        toast('Quote prep', `${packageName} selected — fill the form and hit Email Connor.`);
+        document.getElementById('contact').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }catch(e){
+        // no-op
+      }
+    };
+
+    /* =========================================================
+       Modal case studies (expanded + realistic)
+    ========================================================= */
     const modal = document.getElementById('modal');
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
@@ -1200,31 +1839,65 @@ Sent via connorcolyer site`
     const PROJECTS = {
       cortex: {
         title: "Cortex — EEG / BCI concept",
-        body: "Explores EEG-driven prediction and HCI. The interesting part is the pipeline: noisy inputs, real-time constraints, and turning signals into usable interactions without pretending it's magic.",
-        chips: ["Python", "Signal processing", "Realtime systems"]
+        body:
+          "A concept exploring usable, testable interaction ideas from EEG signals.\n\n" +
+          "Focus:\n" +
+          "• Thinking in constraints (noise, latency, false positives)\n" +
+          "• Designing signal pipelines that can actually be validated\n" +
+          "• Translating messy inputs into clean UX primitives (intent, confidence, state)\n\n" +
+          "Next steps:\n" +
+          "• Define measurable tasks + baseline models\n" +
+          "• Prototype realtime capture → feature extraction → interaction loop",
+        chips: ["Python", "Signal processing", "Realtime constraints", "HCI"]
       },
       aconite: {
         title: "Aconite — Rust orbital simulator",
-        body: "A physics-leaning orbital simulator with numerical integration. Focus: stability, correctness, and building tooling around the math so it’s actually usable (not just a graph that looks cool).",
-        chips: ["Rust", "Numerical methods", "Simulation"]
+        body:
+          "A physics-leaning orbital simulator with numerical integration at the core.\n\n" +
+          "Focus:\n" +
+          "• Stability and correctness over pretty graphs\n" +
+          "• Tooling around the math so it’s usable (inspection, logging, tuning)\n" +
+          "• Clean Rust architecture to support future visualization\n\n" +
+          "Next steps:\n" +
+          "• Add integrator variants + error analysis\n" +
+          "• Build a lightweight viewer + interaction layer",
+        chips: ["Rust", "Numerical methods", "Simulation", "Architecture"]
       },
       auralis: {
         title: "Auralis — macOS dashboard concept",
-        body: "A clean dashboard concept with calm UI and strong information hierarchy. The goal is clarity and speed — interfaces that feel like instruments, not distractions.",
-        chips: ["UI/UX", "Frontend", "Systems thinking"]
+        body:
+          "A calm dashboard concept: clarity first, motion as feedback, zero UI noise.\n\n" +
+          "Focus:\n" +
+          "• Strong hierarchy and readability\n" +
+          "• UI as an instrument (fast, predictable)\n" +
+          "• Design system thinking (components, spacing, states)\n\n" +
+          "Next steps:\n" +
+          "• Turn into a working prototype\n" +
+          "• Connect real data sources + refresh cadence",
+        chips: ["UI/UX", "Design systems", "Frontend", "Product thinking"]
       },
       localsites: {
         title: "Local Service Sites — conversion templates",
-        body: "Fast landing pages built to turn Google traffic into enquiries. Designed for small businesses: clear CTA, fast load, mobile-first layout, SEO basics, and simple contact flows (form + WhatsApp/call).",
-        chips: ["SEO", "Conversion", "Mobile-first"]
+        body:
+          "Repeatable templates for small businesses that need enquiries, not fluff.\n\n" +
+          "Focus:\n" +
+          "• Fast load + mobile-first\n" +
+          "• Clear CTA flows (call/WhatsApp/form)\n" +
+          "• SEO structure (headings, metadata, schema basics)\n\n" +
+          "Next steps:\n" +
+          "• Add niche variants (trades, fitness, pet services)\n" +
+          "• Plug-in integrations (Sheets/CRM/email routing)",
+        chips: ["SEO", "Conversion", "Mobile-first", "Automation-ready"]
       }
     };
 
     window.openModal = (key) => {
       const p = PROJECTS[key];
       if (!p) return;
+
       modalTitle.textContent = p.title;
       modalBody.textContent = p.body;
+
       modalChips.innerHTML = "";
       p.chips.forEach(c => {
         const el = document.createElement('span');
@@ -1232,16 +1905,309 @@ Sent via connorcolyer site`
         el.textContent = c;
         modalChips.appendChild(el);
       });
+
       if (typeof modal.showModal === "function") modal.showModal();
+      toast('Opened', 'Press Esc to close.');
     };
 
     closeModal.addEventListener('click', () => modal.close());
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.open) modal.close();
+    });
+
+    /* =========================================================
+       Command palette (⌘/Ctrl+K + /)
+    ========================================================= */
+    const paletteBackdrop = document.getElementById('paletteBackdrop');
+    const paletteInput = document.getElementById('paletteInput');
+    const paletteList = document.getElementById('paletteList');
+    const paletteClose = document.getElementById('paletteClose');
+    const openPaletteBtn = document.getElementById('openPalette');
+    const openPaletteBtn2 = document.getElementById('openPalette2');
+
+    const COMMANDS = [
+      { label: "Go: Home", key: "H", run: () => jump("#home") },
+      { label: "Go: Work", key: "W", run: () => jump("#work") },
+      { label: "Go: Process", key: "P", run: () => jump("#process") },
+      { label: "Go: Packages", key: "G", run: () => jump("#packages") },
+      { label: "Go: Experience", key: "E", run: () => jump("#experience") },
+      { label: "Go: Skills", key: "S", run: () => jump("#skills") },
+      { label: "Go: Awards", key: "A", run: () => jump("#awards") },
+      { label: "Go: Contact", key: "C", run: () => jump("#contact") },
+
+      { label: "Action: Toggle theme", key: "T", run: () => toggleTheme() },
+      { label: "Action: Copy email", key: "M", run: () => copyToClipboard('connorcolyer@icloud.com','Email copied','Paste it anywhere.') },
+      { label: "Action: Copy phone", key: "N", run: () => copyToClipboard('+44 07902 346502','Phone copied','Ready to paste.') },
+      { label: "Action: Download CV", key: "D", run: () => document.getElementById('cvBtn')?.click() },
+
+      // Replace these once you set real links:
+      { label: "Open: GitHub (add your link)", key: "", run: () => toast('Heads up', 'Set your GitHub link in the Contact > Social buttons.') },
+      { label: "Open: LinkedIn (add your link)", key: "", run: () => toast('Heads up', 'Set your LinkedIn link in the Contact > Social buttons.') },
+    ];
+
+    function jump(hash){
+      const el = document.querySelector(hash);
+      if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      closePalette();
+    }
+
+    function openPalette(){
+      paletteBackdrop.classList.add('open');
+      paletteInput.value = "";
+      renderCommands("");
+      setTimeout(() => paletteInput.focus(), 0);
+    }
+    function closePalette(){
+      paletteBackdrop.classList.remove('open');
+    }
+
+    openPaletteBtn?.addEventListener('click', openPalette);
+    openPaletteBtn2?.addEventListener('click', openPalette);
+    paletteClose?.addEventListener('click', closePalette);
+
+    paletteBackdrop.addEventListener('click', (e) => {
+      if (e.target === paletteBackdrop) closePalette();
+    });
+
+    function renderCommands(filter){
+      const q = (filter || "").toLowerCase().trim();
+      const items = COMMANDS
+        .filter(c => c.label.toLowerCase().includes(q))
+        .slice(0, 12);
+
+      paletteList.innerHTML = "";
+      items.forEach((c, idx) => {
+        const btn = document.createElement('button');
+        btn.type = "button";
+        btn.className = "cmd" + (idx === 0 ? " active" : "");
+        btn.innerHTML = `
+          <span>${escapeHtml(c.label)}</span>
+          <span class="kbd">${escapeHtml(c.key || '↵')}</span>
+        `;
+        btn.addEventListener('click', () => { c.run(); closePalette(); });
+        paletteList.appendChild(btn);
+      });
+    }
+
+    function setActiveCmd(delta){
+      const cmds = [...paletteList.querySelectorAll('.cmd')];
+      const idx = cmds.findIndex(el => el.classList.contains('active'));
+      const next = Math.max(0, Math.min(cmds.length - 1, idx + delta));
+      cmds.forEach(el => el.classList.remove('active'));
+      if (cmds[next]) cmds[next].classList.add('active');
+      cmds[next]?.scrollIntoView({ block: 'nearest' });
+    }
+
+    paletteInput.addEventListener('input', (e) => renderCommands(e.target.value));
+
+    paletteInput.addEventListener('keydown', (e) => {
+      const cmds = [...paletteList.querySelectorAll('.cmd')];
+      const active = paletteList.querySelector('.cmd.active');
+      const activeIdx = cmds.indexOf(active);
+
+      if (e.key === "Escape"){ closePalette(); return; }
+      if (e.key === "ArrowDown"){ e.preventDefault(); setActiveCmd(1); return; }
+      if (e.key === "ArrowUp"){ e.preventDefault(); setActiveCmd(-1); return; }
+      if (e.key === "Enter"){
+        e.preventDefault();
+        const chosen = cmds[activeIdx] || cmds[0];
+        chosen?.click();
+      }
+    });
+
+    // Global hotkeys: Cmd/Ctrl+K and "/" (when not typing)
+    window.addEventListener('keydown', (e) => {
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+      const typing = tag === "input" || tag === "textarea" || tag === "select" || e.target?.isContentEditable;
+
+      const isCmdK = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k";
+      if (isCmdK){
+        e.preventDefault();
+        paletteBackdrop.classList.contains('open') ? closePalette() : openPalette();
+        return;
+      }
+
+      if (!typing && e.key === "/"){
+        e.preventDefault();
+        openPalette();
+        return;
+      }
+
+      // Quick single-key shortcuts when not typing
+      if (!typing && !paletteBackdrop.classList.contains('open')){
+        if (e.key === "t" || e.key === "T") toggleTheme();
+        if (e.key === "g" || e.key === "G") jump("#packages");
+        if (e.key === "c" || e.key === "C") jump("#contact");
+      }
+    });
+
+    /* =========================================================
+       Modal (accessibility polish)
+    ========================================================= */
     modal.addEventListener('click', (e) => {
-      // close if clicking backdrop
+      // Close if clicking backdrop area (not inside card)
       const rect = modal.getBoundingClientRect();
-      const inside = (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom);
+      const inside = (
+        e.clientX >= rect.left && e.clientX <= rect.right &&
+        e.clientY >= rect.top && e.clientY <= rect.bottom
+      );
       if (!inside) modal.close();
     });
-  </script>
-</body>
-</html>
+
+    /* =========================================================
+       Small helpers
+    ========================================================= */
+    function jumpToEl(el){
+      if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function toggleTheme(){
+      const current = root.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      toast('Theme', next === 'dark' ? 'Dark mode' : 'Light mode');
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#39;");
+    }
+
+    async function copyToClipboard(text, title='Copied', desc=''){
+      try{
+        await navigator.clipboard.writeText(text);
+        toast(title, desc || text);
+      }catch(err){
+        // Fallback: create a temporary input
+        const tmp = document.createElement('input');
+        tmp.value = text;
+        document.body.appendChild(tmp);
+        tmp.select();
+        try{
+          document.execCommand('copy');
+          toast(title, desc || text);
+        }catch(e){
+          toast('Copy failed', 'Tap and hold to copy manually.');
+        }finally{
+          document.body.removeChild(tmp);
+        }
+      }
+    }
+
+    /* =========================================================
+       Toast notifications
+    ========================================================= */
+    const toastEl = document.getElementById('toast');
+    const toastTitleEl = document.getElementById('toastTitle');
+    const toastDescEl = document.getElementById('toastDesc');
+
+    let toastTimer = null;
+
+    function toast(title, desc){
+      if (!toastEl) return;
+
+      toastTitleEl.textContent = title || '';
+      toastDescEl.textContent = desc || '';
+      toastEl.classList.add('show');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2400);
+    }
+
+    document.getElementById('toastClose')?.addEventListener('click', () => {
+      toastEl?.classList.remove('show');
+      if (toastTimer) clearTimeout(toastTimer);
+    });
+
+    /* =========================================================
+       Back to top button
+    ========================================================= */
+    const toTop = document.getElementById('toTop');
+    const SHOW_TOP_AFTER = 520;
+
+    function updateToTop(){
+      if (!toTop) return;
+      if (window.scrollY > SHOW_TOP_AFTER) toTop.classList.add('show');
+      else toTop.classList.remove('show');
+    }
+    window.addEventListener('scroll', updateToTop, { passive: true });
+    updateToTop();
+
+    toTop?.addEventListener('click', () => jumpToEl(document.getElementById('home')));
+
+    /* =========================================================
+       CV download button (expects /cv.pdf in repo)
+    ========================================================= */
+    const cvBtn = document.getElementById('cvBtn');
+    cvBtn?.addEventListener('click', (e) => {
+      // If user hasn't added cv.pdf yet, avoid a 404 surprise
+      // You can remove this guard once cv.pdf exists.
+      fetch('cv.pdf', { method: 'HEAD' })
+        .then(res => {
+          if (!res.ok) throw new Error('missing');
+          window.location.href = 'cv.pdf';
+        })
+        .catch(() => {
+          toast('CV not found', 'Add a cv.pdf file to your repo root.');
+        });
+      e.preventDefault();
+    });
+
+    /* =========================================================
+       Improve nav active-state stability
+       (Optional override: safer intersection behaviour)
+    ========================================================= */
+    // If you already have an IntersectionObserver earlier, this can help stabilize it
+    // by setting Home as active when near the top.
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < 140) setActive?.('home');
+    }, { passive: true });
+
+    /* =========================================================
+       Gradient seam / background repeat fix (runtime nudge)
+       Ensures background elements cover full viewport and don't show a hard edge on resize
+    ========================================================= */
+    function fixBackgroundSeam(){
+      const bg = document.querySelector('.bg-wrap');
+      if (!bg) return;
+      // Force reflow + ensure fixed positioning covers mobile bars
+      bg.style.height = window.innerHeight + 'px';
+      // also update the grid inset to exceed viewport
+      const grid = document.querySelector('.bg-grid');
+      if (grid) grid.style.inset = '-30%';
+    }
+    window.addEventListener('resize', fixBackgroundSeam);
+    window.addEventListener('orientationchange', fixBackgroundSeam);
+    fixBackgroundSeam();
+
+    /* =========================================================
+       Wire up extra quick actions (if present)
+    ========================================================= */
+    document.getElementById('copyPhone')?.addEventListener('click', () =>
+      copyToClipboard('+44 07902 346502', 'Phone copied', 'Ready to paste.')
+    );
+
+    document.getElementById('copyLocation')?.addEventListener('click', () =>
+      copyToClipboard('Winchester, UK', 'Location copied', 'Handy for invoices / profiles.')
+    );
+
+    // Make package cards clickable (optional)
+    document.querySelectorAll('[data-package]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pkg = btn.getAttribute('data-package');
+        if (pkg) window.prefillQuote?.(pkg);
+      });
+    });
+
+    /* =========================================================
+       Done
+    ========================================================= */
+
+
