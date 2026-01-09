@@ -689,8 +689,9 @@
     }
 
     /* Reveal */
-    .reveal{ opacity: 0; transform: translateY(10px); transition: opacity .55s ease, transform .55s ease; }
-    .reveal.show{ opacity: 1; transform: translateY(0); }
+    .reveal{ opacity: 1; transform: translateY(0); }
+    .reveal-ready .reveal{ opacity: 0; transform: translateY(10px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal-ready .reveal.show{ opacity: 1; transform: translateY(0); }
 
     /* Toast */
     .toast-wrap{
@@ -1719,6 +1720,17 @@
        Reveal on scroll
     ========================================================= */
     const reveals = document.querySelectorAll('.reveal');
+    document.body.classList.add('reveal-ready');
+    if ('IntersectionObserver' in window){
+      const rObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add('show');
+        });
+      }, { threshold: 0.12 });
+      reveals.forEach(el => rObs.observe(el));
+    }else{
+      reveals.forEach(el => el.classList.add('show'));
+    }
     const rObs = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) e.target.classList.add('show');
