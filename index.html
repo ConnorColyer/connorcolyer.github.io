@@ -1610,7 +1610,7 @@
     root.setAttribute('data-theme', storedTheme || (prefersLight ? 'light' : 'dark'));
 
     const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => toggleTheme());
+    themeToggle?.addEventListener('click', () => toggleTheme());
 
     function toggleTheme(){
       const current = root.getAttribute('data-theme') || 'dark';
@@ -1655,12 +1655,12 @@
        Copy email / phone
     ========================================================= */
     const copyEmailBtn = document.getElementById('copyEmail');
-    copyEmailBtn.addEventListener('click', async () => {
+    copyEmailBtn?.addEventListener('click', async () => {
       await copyToClipboard('connorcolyer@icloud.com', 'Email copied', 'Paste it anywhere.');
     });
 
     const copyPhoneBtn = document.getElementById('copyPhone');
-    copyPhoneBtn.addEventListener('click', async () => {
+    copyPhoneBtn?.addEventListener('click', async () => {
       await copyToClipboard('+44 07902 346502', 'Phone copied', 'Ready to paste.');
     });
 
